@@ -54,3 +54,4 @@ compile_commands.json
 *_qmlcache.qrc
 
 /cctv_36/build
+.DS_Store
