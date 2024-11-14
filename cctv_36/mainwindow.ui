@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>680</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,17 +20,40 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>40</y>
-      <width>731</width>
-      <height>441</height>
+      <x>70</x>
+      <y>50</y>
+      <width>521</width>
+      <height>341</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QTabBar::tab {
+    background: #d3d3d3;          /* 탭의 기본 배경색 */
+    color: black;                 /* 텍스트 색상 */
+    padding: 5px;                /* 탭 내부 여백 */
+    border: 1.5px solid ;   /* 테두리 색상 */
+	border-color:rgb(163, 109, 0);
+    border-top-left-radius: 5px;  /* 왼쪽 상단 모서리 둥글게 */
+    border-top-right-radius: 5px; /* 오른쪽 상단 모서리 둥글게 */
+    min-width: 100px;              /* 탭의 최소 너비 */
+}
+
+QTabBar::tab:selected {
+    background-color: rgb(252, 255, 202);
+    font-weight: bold;            /* 선택된 탭의 텍스트 굵게 */
+}
+
+QTabBar::tab:hover {
+	background-color: rgb(215, 255, 190);
+    background: #ffd700;          /* 탭 위로 마우스 올렸을 때 배경색 */
+}
+</string>
+    </property>
     <property name="tabPosition">
-     <enum>QTabWidget::TabPosition::North</enum>
+     <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -64,7 +87,7 @@
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::Shape::NoFrame</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <widget class="QPushButton" name="searchButton">
        <property name="geometry">
@@ -79,7 +102,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::EditFind"/>
+        <iconset theme="QIcon::ThemeIcon::EditFind">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
       <widget class="QTextBrowser" name="textBrowser">
@@ -132,7 +156,7 @@
       <family>URW Bookman [UKWN]</family>
       <pointsize>12</pointsize>
       <italic>true</italic>
-      <fontweight>DemiBold</fontweight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -143,9 +167,6 @@ font: 600 italic 12pt &quot;URW Bookman [UKWN]&quot;;
     </property>
     <property name="text">
      <string>LicensePlate Detection CCTV App</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
   </widget>
