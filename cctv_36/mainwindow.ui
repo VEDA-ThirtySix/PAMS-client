@@ -13,46 +13,141 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="dateTimeLabel">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>111</width>
+      <x>30</x>
+      <y>40</y>
+      <width>731</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::TabPosition::North</enum>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Streaming</string>
+     </attribute>
+     <widget class="QLabel" name="dateTimeLabel">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>40</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Search</string>
+     </attribute>
+     <widget class="QFrame" name="frame">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>251</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::NoFrame</enum>
+      </property>
+      <widget class="QPushButton" name="searchButton">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>20</y>
+         <width>31</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset theme="QIcon::ThemeIcon::EditFind"/>
+       </property>
+      </widget>
+      <widget class="QTextBrowser" name="textBrowser">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>181</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>251</width>
+        <height>291</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>249</width>
+         <height>289</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="guideLabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>801</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>URW Bookman [UKWN]</family>
+      <pointsize>12</pointsize>
+      <italic>true</italic>
+      <fontweight>DemiBold</fontweight>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(215, 222, 255);
+color: rgb(0, 0, 0);
+font: 600 italic 12pt &quot;URW Bookman [UKWN]&quot;;
+</string>
+    </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>LicensePlate Detection CCTV App</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="searchButton">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>380</y>
-      <width>121</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>영상 / 차량 검색</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>24</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

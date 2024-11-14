@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QTimer>
-#include "search.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,11 +21,9 @@ public:
 
 private slots:
     void updateDateTime();
-    void searchButtonClicked();
 
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
-    search *searchWindow;
 };
 #endif // MAINWINDOW_H

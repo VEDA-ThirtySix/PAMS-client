@@ -1,22 +1,10 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
-#include <QWidget>
-
-namespace Ui {
-class search;
-}
-
-class search : public QWidget
+class search
 {
-    Q_OBJECT
-
 public:
-    explicit search(QWidget *parent = nullptr);
-    ~search();
-
-private:
-    Ui::search *ui;
+    search();
 };
 
 #endif // SEARCH_H

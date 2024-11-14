@@ -6,7 +6,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    ,searchWindow(nullptr)
 {
     ui->setupUi(this);
 
@@ -17,8 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 초기 날짜/시간 표시
     updateDateTime();
-
-    connect(ui->searchButton, &QPushButton::clicked, this, &MainWindow::searchButtonClicked);
 
 }
 
@@ -62,10 +59,4 @@ void MainWindow::updateDateTime()
                                             current.time().second());
 
     ui->dateTimeLabel->setText(dateTimeStr);
-}
-
-void MainWindow::searchButtonClicked()
-{
-    searchWindow = new search();
-    searchWindow->show();
 }
