@@ -4,11 +4,10 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QTimer>
+#include "search.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
+namespace Ui {class MainWindow;}
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -25,5 +24,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
+    Search *searchManager;
+
+    void setupSearch();
 };
 #endif // MAINWINDOW_H

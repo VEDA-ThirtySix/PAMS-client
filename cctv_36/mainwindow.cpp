@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "search.h"
 #include <QDateTime>
 
 
@@ -14,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &MainWindow::updateDateTime);
     timer->start(1000);
 
+    setupSearch();
+
     // 초기 날짜/시간 표시
     updateDateTime();
 
@@ -22,6 +25,15 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setupSearch()
+{
+    // Search 클래스 초기화 - Search 탭의 위젯들 연결
+    searchManager = new Search(ui->searchInput,    // LineEdit
+                               ui->searchButton,     // Search 버튼
+                               ui->resultsList,      // 결과 리스트
+                               this);
 }
 
 void MainWindow::updateDateTime()
