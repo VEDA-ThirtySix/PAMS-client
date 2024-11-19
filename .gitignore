@@ -55,3 +55,4 @@ compile_commands.json
 
 /cctv_36/build
 .DS_Store
+cctv_36/.qmake.stash
