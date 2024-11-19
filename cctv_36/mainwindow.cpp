@@ -106,6 +106,7 @@ void MainWindow::processYUYVFrame(const QByteArray &frameData)
 
     ui->streamingLabel->setPixmap(QPixmap::fromImage(image));
 }
+
 void MainWindow::handleError(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {
@@ -113,19 +114,20 @@ void MainWindow::handleError(QAbstractSocket::SocketError socketError)
         qDebug() << "Connection closed by server";
         break;
     case QAbstractSocket::HostNotFoundError:
-        QMessageBox::warning(this, tr("Streaming Client"),
-                             tr("The host was not found."));
+        qDebug() << "The host was not found";
+        QMessageBox::warning(this, tr("Streaming Client"), tr("The host was not found."));
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        QMessageBox::warning(this, tr("Streaming Client"),
-                             tr("The connection was refused."));
+        qDebug() << "The connection was refused";
+        QMessageBox::warning(this, tr("Streaming Client"), tr("The connection was refused."));
         break;
     default:
-        QMessageBox::warning(this, tr("Streaming Client"),
-                             tr("Error: %1.")
-                                 .arg(streamSocket->errorString()));
+        break;
     }
+    
+    QTimer::singleShot(500, this, &MainWindow::reconnectToStream);
 }
+
 void MainWindow::reconnectToStream()
 {
     if (streamSocket->state() == QAbstractSocket::UnconnectedState) {
