@@ -28,6 +28,3 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     images.qrc
 
-
-INCLUDEPATH += /usr/include/opencv4/
-LIBS += -L/usr/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio

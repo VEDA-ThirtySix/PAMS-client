@@ -33,6 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 초기 날짜/시간 표시
     updateDateTime();
+
+
+
+
+    ui->carstateLabel = new QLabel(this);
+    ui->carstateLabel->setVisible(true);
 }
 
 MainWindow::~MainWindow()
@@ -148,13 +154,13 @@ void MainWindow::updateDateTime()
 
     // 요일 한글 변환
     QMap<int, QString> weekdays;
-    weekdays[1] = "월";
-    weekdays[2] = "화";
-    weekdays[3] = "수";
-    weekdays[4] = "목";
-    weekdays[5] = "금";
-    weekdays[6] = "토";
-    weekdays[7] = "일";
+    weekdays[1] = "MON";
+    weekdays[2] = "TUE";
+    weekdays[3] = "WED";
+    weekdays[4] = "THU";
+    weekdays[5] = "FRI";
+    weekdays[6] = "SAT";
+    weekdays[7] = "SUN";
 
     QString weekday = weekdays[current.date().dayOfWeek()];
 
@@ -166,7 +172,7 @@ void MainWindow::updateDateTime()
     if (hour == 0) hour = 12;
 
     // 날짜/시간 문자열 생성
-    QString dateTimeStr = QString::asprintf("%04d.%02d.%02d(%s) | %s %02d:%02d:%02d",
+    QString dateTimeStr = QString::asprintf("%04d.%02d.%02d %s | %s %02d:%02d:%02d",
                                             current.date().year(),
                                             current.date().month(),
                                             current.date().day(),

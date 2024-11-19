@@ -110,7 +110,7 @@ QWidget#searchTab{
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 500 13pt &quot;NotoSerifTamilSlanted Medium&quot;;
+        <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
 background-color: transparent;
 border:1.5px dashed rgb(189, 189, 189);</string>
        </property>
@@ -119,22 +119,6 @@ border:1.5px dashed rgb(189, 189, 189);</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="carstateLabel">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>310</y>
-         <width>361</width>
-         <height>121</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(213, 213, 213);</string>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
        </property>
       </widget>
       <widget class="QFrame" name="bestshotFrame">
@@ -168,7 +152,7 @@ border:none;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(0, 0, 127);
-font: bold 9pt &quot;Serif&quot;;
+font: 500 10pt &quot;Quicksand Medium&quot;;
 background-color: rgba(170, 255, 255,0.5);</string>
        </property>
        <property name="text">
@@ -178,7 +162,7 @@ background-color: rgba(170, 255, 255,0.5);</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="streamingLabel_2">
+      <widget class="QLabel" name="licensetitleLabel">
        <property name="geometry">
         <rect>
          <x>380</x>
@@ -188,11 +172,31 @@ background-color: rgba(170, 255, 255,0.5);</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 500 12pt &quot;NotoSerifTamilSlanted Medium&quot;;
-background-color:  rgba(170, 255, 127,0.5);</string>
+        <string notr="true">
+background-color:  rgba(170, 255, 127,0.5);
+font: 500 12pt &quot;Quicksand Medium&quot;;</string>
        </property>
        <property name="text">
         <string>LicensePlate</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="carstateLabel">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>310</y>
+         <width>121</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/parking.png&quot; width=&quot;100&quot; height=&quot;100&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -326,28 +330,99 @@ font: 500 11pt &quot;Quicksand Medium&quot;;
     </property>
     <property name="geometry">
      <rect>
-      <x>640</x>
+      <x>570</x>
       <y>0</y>
-      <width>81</width>
+      <width>151</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>NotoSerifTamilSlanted Black</family>
-      <pointsize>10</pointsize>
+      <family>UnDotum</family>
+      <pointsize>9</pointsize>
       <italic>false</italic>
-      <bold>true</bold>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:transparent;
 color: rgb(255, 255, 255);
 
-font: 900 10pt &quot;NotoSerifTamilSlanted Black&quot;;</string>
+font: 9pt &quot;UnDotum&quot;;</string>
     </property>
     <property name="text">
-     <string>team.36</string>
+     <string>Thirty-Six Stratagems</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="teamLogo_2">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>UnDotum</family>
+      <pointsize>9</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+color: rgb(255, 255, 255);
+
+font: 9pt &quot;UnDotum&quot;;</string>
+    </property>
+    <property name="text">
+     <string>HanwhaVision</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="chicken">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>-10</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/chicken1.png&quot; width=&quot;30&quot; height=&quot;30&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="chicken_2">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>-10</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/chicken1.png&quot; width=&quot;30&quot; height=&quot;30&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
