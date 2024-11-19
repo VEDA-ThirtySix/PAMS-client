@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network #추가
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,3 +24,10 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    images.qrc
+
+
+INCLUDEPATH += /usr/include/opencv4/
+LIBS += -L/usr/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio
