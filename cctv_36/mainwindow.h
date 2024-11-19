@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QTimer>
+
 #include <QTcpSocket>
 #include <QBuffer>
 #include "search.h"
@@ -32,6 +33,7 @@ private:
     Ui::MainWindow *ui;
     QTimer *timer;
     Search *searchManager;
+
     QTcpSocket *streamSocket;
     QByteArray frameBuffer;
 

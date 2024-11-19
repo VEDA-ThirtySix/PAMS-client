@@ -269,6 +269,7 @@ background-color: rgba(170, 255, 255,0.5);</string>
         </rect>
        </property>
       </widget>
+
       <widget class="QListWidget" name="resultsList">
        <property name="geometry">
         <rect>
@@ -279,6 +280,35 @@ background-color: rgba(170, 255, 255,0.5);</string>
         </rect>
        </property>
       </widget>
+
+     </widget>
+     <widget class="QListWidget" name="resultsList">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>256</width>
+        <height>311</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget {
+    background-color: white;
+    alternate-background-color: #f5f5f5;
+}
+QListWidget::item {
+    padding: 5px;
+    border-bottom: 1px solid #e0e0e0;
+}
+QListWidget::item:hover {
+    background-color: #e3f2fd;
+}
+QListWidget::item:selected {
+    background-color: #2196F3;
+    color: white;
+}</string>
+      </property>
+
      </widget>
     </widget>
    </widget>

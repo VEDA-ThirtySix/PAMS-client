@@ -45,6 +45,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 void MainWindow::setupStreamingConnection()
 {
     const QString serverIP = "192.168.0.39";
