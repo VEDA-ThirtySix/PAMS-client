@@ -78,103 +78,17 @@ QTabBar::tab:hover {
      <attribute name="title">
       <string>Streaming</string>
      </attribute>
-     <widget class="QLabel" name="dateTimeLabel">
+     <widget class="QFrame" name="streamingFrame">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>751</width>
-        <height>31</height>
+        <width>741</width>
+        <height>481</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 127);
-font: bold 9pt &quot;Serif&quot;;
-background-color: rgba(170, 255, 255,0.5);</string>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="videoLabel">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>50</y>
-        <width>411</width>
-        <height>271</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">
-background-color: rgb(194, 194, 194);</string>
-      </property>
-      <property name="text">
-       <string>Streaming Video</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>370</y>
-        <width>151</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(213, 213, 213);</string>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="guideLabel_2">
-      <property name="geometry">
-       <rect>
-        <x>440</x>
-        <y>50</y>
-        <width>291</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>NotoSerifTamilSlanted Black</family>
-        <pointsize>10</pointsize>
-        <italic>false</italic>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:rgb(238, 238, 238);
-color: rgb(0, 0, 127);
-
-font: 900 10pt &quot;NotoSerifTamilSlanted Black&quot;;
-text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); </string>
-      </property>
-      <property name="text">
-       <string>三十六計</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QFrame" name="frame">
-      <property name="geometry">
-       <rect>
-        <x>440</x>
-        <y>80</y>
-        <width>291</width>
-        <height>391</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(209, 209, 209);
-border:none;</string>
+       <string notr="true">background-color: transparent;</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -182,41 +96,129 @@ border:none;</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="videoLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>10</y>
-         <width>261</width>
+         <y>40</y>
+         <width>411</width>
+         <height>271</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+background-color: rgb(194, 194, 194);</string>
+       </property>
+       <property name="text">
+        <string>Streaming Video</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="carstateLabel">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>330</y>
+         <width>151</width>
          <height>41</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(255, 255, 255,0.7);
-border:none;</string>
+        <string notr="true">background-color: rgb(213, 213, 213);</string>
        </property>
        <property name="text">
-        <string>LicensePlate</string>
+        <string>TextLabel</string>
+       </property>
+      </widget>
+      <widget class="QFrame" name="bestshotFrame">
+       <property name="geometry">
+        <rect>
+         <x>430</x>
+         <y>80</y>
+         <width>301</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(209, 209, 209);
+border:none;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QLabel" name="licenseImage">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>11</y>
+          <width>271</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255,0.7);
+border:none;</string>
+        </property>
+        <property name="text">
+         <string>LicensePlate</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="teamLogo">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>430</x>
+         <y>40</y>
+         <width>301</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>NotoSerifTamilSlanted Black</family>
+         <pointsize>10</pointsize>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgba(170, 170, 255,0.5);
+color: rgb(0, 0, 127);
+
+font: 900 10pt &quot;NotoSerifTamilSlanted Black&quot;;
+text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); </string>
+       </property>
+       <property name="text">
+        <string>三十六計</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="dateTimeLabel">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>261</width>
-         <height>41</height>
+         <x>0</x>
+         <y>0</y>
+         <width>741</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(255, 255, 255,0.7);
-border:none;</string>
+        <string notr="true">color: rgb(0, 0, 127);
+font: bold 9pt &quot;Serif&quot;;
+background-color: rgba(170, 255, 255,0.5);</string>
        </property>
        <property name="text">
-        <string>LicensePlate</string>
+        <string>TextLabel</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
