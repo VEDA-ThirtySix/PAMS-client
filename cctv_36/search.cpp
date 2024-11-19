@@ -1,6 +1,5 @@
 #include "search.h"
 
-
 Search::Search(QLineEdit* searchInput,
                QPushButton* searchButton,
                QListWidget* resultsList,
@@ -13,7 +12,7 @@ Search::Search(QLineEdit* searchInput,
 
     setupConnections();
 
-    m_searchInput->setPlaceholderText("번호판을 검색하세요");
+    m_searchInput->setPlaceholderText("Enter the license plate number");
 }
 
 void Search::setupConnections()

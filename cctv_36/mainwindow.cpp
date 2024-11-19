@@ -33,7 +33,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 초기 날짜/시간 표시
     updateDateTime();
-
 }
 
 MainWindow::~MainWindow()
