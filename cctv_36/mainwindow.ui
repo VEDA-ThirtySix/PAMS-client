@@ -96,7 +96,7 @@ QTabBar::tab:hover {
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="videoLabel">
+      <widget class="QLabel" name="streamingLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -233,10 +233,10 @@ background-color: rgba(170, 255, 255,0.5);</string>
      <widget class="QFrame" name="searchFrame">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>251</width>
-        <height>61</height>
+        <x>90</x>
+        <y>50</y>
+        <width>291</width>
+        <height>311</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -269,26 +269,13 @@ background-color: rgba(170, 255, 255,0.5);</string>
         </rect>
        </property>
       </widget>
-     </widget>
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>80</y>
-        <width>251</width>
-        <height>181</height>
-       </rect>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="resultsList">
+      <widget class="QListWidget" name="resultsList">
        <property name="geometry">
         <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>249</width>
-         <height>179</height>
+         <x>10</x>
+         <y>70</y>
+         <width>256</width>
+         <height>192</height>
         </rect>
        </property>
       </widget>
