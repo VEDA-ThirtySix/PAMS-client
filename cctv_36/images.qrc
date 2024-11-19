@@ -6,5 +6,6 @@
         <file>bell.png</file>
         <file>parking.png</file>
         <file>chicken1.png</file>
+        <file>hen.png</file>
     </qresource>
 </RCC>
