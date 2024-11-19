@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>680</width>
-    <height>420</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,34 +20,50 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>50</y>
-      <width>521</width>
-      <height>341</height>
+      <x>20</x>
+      <y>40</y>
+      <width>751</width>
+      <height>521</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QTabBar::tab {
-    background: #d3d3d3;          /* 탭의 기본 배경색 */
-    color: black;                 /* 텍스트 색상 */
-    padding: 5px;                /* 탭 내부 여백 */
-    border: 1.5px solid ;   /* 테두리 색상 */
-	border-color:rgb(163, 109, 0);
-    border-top-left-radius: 5px;  /* 왼쪽 상단 모서리 둥글게 */
-    border-top-right-radius: 5px; /* 오른쪽 상단 모서리 둥글게 */
-    min-width: 100px;              /* 탭의 최소 너비 */
+     <string notr="true"> /* 탭 창 영역 */
+ QTabWidget::pane {
+        background-color:rgb(255, 255, 255);
+        border:1px solid rgb(207, 207, 207);
+        border-radius: 5px; /* 둥근 모서리 */
+        padding: 2px; /* 내부 여백 */
+    }
+
+/*탭 버튼 영역*/
+
+QTabBar::tab {
+    background: transparent;
+	border:1px solid rgb(240, 240, 240);
+    color: transparent;               /* 기본 텍스트를 숨김 */
+    padding: 7px;                    /* 기본 패딩 */
+    width: 120px;                  /* 기본 너비 */
+    height: 15px;                 /* 기본 높이 */
+    border-radius: 5px;              /* 둥근 모서리 */
+    transition: all 0.3s ease;        /* 부드러운 애니메이션 */
+    font-size: 13px;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
+
 QTabBar::tab:selected {
-    background-color: rgb(252, 255, 202);
-    font-weight: bold;            /* 선택된 탭의 텍스트 굵게 */
+    background-color: rgb(244, 255, 194);       /*선택된 탭의 배경색 */
+    color: black;                     /* 선택된 탭 텍스트 색상 */
+    font-weight: bold;
+    padding: 8px;                    /* 선택된 탭 패딩 */
 }
 
 QTabBar::tab:hover {
-	background-color: rgb(215, 255, 190);
-    background: #ffd700;          /* 탭 위로 마우스 올렸을 때 배경색 */
-}
-</string>
+    background-color: rgb(211, 211, 211);
+    color: rgb(255, 255, 255);                  /* 호버 시 텍스트 색상 */
+	border:none;
+}</string>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::North</enum>
@@ -55,35 +71,172 @@ QTabBar::tab:hover {
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="streamingTab">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <attribute name="title">
       <string>Streaming</string>
      </attribute>
-     <widget class="QLabel" name="dateTimeLabel">
+     <widget class="QFrame" name="streamingFrame">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>40</y>
-        <width>111</width>
-        <height>31</height>
+        <x>0</x>
+        <y>0</y>
+        <width>741</width>
+        <height>481</height>
        </rect>
       </property>
-      <property name="text">
-       <string>TextLabel</string>
+      <property name="styleSheet">
+       <string notr="true">background-color: transparent;</string>
       </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="streamingLabel">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>411</width>
+         <height>271</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+background-color: rgb(194, 194, 194);</string>
+       </property>
+       <property name="text">
+        <string>Streaming Video</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="carstateLabel">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>330</y>
+         <width>151</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(213, 213, 213);</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+      <widget class="QFrame" name="bestshotFrame">
+       <property name="geometry">
+        <rect>
+         <x>430</x>
+         <y>80</y>
+         <width>301</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(209, 209, 209);
+border:none;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QLabel" name="licenseImage">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>11</y>
+          <width>271</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255,0.7);
+border:none;</string>
+        </property>
+        <property name="text">
+         <string>LicensePlate</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="teamLogo">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>430</x>
+         <y>40</y>
+         <width>301</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>NotoSerifTamilSlanted Black</family>
+         <pointsize>10</pointsize>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgba(170, 170, 255,0.5);
+color: rgb(0, 0, 127);
+
+font: 900 10pt &quot;NotoSerifTamilSlanted Black&quot;;
+text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); </string>
+       </property>
+       <property name="text">
+        <string>三十六計</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="dateTimeLabel">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>741</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 0, 127);
+font: bold 9pt &quot;Serif&quot;;
+background-color: rgba(170, 255, 255,0.5);</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="searchTab">
      <attribute name="title">
       <string>Search</string>
      </attribute>
      <widget class="QFrame" name="searchFrame">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>251</width>
-        <height>61</height>
+        <x>90</x>
+        <y>50</y>
+        <width>291</width>
+        <height>311</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -92,8 +245,8 @@ QTabBar::tab:hover {
       <widget class="QPushButton" name="searchButton">
        <property name="geometry">
         <rect>
-         <x>210</x>
-         <y>20</y>
+         <x>200</x>
+         <y>10</y>
          <width>31</width>
          <height>41</height>
         </rect>
@@ -110,12 +263,24 @@ QTabBar::tab:hover {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>20</y>
+         <y>10</y>
          <width>181</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
       </widget>
+
+      <widget class="QListWidget" name="resultsList">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>256</width>
+         <height>192</height>
+        </rect>
+       </property>
+      </widget>
+
      </widget>
      <widget class="QListWidget" name="resultsList">
       <property name="geometry">
@@ -143,6 +308,7 @@ QListWidget::item:selected {
     color: white;
 }</string>
       </property>
+
      </widget>
     </widget>
    </widget>
@@ -157,20 +323,23 @@ QListWidget::item:selected {
     </property>
     <property name="font">
      <font>
-      <family>URW Bookman [UKWN]</family>
-      <pointsize>12</pointsize>
-      <italic>true</italic>
-      <bold>true</bold>
+      <family>Quicksand Medium</family>
+      <pointsize>11</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgb(215, 222, 255);
-color: rgb(0, 0, 0);
-font: 600 italic 12pt &quot;URW Bookman [UKWN]&quot;;
+     <string notr="true">background-color:rgba(120, 133, 255,0.6);
+color: rgb(0, 0, 127);
+font: 500 11pt &quot;Quicksand Medium&quot;;
 </string>
     </property>
     <property name="text">
      <string>LicensePlate Detection CCTV App</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
