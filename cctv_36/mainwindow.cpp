@@ -34,11 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
     // 초기 날짜/시간 표시
     updateDateTime();
 
-
-
-
-    ui->carstateLabel = new QLabel(this);
-    ui->carstateLabel->setVisible(true);
 }
 
 MainWindow::~MainWindow()
