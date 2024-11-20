@@ -41,6 +41,8 @@ private:
     const int FRAME_HEIGHT = 240;
     const int FRAME_SIZE = FRAME_WIDTH * FRAME_HEIGHT * 2;  // YUYV format
 
+    bool errorMessageShown = false;  // 에러 메시지 표시 여부를 추적하는 플래그
+
     void setupStreamingConnection();
     void processYUYVFrame(const QByteArray &frameData);
 

@@ -47,7 +47,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupStreamingConnection()
 {
-    const QString serverIP = "192.168.0.39";
+    const QString serverIP = "192.168.0.40";
     const quint16 serverPort = 5100;
 
     streamSocket->connectToHost(serverIP, serverPort);
@@ -114,12 +114,18 @@ void MainWindow::handleError(QAbstractSocket::SocketError socketError)
         qDebug() << "Connection closed by server";
         break;
     case QAbstractSocket::HostNotFoundError:
-        qDebug() << "The host was not found";
-        QMessageBox::warning(this, tr("Streaming Client"), tr("The host was not found."));
+        if (!errorMessageShown) {
+            qDebug() << "The host was not found";
+            QMessageBox::warning(this, tr("Streaming Client"), tr("The host was not found."));
+            errorMessageShown = true;
+        }
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        qDebug() << "The connection was refused";
-        QMessageBox::warning(this, tr("Streaming Client"), tr("The connection was refused."));
+        if (!errorMessageShown) {
+            qDebug() << "The connection was refused";
+            QMessageBox::warning(this, tr("Streaming Client"), tr("The connection was refused."));
+            errorMessageShown = true;
+        }
         break;
     default:
         break;
