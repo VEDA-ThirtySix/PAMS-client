@@ -4,6 +4,15 @@
 #include <QDateTime>
 #include <QMessageBox>
 #include <QImage>
+#include <QTabBar>
+
+#include <QMenu>
+#include <QAction>
+#include <QFileDialog>
+#include <QIcon>
+#include <QMenuBar>
+#include <QVBoxLayout>
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -11,7 +20,44 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+/*
+    // 메뉴바 설정
+    //QMenu *menu = menuBar()->addMenu(tr("Menu")); // "Menu" 메뉴 추가
+    QVBoxLayout *layout=new QVBoxLayout();
+    ui->centralwidget->setLayout(layout); // centralwidget에 레이아웃 설정
 
+    // 메뉴 항목 생성
+    QMenuBar* menubar = this->menuBar();
+    QAction *streamingAction = new QAction(QIcon(":/images/zoom.png"), tr("Streaming"), this);
+    QAction *searchAction = new QAction(QIcon(":/images/search.png"), tr("Search"), this);
+
+    layout->addWidget(ui->guideLabel);
+    layout->addWidget(menubar);
+
+    // 메뉴에 액션 추가
+    menubar->addAction(streamingAction);
+    menubar->addAction(searchAction);
+    menubar->setStyleSheet(
+        "QMenuBar {"
+        "   background-color: #f0f0f0;"  // 배경색
+        "   border: 1px solid #ccc;"     // 테두리
+        "   padding: 5px;"               // 패딩
+        "}"
+        "QMenuBar::item {"
+        "   background-color: transparent;"  // 아이템 배경색
+        "   padding: 5px 10px;"              // 아이템 여백
+        "   margin: 2px;"                    // 아이템 간격
+        "}"
+        "QMenuBar::item:selected {"
+        "   background-color: #a0c4ff;"      // 선택된 아이템 배경색
+        "   color: white;"                   // 선택된 아이템 글자색
+        "}"
+        "QMenuBar::item:pressed {"
+        "   background-color: #ff7f7f;"      // 클릭된 아이템 배경색
+        "}"
+    );
+
+*/
     // 타이머 설정
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateDateTime);
@@ -28,11 +74,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->streamingLabel->setAlignment(Qt::AlignCenter);
 
     setupStreamingConnection();
-
     setupSearch();
-
-    // 초기 날짜/시간 표시
-    updateDateTime();
+    updateDateTime();// 초기 날짜/시간 표시
 
 }
 
@@ -44,8 +87,6 @@ MainWindow::~MainWindow()
 
     delete ui;
 }
-
-
 void MainWindow::setupStreamingConnection()
 {
     const QString serverIP = "192.168.0.39";
@@ -179,3 +220,26 @@ void MainWindow::updateDateTime()
 
     ui->dateTimeLabel->setText(dateTimeStr);
 }
+
+/* 로컬 이미지를 데이터베이스에서 받아오기*/
+
+void MainWindow::initDatabase() {                               // 데이터베이스 초기화
+    db = QSqlDatabase::addDatabase("QSQLITE");              // SQLite 데이터베이스 사용
+    db.setDatabaseName("shyun_test.db");                       // 데이터베이스 파일 이름 설정 (build 폴더에 저장되어 있음)
+
+    if (!db.open()) {
+        qDebug() << "Error: Unable to open database." << db.lastError().text();
+        return;                                             // 데이터베이스가 열리지 않으면 종료
+    }
+
+    else {
+        QSqlQuery image;                                       // 메세지 테이블 처리할 쿼리
+        if (!image.exec("CREATE TABLE IF NOT EXISTS logins ("
+                        "id TEXT NOT NULL,"
+                        "image BLOB NOT NULL")) {
+            qDebug() << "Error creating logins table:" << image.lastError().text();
+        }
+        qDebug() << "Database initialized successfully.";
+    }
+}
+
