@@ -7,6 +7,7 @@
 #include <QListWidget>
 #include <QDateTime>
 #include <QTableView>
+#include <QLabel>
 
 #include <QSqlDatabase>
 #include <QSqlTableModel>
@@ -21,6 +22,7 @@ public:
     explicit Search(QLineEdit* searchInput,
                     QPushButton* searchButton,
                     QTableView* resultsTable,
+                    QLabel* imageLabel,
                     QObject *parent = nullptr);
 
     void initializeDatabase();
@@ -29,6 +31,7 @@ public:
 public slots:
     void performSearch();
     void handleSearchInput(const QString &text);
+    void handleDoubleClick(const QModelIndex &index);
 
 private:
     QLineEdit* m_searchInput;
@@ -36,9 +39,11 @@ private:
     QTableView* m_resultsTable;
     QSqlTableModel* m_model;
     QSqlDatabase m_db;
+    QLabel* m_imageLabel;
 
     void setupConnections();
     bool setupDatabase();
+    void setupImage();
 };
 
 #endif // SEARCH_H

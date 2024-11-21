@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
+    <width>957</width>
     <height>647</height>
    </rect>
   </property>
@@ -367,6 +367,19 @@ font: 900 10pt &quot;NotoSerifTamilSlanted Black&quot;;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="imageLabel">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>80</y>
+      <width>221</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ImageLabel</string>
     </property>
    </widget>
   </widget>

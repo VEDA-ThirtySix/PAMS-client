@@ -1,18 +1,22 @@
 #include "search.h"
 #include <QMessageBox>
+#include <QPixmap>
 
 Search::Search(QLineEdit* searchInput,
                QPushButton* searchButton,
                QTableView* resultsTable,
+               QLabel* imageLabel,
                QObject *parent)
     : QObject(parent)
 {
     m_searchInput = searchInput;
     m_searchButton = searchButton;
     m_resultsTable = resultsTable;
+    m_imageLabel = imageLabel;
 
     setupConnections();
     setupDatabase();
+    setupImage();
 
     m_searchInput->setPlaceholderText("차량번호를 입력하세요");
 }
@@ -56,6 +60,15 @@ bool Search::setupDatabase()
     return true;
 }
 
+void Search::setupImage()
+{
+    m_imageLabel->setMinimumSize(300, 200);
+    m_imageLabel->setMaximumSize(300, 200);
+    m_imageLabel->setScaledContents(true);
+    m_imageLabel->setAlignment(Qt::AlignCenter);
+    m_imageLabel->setText("이미지 없음");
+}
+
 void Search::createExampleData()
 {
     QSqlQuery query;
@@ -90,16 +103,17 @@ void Search::createExampleData()
 void Search::setupConnections()
 {
     // 검색 버튼 클릭 시 검색 수행
-    connect(m_searchButton, &QPushButton::clicked,
-            this, &Search::performSearch);
+    connect(m_searchButton, &QPushButton::clicked, this, &Search::performSearch);
 
     // Enter 키 입력 시 검색 수행
-    connect(m_searchInput, &QLineEdit::returnPressed,
-            this, &Search::performSearch);
+    connect(m_searchInput, &QLineEdit::returnPressed, this, &Search::performSearch);
 
     // 텍스트 변경 시 실시간 검색
-    connect(m_searchInput, &QLineEdit::textChanged,
-            this, &Search::handleSearchInput);
+    connect(m_searchInput, &QLineEdit::textChanged, this, &Search::handleSearchInput);
+
+    // 테이블 뷰에 있는 컬럼 더블 클릭시 이벤트 연결
+    connect(m_resultsTable, &QTableView::doubleClicked, this, &Search::handleDoubleClick);
+
 }
 
 void Search::handleSearchInput(const QString &text)
@@ -110,6 +124,24 @@ void Search::handleSearchInput(const QString &text)
     } else if (text.isEmpty()){
         m_model->setFilter("");
         m_model->select();
+    }
+}
+
+void Search::handleDoubleClick(const QModelIndex &index)
+{
+    // 차량번호 컬럼(인덱스 1)을 더블클릭했을 때만 처리
+    if (index.column() == 1) {
+        QString plateNumber = m_model->data(index).toString();
+
+        // 여기에서 차량번호에 해당하는 이미지 파일을 찾아 표시
+        QString imagePath = QString("/Users/taewonkim/GitHub/PAMS-client/cctv_36/image1.jpg").arg(plateNumber);
+        QPixmap image(imagePath);
+
+        if (image.isNull()) {
+            m_imageLabel->setText("이미지 없음");
+        } else {
+            m_imageLabel->setPixmap(image);
+        }
     }
 }
 
@@ -124,6 +156,8 @@ void Search::performSearch()
     }
     m_model->select();
 }
+
+
 
 /*void Search::loadExampleData()
 {
