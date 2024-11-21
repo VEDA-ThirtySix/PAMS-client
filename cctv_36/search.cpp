@@ -128,20 +128,23 @@ void Search::handleSearchInput(const QString &text)
 }
 
 void Search::handleDoubleClick(const QModelIndex &index)
+
 {
-    // 차량번호 컬럼(인덱스 1)을 더블클릭했을 때만 처리
-    if (index.column() == 1) {
-        QString plateNumber = m_model->data(index).toString();
 
-        // 여기에서 차량번호에 해당하는 이미지 파일을 찾아 표시
-        QString imagePath = QString("/Users/taewonkim/GitHub/PAMS-client/cctv_36/image1.jpg").arg(plateNumber);
-        QPixmap image(imagePath);
+    // qDebug() << "클릭된 컬럼 번호:" << index.column();
 
-        if (image.isNull()) {
-            m_imageLabel->setText("이미지 없음");
-        } else {
-            m_imageLabel->setPixmap(image);
-        }
+    QString basePath = "/Users/taewonkim/GitHub/PAMS-client/cctv_36/images";
+    QString imagePath = QString("%1/image_%2.jpg")
+                            .arg(basePath)
+                            .arg(index.row() + 1);
+
+    QPixmap image(imagePath);
+    if (image.isNull()) {
+        m_imageLabel->setText("이미지 없음");
+        qDebug() << "이미지 로드 실패:" << imagePath;
+    } else {
+        m_imageLabel->setPixmap(image);
+        qDebug() << "이미지 로드 성공:" << imagePath;
     }
 }
 
