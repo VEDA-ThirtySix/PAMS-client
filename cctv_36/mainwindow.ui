@@ -288,20 +288,20 @@ border-radius:5px;
        </property>
       </widget>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QTableView" name="resultsTable">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>10</y>
+        <y>20</y>
         <width>661</width>
-        <height>271</height>
+        <height>261</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Picture or Video</string>
+      <property name="inputMethodHints">
+       <set>Qt::InputMethodHint::ImhNone</set>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
       </property>
      </widget>
     </widget>
