@@ -188,8 +188,11 @@ void MainWindow::setupSearch()
     // Search 클래스 초기화 - Search 탭의 위젯들 연결
     searchManager = new Search(ui->searchInput,    // LineEdit
                                ui->searchButton,     // Search 버튼
-                               ui->resultsList,      // 결과 리스트
+                               ui->resultsTable,
+                               ui->imageLabel,                               // 결과 테이블
                                this);
+
+    searchManager->createExampleData();
 }
 
 void MainWindow::updateDateTime()

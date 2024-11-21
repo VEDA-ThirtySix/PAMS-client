@@ -6,6 +6,13 @@
 #include <QPushButton>
 #include <QListWidget>
 #include <QDateTime>
+#include <QTableView>
+#include <QLabel>
+
+#include <QSqlDatabase>
+#include <QSqlTableModel>
+#include <QSqlQuery>
+#include <QSqlError>
 
 class Search : public QObject
 {
@@ -14,20 +21,29 @@ class Search : public QObject
 public:
     explicit Search(QLineEdit* searchInput,
                     QPushButton* searchButton,
-                    QListWidget* resultsList,
+                    QTableView* resultsTable,
+                    QLabel* imageLabel,
                     QObject *parent = nullptr);
+
+    void initializeDatabase();
+    void createExampleData();
 
 public slots:
     void performSearch();
-    void loadExampleData();
     void handleSearchInput(const QString &text);
+    void handleDoubleClick(const QModelIndex &index);
 
 private:
     QLineEdit* m_searchInput;
     QPushButton* m_searchButton;
-    QListWidget* m_resultsList;
+    QTableView* m_resultsTable;
+    QSqlTableModel* m_model;
+    QSqlDatabase m_db;
+    QLabel* m_imageLabel;
 
     void setupConnections();
+    bool setupDatabase();
+    void setupImage();
 };
 
 #endif // SEARCH_H

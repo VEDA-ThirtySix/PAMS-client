@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>553</height>
+    <width>1052</width>
+    <height>647</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -366,20 +366,20 @@ border-radius:5px;
        </property>
       </widget>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QTableView" name="resultsTable">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>10</y>
+        <y>20</y>
         <width>661</width>
-        <height>271</height>
+        <height>261</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Picture or Video</string>
+      <property name="inputMethodHints">
+       <set>Qt::InputMethodHint::ImhNone</set>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
       </property>
      </widget>
     </widget>
@@ -478,6 +478,19 @@ font: 9pt &quot;UnDotum&quot;;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="imageLabel">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>80</y>
+      <width>221</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ImageLabel</string>
     </property>
    </widget>
   </widget>
