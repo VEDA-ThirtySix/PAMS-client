@@ -23,7 +23,7 @@
       <x>10</x>
       <y>50</y>
       <width>701</width>
-      <height>481</height>
+      <height>571</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -87,10 +87,10 @@ QTabBar::tab:hover {
 </string>
     </property>
     <property name="tabPosition">
-     <enum>QTabWidget::North</enum>
+     <enum>QTabWidget::TabPosition::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="streamingTab">
      <property name="styleSheet">
@@ -113,10 +113,10 @@ QTabBar::tab:hover {
 border:none;</string>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Shape::StyledPanel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <widget class="QLabel" name="streamingLabel">
        <property name="geometry">
@@ -137,7 +137,7 @@ color: rgb(255, 255, 255);</string>
         <string>Streaming Video</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
       <widget class="QFrame" name="bestshotFrame">
@@ -155,10 +155,10 @@ background-color: rgba(207, 207, 207,0.2);
 border:none;</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::Shape::StyledPanel</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+        <enum>QFrame::Shadow::Raised</enum>
        </property>
        <widget class="QLabel" name="label">
         <property name="geometry">
@@ -224,7 +224,7 @@ border:none;</string>
         <string>Date - Time</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
       <widget class="QLabel" name="licensetitleLabel">
@@ -247,7 +247,7 @@ font: 500 12pt &quot;Quicksand Medium&quot;;
         <string>LicensePlate</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
       <widget class="QFrame" name="bestshotFrame_2">
@@ -285,17 +285,17 @@ border:none;</string>
      <widget class="QFrame" name="searchFrame">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>321</width>
-        <height>421</height>
+        <x>20</x>
+        <y>290</y>
+        <width>661</width>
+        <height>231</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color:transparent;</string>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <widget class="QPushButton" name="searchButton">
        <property name="geometry">
@@ -366,6 +366,22 @@ border-radius:5px;
        </property>
       </widget>
      </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>661</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Picture or Video</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QLabel" name="guideLabel">
@@ -395,7 +411,7 @@ font:bold 11pt &quot;FreeSans&quot;;
      <string>LicensePlate Detection CCTV App</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="teamLogo">
