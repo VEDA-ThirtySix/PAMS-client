@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(28, 28, 42);</string>
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -36,7 +36,7 @@
 /*탭 버튼 영역*/
 QTabBar::tab {
 	font: 9pt &quot;Sans Serif&quot;;
- 	background-color: rgba(50,50,50,0.2);
+ 	background-color:rgba(243,115,33,0.5);
     color: transparent;               /* 기본 텍스트를 숨김 */
     padding: 7px;                    /* 기본 패딩 */
 	margin-right:5px;
@@ -45,11 +45,16 @@ QTabBar::tab {
 	background-repeat: no-repeat;
     background-position: center;
 }
+/*
+color: rgb(255, 255, 255);
+font: 500 10pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border:1px solid rgb(243,115,33);
 
-
+*/
 /*세번째 탭*/
 QTabBar::tab:first {
-    background-image: url(:/images/zoom2.png);
+    background-image: url(:/images/video2.png);
 }
 QTabBar::tab:first:selected {
     background:none;
@@ -61,7 +66,7 @@ QTabBar::tab:first:hover {
 
 /*두번째 탭*/
 QTabBar::tab:last {
-    background-image: url(:/images/search3.png);
+    background-image: url(:/images/search5.png);
 }
 QTabBar::tab:last:selected {
     background:none;
@@ -72,7 +77,7 @@ QTabBar::tab:last:hover {
 
 
 QTabBar::tab:selected {
-	background-color: rgba(207, 207, 207,0.2);
+	background-color: rgba(243,115,33,0.5);
 	border:none;
 	color:rgb(255, 255, 255);
 	font: 300 bold 10pt &quot;Quicksand Light&quot;;
@@ -80,7 +85,7 @@ QTabBar::tab:selected {
 }
 
 QTabBar::tab:hover {
-    background-color: transparent;
+    background-color:rgba(243,115,33,0.2);
     color: rgb(255, 255, 255);                  /* 호버 시 텍스트 색상 */
 	border:none;
 }
@@ -121,17 +126,17 @@ border:none;</string>
       <widget class="QLabel" name="streamingLabel">
        <property name="geometry">
         <rect>
-         <x>-10</x>
+         <x>10</x>
          <y>40</y>
-         <width>381</width>
+         <width>361</width>
          <height>251</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 300 13pt &quot;Quicksand Light&quot;;
-background-color: rgba(207, 207, 207,0.2);
-border:none;
-color: rgb(255, 255, 255);</string>
+        <string notr="true">font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
        </property>
        <property name="text">
         <string>Streaming Video</string>
@@ -151,8 +156,9 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="styleSheet">
         <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
-background-color: rgba(207, 207, 207,0.2);
-border:none;</string>
+color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::Shape::StyledPanel</enum>
@@ -163,17 +169,18 @@ border:none;</string>
        <widget class="QLabel" name="label">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>10</x>
           <y>150</y>
-          <width>311</width>
+          <width>291</width>
           <height>51</height>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: transparent;
-border:none;
-font: 300 13pt &quot;Quicksand Light&quot;;
-color: rgb(255, 255, 255);</string>
+         <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
         </property>
         <property name="text">
          <string>Detected Vehicle Image</string>
@@ -194,8 +201,9 @@ color: rgb(255, 255, 255);</string>
         <property name="styleSheet">
          <string notr="true">background:none;
 border:1px solid rgb(255, 255, 255);
-font: 300 13pt &quot;Quicksand Light&quot;;
-color: rgb(255, 255, 255);</string>
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
         </property>
         <property name="text">
          <string>Vehicle1</string>
@@ -208,17 +216,17 @@ color: rgb(255, 255, 255);</string>
       <widget class="QLabel" name="dateTimeLabel">
        <property name="geometry">
         <rect>
-         <x>0</x>
+         <x>10</x>
          <y>10</y>
-         <width>371</width>
+         <width>361</width>
          <height>21</height>
         </rect>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(255, 255, 255);
 font: 500 10pt &quot;Quicksand Medium&quot;;
-background-color: rgba(207, 207, 207,0.2);
-border:none;</string>
+background-color: rgba(243,115,33,0.5);
+border:1px solid rgb(243,115,33);</string>
        </property>
        <property name="text">
         <string>Date - Time</string>
@@ -237,11 +245,10 @@ border:none;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(207, 207, 207,0.2);
-border:none;
-color:rgb(255, 255, 255);
-font: 500 12pt &quot;Quicksand Medium&quot;;
-</string>
+        <string notr="true">color: rgb(255, 255, 255);
+font: 500 10pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border:1px solid rgb(243,115,33);</string>
        </property>
        <property name="text">
         <string>LicensePlate</string>
@@ -253,16 +260,16 @@ font: 500 12pt &quot;Quicksand Medium&quot;;
       <widget class="QFrame" name="bestshotFrame_2">
        <property name="geometry">
         <rect>
-         <x>-10</x>
+         <x>10</x>
          <y>300</y>
-         <width>381</width>
+         <width>361</width>
          <height>111</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
-background-color: rgba(207, 207, 207,0.2);
-border:none;</string>
+        <string notr="true">color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::Shape::StyledPanel</enum>
@@ -321,7 +328,7 @@ border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
        </property>
        <property name="icon">
         <iconset resource="images.qrc">
-         <normaloff>:/images/search.png</normaloff>:/images/search.png</iconset>
+         <normaloff>:/images/search5.png</normaloff>:/images/search5.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -398,17 +405,17 @@ border-radius:5px;
     </property>
     <property name="font">
      <font>
-      <family>FreeSans</family>
-      <pointsize>11</pointsize>
+      <family>Quicksand Medium</family>
+      <pointsize>13</pointsize>
       <italic>false</italic>
       <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgba(66, 66, 99,0.5);
-color: rgb(255, 255, 255);
-font:bold 11pt &quot;FreeSans&quot;;
-</string>
+     <string notr="true">color: rgb(255, 255, 255);
+font: 500 bold 13pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border-bottom:2px solid rgb(243,115,33);</string>
     </property>
     <property name="text">
      <string>LicensePlate Detection CCTV App</string>
@@ -426,7 +433,7 @@ font:bold 11pt &quot;FreeSans&quot;;
       <x>570</x>
       <y>0</y>
       <width>151</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -434,14 +441,14 @@ font:bold 11pt &quot;FreeSans&quot;;
       <family>UnDotum</family>
       <pointsize>9</pointsize>
       <italic>false</italic>
-      <bold>false</bold>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:transparent;
 color: rgb(255, 255, 255);
 
-font: 9pt &quot;UnDotum&quot;;</string>
+font: bold 9pt &quot;UnDotum&quot;;</string>
     </property>
     <property name="text">
      <string>Thirty-Six Stratagems </string>
@@ -459,7 +466,7 @@ font: 9pt &quot;UnDotum&quot;;</string>
       <x>0</x>
       <y>0</y>
       <width>161</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -467,14 +474,14 @@ font: 9pt &quot;UnDotum&quot;;</string>
       <family>UnDotum</family>
       <pointsize>9</pointsize>
       <italic>false</italic>
-      <bold>false</bold>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:transparent;
 color: rgb(255, 255, 255);
 
-font: 9pt &quot;UnDotum&quot;;</string>
+font: bold 9pt &quot;UnDotum&quot;;</string>
     </property>
     <property name="text">
      <string> HanwhaVision</string>
