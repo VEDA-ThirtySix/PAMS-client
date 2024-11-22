@@ -383,7 +383,7 @@ border-radius:5px;
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
+       <string notr="true">background-color: rgb(163, 182, 255);</string>
       </property>
       <property name="inputMethodHints">
        <set>Qt::InputMethodHint::ImhNone</set>
@@ -399,7 +399,7 @@ border-radius:5px;
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>731</width>
+      <width>1051</width>
       <height>41</height>
      </rect>
     </property>
@@ -430,7 +430,7 @@ border-bottom:2px solid rgb(243,115,33);</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>900</x>
       <y>0</y>
       <width>151</width>
       <height>31</height>
@@ -501,6 +501,9 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
     </property>
     <property name="text">
      <string>ImageLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
   </widget>
