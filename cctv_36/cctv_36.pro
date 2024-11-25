@@ -12,11 +12,13 @@ SOURCES += \
     db.cpp \
     main.cpp \
     mainwindow.cpp \
+    metadata.cpp \
     search.cpp
 
 HEADERS += \
     db.h \
     mainwindow.h \
+    metadata.h \
     search.h
 
 FORMS += \
