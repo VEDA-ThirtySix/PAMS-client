@@ -154,8 +154,6 @@ void MainWindow::setupSearch()
                                ui->resultsTable,
                                ui->imageLabel,                               // 결과 테이블
                                this);
-
-    searchManager->createExampleData();
 }
 
 void MainWindow::updateDateTime()

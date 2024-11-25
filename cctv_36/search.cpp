@@ -25,7 +25,8 @@ bool Search::setupDatabase()
 {
     // 데이터베이스 연결 설정
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db");
+    //m_db.setDatabaseName("vehicles.db");
+    m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db"); // for MacOS
 
 
     if (!m_db.open()) {
@@ -58,6 +59,8 @@ bool Search::setupDatabase()
     m_resultsTable->setColumnWidth(1, 150);
     m_resultsTable->setColumnWidth(2, 200);
 
+    createExampleData();
+
     return true;
 }
 
@@ -72,6 +75,11 @@ void Search::setupImage()
 
 void Search::createExampleData()
 {
+
+    // 기존 데이터 삭제
+    QSqlQuery clearQuery;
+    clearQuery.exec("DELETE FROM vehicles");
+
     QSqlQuery query;
     query.prepare("INSERT INTO vehicles (plate_number, timestamp) VALUES (?, ?)");
 
