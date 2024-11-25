@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1052</width>
-    <height>647</height>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,14 +23,15 @@
       <x>10</x>
       <y>50</y>
       <width>701</width>
-      <height>571</height>
+      <height>471</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true"> /* 탭 창 영역 */
  QTabWidget::pane {
         background-color:rgb(255, 255, 255);
-        border:none;
+        border: 1px solid rgb(243,115,33); 
+        margin-top: -1px;  
     }
 
 /*탭 버튼 영역*/
@@ -44,6 +45,7 @@ QTabBar::tab {
     height: 15px;                 /* 기본 높이 */
 	background-repeat: no-repeat;
     background-position: center;
+    border: 1px solid rgb(243,115,33); 
 }
 /*
 color: rgb(255, 255, 255);
@@ -95,8 +97,84 @@ QTabBar::tab:hover {
      <enum>QTabWidget::TabPosition::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
+    <widget class="QWidget" name="searchTab">
+     <attribute name="title">
+      <string>Search</string>
+     </attribute>
+     <widget class="QTableView" name="resultsTable">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>661</width>
+        <height>351</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::InputMethodHint::ImhNone</set>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="searchInput">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>30</y>
+        <width>261</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(170, 255, 255,0.5);
+border:1px solid rgba(0, 168, 168,0.5);
+
+border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="searchButton">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>30</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(170, 255, 255,0.5);
+border:1px solid rgba(0, 168, 168,0.5);
+
+
+border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 0; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/images/search5.png</normaloff>:/images/search5.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="streamingTab">
      <property name="styleSheet">
       <string notr="true"/>
@@ -285,114 +363,6 @@ border:1px solid rgb(243,115,33);</string>
       <zorder>bestshotFrame_2</zorder>
      </widget>
     </widget>
-    <widget class="QWidget" name="searchTab">
-     <attribute name="title">
-      <string>Search</string>
-     </attribute>
-     <widget class="QFrame" name="searchFrame">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>290</y>
-        <width>661</width>
-        <height>231</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:transparent;</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Shape::NoFrame</enum>
-      </property>
-      <widget class="QPushButton" name="searchButton">
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>10</y>
-         <width>41</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgba(170, 255, 255,0.5);
-border:1px solid rgba(0, 168, 168,0.5);
-
-
-border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
-border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
-border-top-left-radius: 0; /* 왼쪽 위 모서리 */
-border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="images.qrc">
-         <normaloff>:/images/search5.png</normaloff>:/images/search5.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="searchInput">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>261</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgba(170, 255, 255,0.5);
-border:1px solid rgba(0, 168, 168,0.5);
-
-border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
-border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
-border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
-border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
-       </property>
-      </widget>
-      <widget class="QListWidget" name="resultsList">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>301</width>
-         <height>331</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: transparent;
-border:1px solid rgba(0, 168, 168,0.5);
-border-radius:5px;
-</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QTableView" name="resultsTable">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>661</width>
-        <height>261</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(163, 182, 255);</string>
-      </property>
-      <property name="inputMethodHints">
-       <set>Qt::InputMethodHint::ImhNone</set>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
-      </property>
-     </widget>
-    </widget>
    </widget>
    <widget class="QLabel" name="guideLabel">
     <property name="geometry">
@@ -493,10 +463,10 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
    <widget class="QLabel" name="imageLabel">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>80</y>
+      <x>730</x>
+      <y>90</y>
       <width>221</width>
-      <height>341</height>
+      <height>431</height>
      </rect>
     </property>
     <property name="text">
