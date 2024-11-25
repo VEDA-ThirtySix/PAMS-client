@@ -34,8 +34,11 @@ bool Search::setupDatabase()
         return false;
     }
 
-    // 테이블 생성
+
     QSqlQuery query;
+    query.exec("DROP TABLE IF EXISTS vehicles");  // 테이블이 이미 존재하면 삭제
+
+    // 테이블 생성
     query.exec("CREATE TABLE IF NOT EXISTS vehicles ("
                "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                "plate_number VARCHAR(20), "
