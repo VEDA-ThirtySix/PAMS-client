@@ -132,8 +132,8 @@ QTabBar::tab:hover {
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgba(170, 255, 255,0.5);
-border:1px solid rgba(0, 168, 168,0.5);
+       <string notr="true">background-color: rgba(0, 0, 0);
+border:1px solid rgba(255, 255, 255);
 
 border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
 border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
@@ -151,8 +151,8 @@ border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgba(170, 255, 255,0.5);
-border:1px solid rgba(0, 168, 168,0.5);
+       <string notr="true">background-color: rgba(0, 0, 0);
+border:1px solid rgba(255, 255, 255);
 
 
 border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
@@ -172,6 +172,35 @@ border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
         <width>20</width>
         <height>20</height>
        </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>30</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">image: url(:/images/list.png);
+background-color: transparent;
+border:1px solid transparent;
+
+
+border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>
