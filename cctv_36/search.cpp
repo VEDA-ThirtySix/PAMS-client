@@ -237,7 +237,7 @@ void Search::showSearchMenu()
     QAction* plateSearch = menu->addAction("차량번호로 검색");
     QAction* timeSearch = menu->addAction("입차시간으로 검색");
 
-    connect(nameSearch, &QAction::triggered, [this]() {
+    connect(nameSearch, &QAction::triggered, this, [this]() {
         clearImage();
         m_currentSearchType = "이름";
         m_searchInput->clear();
@@ -246,7 +246,7 @@ void Search::showSearchMenu()
         m_model->select();
     });
 
-    connect(plateSearch, &QAction::triggered, [this]() {
+    connect(plateSearch, &QAction::triggered, this, [this]() {
         clearImage();
         m_currentSearchType = "차량번호";
         m_searchInput->clear();
@@ -255,7 +255,7 @@ void Search::showSearchMenu()
         m_model->select();
     });
 
-    connect(timeSearch, &QAction::triggered, [this]() {
+    connect(timeSearch, &QAction::triggered, this, [this]() {
         clearImage();
         m_currentSearchType = "시간";
         m_searchInput->clear();
