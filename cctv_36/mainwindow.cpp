@@ -149,10 +149,11 @@ void MainWindow::reconnectToStream()
 void MainWindow::setupSearch()
 {
     // Search 클래스 초기화 - Search 탭의 위젯들 연결
-    searchManager = new Search(ui->searchInput,    // LineEdit
-                               ui->searchButton,     // Search 버튼
-                               ui->resultsTable,
-                               ui->imageLabel,                               // 결과 테이블
+    searchManager = new Search(ui->searchInput,      // 검색어
+                               ui->searchButton,     // 검색 버튼
+                               ui->resultsTable,     // 데이터 테이블
+                               ui->imageLabel,       // 차량번호판 이미지
+                               ui->filterButton,     // 검색 필터링 버튼
                                this);
 }
 

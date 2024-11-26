@@ -8,6 +8,7 @@
 #include <QDateTime>
 #include <QTableView>
 #include <QLabel>
+#include <QMenu>
 
 #include <QSqlDatabase>
 #include <QSqlTableModel>
@@ -23,9 +24,9 @@ public:
                     QPushButton* searchButton,
                     QTableView* resultsTable,
                     QLabel* imageLabel,
+                    QPushButton* filterButton,
                     QObject *parent = nullptr);
 
-    void initializeDatabase();
     void createExampleData();
 
 public slots:
@@ -40,10 +41,17 @@ private:
     QSqlTableModel* m_model;
     QSqlDatabase m_db;
     QLabel* m_imageLabel;
+    QPushButton* m_filterButton;
+    QString m_currentSearchType;
 
     void setupConnections();
     bool setupDatabase();
     void setupImage();
+    void updatePlaceholder();
+
+private slots:
+    void showSearchMenu();
+
 };
 
 #endif // SEARCH_H
