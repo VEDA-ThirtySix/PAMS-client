@@ -78,8 +78,7 @@ bool Search::setupDatabase()
 
 void Search::setupImage()
 {
-    m_imageLabel->setMinimumSize(300, 200);
-    m_imageLabel->setMaximumSize(300, 200);
+    m_imageLabel->setMinimumSize(320, 200);
     m_imageLabel->setScaledContents(true);
     m_imageLabel->setAlignment(Qt::AlignCenter);
     m_imageLabel->setText("이미지 없음");
@@ -193,9 +192,18 @@ void Search::handleDoubleClick(const QModelIndex &index)
     }
 }
 
+void Search::clearImage()
+{
+    m_imageLabel->setPixmap(QPixmap());
+    m_imageLabel->setText("이미지 없음");
+}
+
 void Search::performSearch()
 {
     QString searchText = m_searchInput->text();
+
+    clearImage(); // 검색 시 이미지 초기화
+
     if (searchText.isEmpty()) {
         m_model->setFilter("");
     } else {
@@ -229,7 +237,8 @@ void Search::showSearchMenu()
     QAction* plateSearch = menu->addAction("차량번호로 검색");
     QAction* timeSearch = menu->addAction("입차시간으로 검색");
 
-    connect(nameSearch, &QAction::triggered, [this]() {
+    connect(nameSearch, &QAction::triggered, this, [this]() {
+        clearImage();
         m_currentSearchType = "이름";
         m_searchInput->clear();
         updatePlaceholder();
@@ -237,7 +246,8 @@ void Search::showSearchMenu()
         m_model->select();
     });
 
-    connect(plateSearch, &QAction::triggered, [this]() {
+    connect(plateSearch, &QAction::triggered, this, [this]() {
+        clearImage();
         m_currentSearchType = "차량번호";
         m_searchInput->clear();
         updatePlaceholder();
@@ -245,7 +255,8 @@ void Search::showSearchMenu()
         m_model->select();
     });
 
-    connect(timeSearch, &QAction::triggered, [this]() {
+    connect(timeSearch, &QAction::triggered, this, [this]() {
+        clearImage();
         m_currentSearchType = "시간";
         m_searchInput->clear();
         updatePlaceholder();

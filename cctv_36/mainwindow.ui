@@ -22,7 +22,7 @@
      <rect>
       <x>10</x>
       <y>50</y>
-      <width>701</width>
+      <width>1031</width>
       <height>471</height>
      </rect>
     </property>
@@ -40,7 +40,7 @@ QTabBar::tab {
  	background-color:rgba(243,115,33,0.5);
     color: transparent;               /* 기본 텍스트를 숨김 */
     padding: 7px;                    /* 기본 패딩 */
-	margin-right:5px;
+
     width: 120px;                  /* 기본 너비 */
     height: 15px;                 /* 기본 높이 */
 	background-repeat: no-repeat;
@@ -217,6 +217,32 @@ border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="imageLabel">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>20</y>
+        <width>320</width>
+        <height>200</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>ImageLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>240</y>
+        <width>321</width>
+        <height>191</height>
+       </rect>
       </property>
      </widget>
     </widget>
@@ -503,22 +529,6 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="imageLabel">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>80</y>
-      <width>301</width>
-      <height>431</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ImageLabel</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
   </widget>
