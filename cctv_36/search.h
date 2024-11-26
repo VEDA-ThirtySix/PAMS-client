@@ -48,6 +48,7 @@ private:
     bool setupDatabase();
     void setupImage();
     void updatePlaceholder();
+    void clearImage();
 
 private slots:
     void showSearchMenu();
