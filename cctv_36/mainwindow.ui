@@ -132,8 +132,8 @@ QTabBar::tab:hover {
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgba(0, 0, 0);
-border:1px solid rgba(255, 255, 255);
+       <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
 
 border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
 border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
@@ -151,8 +151,8 @@ border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgba(0, 0, 0);
-border:1px solid rgba(255, 255, 255);
+       <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
 
 
 border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
