@@ -190,7 +190,7 @@ border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
        </size>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="filterButton">
       <property name="geometry">
        <rect>
         <x>420</x>

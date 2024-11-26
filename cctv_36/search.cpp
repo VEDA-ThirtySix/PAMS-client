@@ -1,24 +1,28 @@
 #include "search.h"
 #include <QMessageBox>
 #include <QPixmap>
+#include <QtWidgets/qmenu.h>
 
 Search::Search(QLineEdit* searchInput,
                QPushButton* searchButton,
                QTableView* resultsTable,
                QLabel* imageLabel,
+               QPushButton* filterButton,
                QObject *parent)
     : QObject(parent)
 {
     m_searchInput = searchInput;
     m_searchButton = searchButton;
     m_resultsTable = resultsTable;
+    m_filterButton = filterButton;
     m_imageLabel = imageLabel;
+    m_currentSearchType = "차량번호"; // 기본 검색 타입
 
     setupConnections();
     setupDatabase();
     setupImage();
 
-    m_searchInput->setPlaceholderText("차량번호를 입력하세요");
+    updatePlaceholder();
 }
 
 bool Search::setupDatabase()
@@ -152,6 +156,9 @@ void Search::setupConnections()
     // 테이블 뷰에 있는 컬럼 더블 클릭시 이벤트 연결
     connect(m_resultsTable, &QTableView::doubleClicked, this, &Search::handleDoubleClick);
 
+    // 검색어 필터링
+    connect(m_filterButton, &QPushButton::clicked, this, &Search::showSearchMenu);
+
 }
 
 void Search::handleSearchInput(const QString &text)
@@ -192,8 +199,60 @@ void Search::performSearch()
     if (searchText.isEmpty()) {
         m_model->setFilter("");
     } else {
-        QString filter = QString("plate_number LIKE '%%1%'").arg(searchText);
+        QString filter;
+
+        if (m_currentSearchType == "이름") {
+            filter = QString("name LIKE '%%1%'").arg(searchText);
+        }
+        else if (m_currentSearchType == "차량번호") {
+            filter = QString("plate_number LIKE '%%1%'").arg(searchText);
+        }
+        else if (m_currentSearchType == "시간") {
+             // 일단은 입차시간을 검색하게 만듬
+            filter = QString("entrance_time LIKE '%%1%'").arg(searchText);
+        }
         m_model->setFilter(filter);
     }
     m_model->select();
+}
+
+void Search::updatePlaceholder()
+{
+    m_searchInput->setPlaceholderText(QString("%1을(를) 입력하세요").arg(m_currentSearchType));
+}
+
+void Search::showSearchMenu()
+{
+    QMenu* menu = new QMenu;
+
+    QAction* nameSearch = menu->addAction("이름으로 검색");
+    QAction* plateSearch = menu->addAction("차량번호로 검색");
+    QAction* timeSearch = menu->addAction("입차시간으로 검색");
+
+    connect(nameSearch, &QAction::triggered, [this]() {
+        m_currentSearchType = "이름";
+        m_searchInput->clear();
+        updatePlaceholder();
+        m_model->setFilter("");
+        m_model->select();
+    });
+
+    connect(plateSearch, &QAction::triggered, [this]() {
+        m_currentSearchType = "차량번호";
+        m_searchInput->clear();
+        updatePlaceholder();
+        m_model->setFilter("");
+        m_model->select();
+    });
+
+    connect(timeSearch, &QAction::triggered, [this]() {
+        m_currentSearchType = "시간";
+        m_searchInput->clear();
+        updatePlaceholder();
+        m_model->setFilter("");
+        m_model->select();
+    });
+
+    // filterButton 위치를 기준으로 메뉴 표시
+    menu->exec(m_filterButton->mapToGlobal(QPoint(0, m_filterButton->height())));
 }
