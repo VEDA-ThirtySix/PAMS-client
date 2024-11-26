@@ -28,12 +28,10 @@ bool Search::setupDatabase()
     //m_db.setDatabaseName("vehicles.db");
     m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db"); // for MacOS
 
-
     if (!m_db.open()) {
         QMessageBox::critical(nullptr, "Error", "데이터베이스 연결 실패!");
         return false;
     }
-
 
     QSqlQuery query;
     query.exec("DROP TABLE IF EXISTS vehicles");  // 테이블이 이미 존재하면 삭제
@@ -41,8 +39,11 @@ bool Search::setupDatabase()
     // 테이블 생성
     query.exec("CREATE TABLE IF NOT EXISTS vehicles ("
                "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+               "name VARCHAR(20), "
                "plate_number VARCHAR(20), "
-               "timestamp DATETIME)");
+               "entrance_time TEXT, "
+               "exit_time TEXT, "
+               "parking_duration TEXT)");
 
     // 테이블 모델 설정
     m_model = new QSqlTableModel(this, m_db);
@@ -50,8 +51,11 @@ bool Search::setupDatabase()
     m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
     // 열 헤더 설정
-    m_model->setHeaderData(1, Qt::Horizontal, "차량번호");
-    m_model->setHeaderData(2, Qt::Horizontal, "시간");
+    m_model->setHeaderData(1, Qt::Horizontal, "이름");
+    m_model->setHeaderData(2, Qt::Horizontal, "차량번호");
+    m_model->setHeaderData(3, Qt::Horizontal, "입차시간");
+    m_model->setHeaderData(4, Qt::Horizontal, "출차시간");
+    m_model->setHeaderData(5, Qt::Horizontal, "주차시간");
 
     m_resultsTable->setModel(m_model);
     m_resultsTable->hideColumn(0); // ID 컬럼 숨기기
@@ -59,8 +63,9 @@ bool Search::setupDatabase()
     m_resultsTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
 
     // 열 너비 설정
-    m_resultsTable->setColumnWidth(1, 150);
-    m_resultsTable->setColumnWidth(2, 200);
+    m_resultsTable->setColumnWidth(3, 150);
+    m_resultsTable->setColumnWidth(4, 150);
+    m_resultsTable->setColumnWidth(5, 140);
 
     createExampleData();
 
@@ -84,25 +89,46 @@ void Search::createExampleData()
     clearQuery.exec("DELETE FROM vehicles");
 
     QSqlQuery query;
-    query.prepare("INSERT INTO vehicles (plate_number, timestamp) VALUES (?, ?)");
+    query.prepare("INSERT INTO vehicles (name, plate_number, entrance_time, exit_time, parking_duration) VALUES (?, ?, ?, ?, ?)");
 
     QDateTime current = QDateTime::currentDateTime();
-    QList<QPair<QString, QDateTime>> examples = {
-        {QString("12가3456"), current.addSecs(-1800)},
-        {QString("34나5678"), current.addSecs(-2700)},
-        {QString("56다7890"), current.addSecs(-18000)},
-        {QString("78라1234"), current.addSecs(-25200)},
-        {QString("90마5678"), current.addDays(-1)},
-        {QString("12바9012"), current.addDays(-1).addSecs(-14400)},
-        {QString("34사3456"), current.addDays(-2)},
-        {QString("56아7890"), current.addDays(-3)},
-        {QString("78자1234"), current.addDays(-4)}
+
+    struct VehicleData {
+        QString name;
+        QString plateNumber;
+        QDateTime entranceTime;
+        QDateTime exitTime;
+    };
+
+    QList<VehicleData> examples = {
+        {"김철수", "12가3456", current.addSecs(-3600), current},  // 1시간 주차
+        {"이영희", "34나5678", current.addSecs(-7200), current},  // 2시간 주차
+        {"박민수", "56다7890", current.addSecs(-18000), current}, // 5시간 주차
+        {"정준호", "78라1234", current.addSecs(-25200), current}, // 7시간 주차
+        {"최수진", "90마5678", current.addDays(-1), current},
+        {"강동원", "12바9012", current.addDays(-2), current},
+        {"조미영", "34사3456", current.addDays(-1), current.addDays(-1).addSecs(14400)},
+        {"윤석진", "56아7890", current.addDays(-3), current.addDays(-2)},
+        {"한지민", "78자1234", current.addDays(-4), current.addDays(-3)}
     };
 
     m_db.transaction();
     for (const auto &example : examples) {
-        query.bindValue(0, example.first);
-        query.bindValue(1, example.second.toString("yyyy-MM-dd hh:mm:ss"));
+        // 주차 시간 계산
+        qint64 seconds = example.entranceTime.secsTo(example.exitTime);
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        QString parkingDuration = QString("%1:%2:%3")
+                                      .arg(hours, 2, 10, QLatin1Char('0'))
+                                      .arg(minutes, 2, 10, QLatin1Char('0'))
+                                      .arg(secs, 2, 10, QLatin1Char('0'));
+
+        query.bindValue(0, example.name);
+        query.bindValue(1, example.plateNumber);
+        query.bindValue(2, example.entranceTime.toString("yyyy-MM-dd hh:mm:ss"));
+        query.bindValue(3, example.exitTime.toString("yyyy-MM-dd hh:mm:ss"));
+        query.bindValue(4, parkingDuration);
         query.exec();
     }
     m_db.commit();

@@ -113,7 +113,17 @@ QTabBar::tab:hover {
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
+       <string notr="true">QTableView {
+    background-color: rgb(255, 255, 255);
+}
+
+QHeaderView::section {
+    background-color: rgba(202,205,205,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+}</string>
       </property>
       <property name="inputMethodHints">
        <set>Qt::InputMethodHint::ImhNone</set>
@@ -121,6 +131,12 @@ QTabBar::tab:hover {
       <property name="editTriggers">
        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
       </property>
+      <property name="textElideMode">
+       <enum>Qt::TextElideMode::ElideLeft</enum>
+      </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
      </widget>
      <widget class="QLineEdit" name="searchInput">
       <property name="geometry">
@@ -493,8 +509,8 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
     <property name="geometry">
      <rect>
       <x>730</x>
-      <y>90</y>
-      <width>221</width>
+      <y>80</y>
+      <width>301</width>
       <height>431</height>
      </rect>
     </property>
