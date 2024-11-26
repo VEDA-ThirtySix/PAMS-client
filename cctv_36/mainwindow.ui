@@ -70,10 +70,10 @@ QWidget#searchTab{
 </string>
     </property>
     <property name="tabPosition">
-     <enum>QTabWidget::North</enum>
+     <enum>QTabWidget::TabPosition::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="streamingTab">
      <property name="styleSheet">
@@ -95,10 +95,10 @@ QWidget#searchTab{
        <string notr="true">background-color: transparent;</string>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Shape::StyledPanel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <widget class="QLabel" name="streamingLabel">
        <property name="geometry">
@@ -118,7 +118,7 @@ border:1.5px dashed rgb(189, 189, 189);</string>
         <string>Streaming Video</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
       <widget class="QLabel" name="carstateLabel">
@@ -151,10 +151,10 @@ border:1.5px dashed rgb(189, 189, 189);</string>
 border:none;</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::Shape::StyledPanel</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+        <enum>QFrame::Shadow::Raised</enum>
        </property>
       </widget>
       <widget class="QLabel" name="dateTimeLabel">
@@ -175,7 +175,7 @@ background-color: rgba(170, 255, 255,0.5);</string>
         <string>Date - Time</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
       <widget class="QLabel" name="streamingLabel_2">
@@ -195,7 +195,7 @@ background-color:  rgba(170, 255, 127,0.5);</string>
         <string>LicensePlate</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </widget>
@@ -217,7 +217,7 @@ background-color:  rgba(170, 255, 127,0.5);</string>
        <string notr="true">background-color:transparent;</string>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <widget class="QPushButton" name="searchButton">
        <property name="geometry">
@@ -304,7 +304,7 @@ border-radius:5px;
       <family>Quicksand Medium</family>
       <pointsize>11</pointsize>
       <italic>false</italic>
-      <bold>false</bold>
+      <fontweight>Medium</fontweight>
      </font>
     </property>
     <property name="styleSheet">
@@ -317,7 +317,7 @@ font: 500 11pt &quot;Quicksand Medium&quot;;
      <string>LicensePlate Detection CCTV App</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="teamLogo">
@@ -337,7 +337,7 @@ font: 500 11pt &quot;Quicksand Medium&quot;;
       <family>NotoSerifTamilSlanted Black</family>
       <pointsize>10</pointsize>
       <italic>false</italic>
-      <bold>true</bold>
+      <fontweight>Black</fontweight>
      </font>
     </property>
     <property name="styleSheet">
@@ -350,7 +350,7 @@ font: 900 10pt &quot;NotoSerifTamilSlanted Black&quot;;</string>
      <string>team.36</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
   </widget>

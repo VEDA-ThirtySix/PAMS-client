@@ -1,7 +1,7 @@
 #ifndef DB_H
 #define DB_H
 
-/**
+/** *********************************************************
  *@ brief: 메타데이터 멤버변수 선언
  *@ type : 번호판(license), 동호수(home), 연락처(phone), 입출차시간
  *@ Note :
@@ -23,15 +23,20 @@ public:
     void close_database();
 
     /* CRUD: BasicInfo */
-    void create_basicInfo(const QString& plateNumber,
-                            const QString& phone,
-                            const QString& address);
-    QString read_basicInfo(int num);
-    QMap<QString, BasicInfo> readAll_basicInfo(int num, const QString& value);
-    void update_basicInfo(int num, QString& value);
-    void delete_basicInfo(const QString& plateNumber);
+    void create_basicInfo(const BasicInfo& basicInfo);
+    BasicInfo read_basicInfo(int num, const QString& value);
+    void update_basicInfo(const QString& plate, int num, const QString& value);
+    void delete_basicInfo(const QString& plate);
 
     /* CRUD: TimeInfo */
+    void create_timeInfo(const TimeInfo& timeInfo);
+    TimeInfo read_timeInfo(int num, const QString& value);
+    TimeInfo read_timeInfo_duaration(int num, const QDateTime& timeFrom, const QDateTime& timeTo);
+    //void delete_timeInfo(const QString& plate);
+
+    /* QList<TimeInfo> timeInfoList */
+    //void addNewTimeInfo(const TimeInfo& newTimeInfo);
+
     /*
      * 등록_입차시간
      * 등록_출차시간
@@ -40,8 +45,10 @@ public:
      */
 
 private:
-    QMap<QString, BasicInfo> basicInfo;
-    QList<TimeInfo> timeInfo;
+    QSqlDatabase db;
+    BasicInfo basicInfo;
+    TimeInfo timeInfo;
+    QList<TimeInfo> timeInfoList;
 };
 
 #endif // DB_H

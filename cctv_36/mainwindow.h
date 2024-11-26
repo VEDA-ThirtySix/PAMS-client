@@ -8,6 +8,8 @@
 #include <QTcpSocket>
 #include <QBuffer>
 #include "search.h"
+#include "dbTable.h"    //KIYUN: 1126
+#include <QSqlDatabase>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class MainWindow;}
@@ -20,6 +22,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    void updateTable();
 
 private slots:
     void updateDateTime();
@@ -36,6 +40,10 @@ private:
 
     QTcpSocket *streamSocket;
     QByteArray frameBuffer;
+
+    QSqlDatabase db;
+    QTableView* m_tableView;
+    DBtable* m_dbTable;
 
     const int FRAME_WIDTH = 320;
     const int FRAME_HEIGHT = 240;

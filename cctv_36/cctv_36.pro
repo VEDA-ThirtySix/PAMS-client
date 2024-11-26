@@ -1,4 +1,4 @@
-QT       += core gui network #추가
+QT       += core gui network sql#추가
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,13 +13,15 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     metadata.cpp \
-    search.cpp
+    search.cpp \
+    socket.cpp
 
 HEADERS += \
     db.h \
     mainwindow.h \
     metadata.h \
-    search.h
+    search.h \
+    socket.h
 
 FORMS += \
     mainwindow.ui
