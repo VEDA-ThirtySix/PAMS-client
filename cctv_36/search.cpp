@@ -1,13 +1,15 @@
 #include "search.h"
 #include <QMessageBox>
 #include <QPixmap>
-#include <QtWidgets/qmenu.h>
+#include <QMenu>
+#include <QDebug>
 
 Search::Search(QLineEdit* searchInput,
                QPushButton* searchButton,
                QTableView* resultsTable,
                QLabel* imageLabel,
                QPushButton* filterButton,
+               QLabel* textLabel,
                QObject *parent)
     : QObject(parent)
 {
@@ -17,6 +19,7 @@ Search::Search(QLineEdit* searchInput,
     m_filterButton = filterButton;
     m_imageLabel = imageLabel;
     m_currentSearchType = "차량번호"; // 기본 검색 타입
+    m_textLabel = textLabel;
 
     setupConnections();
     setupDatabase();
@@ -81,7 +84,7 @@ void Search::setupImage()
     m_imageLabel->setMinimumSize(320, 200);
     m_imageLabel->setScaledContents(true);
     m_imageLabel->setAlignment(Qt::AlignCenter);
-    m_imageLabel->setText("이미지 없음");
+    //m_imageLabel->setText("이미지 없음");
 }
 
 void Search::createExampleData()
@@ -152,12 +155,11 @@ void Search::setupConnections()
     // 텍스트 변경 시 실시간 검색
     connect(m_searchInput, &QLineEdit::textChanged, this, &Search::handleSearchInput);
 
-    // 테이블 뷰에 있는 컬럼 더블 클릭시 이벤트 연결
+    // 테이블 뷰에 있는 컬럼 더블 클릭시 해당 이미지 연결
     connect(m_resultsTable, &QTableView::doubleClicked, this, &Search::handleDoubleClick);
 
     // 검색어 필터링
     connect(m_filterButton, &QPushButton::clicked, this, &Search::showSearchMenu);
-
 }
 
 void Search::handleSearchInput(const QString &text)
@@ -172,12 +174,8 @@ void Search::handleSearchInput(const QString &text)
 }
 
 void Search::handleDoubleClick(const QModelIndex &index)
-
 {
-
-    // qDebug() << "클릭된 컬럼 번호:" << index.column();
-
-    QString basePath = "/Users/taewonkim/GitHub/PAMS-client/cctv_36/images";
+    QString basePath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/images";
     QString imagePath = QString("%1/image_%2.jpg")
                             .arg(basePath)
                             .arg(index.row() + 1);
@@ -190,12 +188,27 @@ void Search::handleDoubleClick(const QModelIndex &index)
         m_imageLabel->setPixmap(image);
         qDebug() << "이미지 로드 성공:" << imagePath;
     }
+
+    // 여기서 텍스트 정보도 업데이트
+    QString name = m_model->data(m_model->index(index.row(), 1)).toString();
+    QString plateNumber = m_model->data(m_model->index(index.row(), 2)).toString();
+    QString entranceTime = m_model->data(m_model->index(index.row(), 3)).toString();
+    QString exitTime = m_model->data(m_model->index(index.row(), 4)).toString();
+    QString parkingDuration = m_model->data(m_model->index(index.row(), 5)).toString();
+
+    QString displayText = QString("이름: %1\n"
+                                  "차량번호: %2\n"
+                                  "입차시간: %3\n"
+                                  "출차시간: %4\n"
+                                  "주차시간: %5")
+                              .arg(name, plateNumber, entranceTime, exitTime, parkingDuration);
+    m_textLabel->setText(displayText);
 }
 
 void Search::clearImage()
 {
     m_imageLabel->setPixmap(QPixmap());
-    m_imageLabel->setText("이미지 없음");
+    //m_imageLabel->setText("이미지 없음");
 }
 
 void Search::performSearch()

@@ -229,20 +229,41 @@ border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
        </rect>
       </property>
       <property name="text">
-       <string>ImageLabel</string>
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QTextEdit" name="textEdit">
+     <widget class="QLabel" name="textLabel">
       <property name="geometry">
        <rect>
         <x>700</x>
-        <y>240</y>
-        <width>321</width>
-        <height>191</height>
+        <y>230</y>
+        <width>311</width>
+        <height>201</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand Light</family>
+        <pointsize>18</pointsize>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+font-size: 18pt;
+color:  rgb(0, 0, 0);
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
     </widget>
