@@ -154,6 +154,7 @@ void MainWindow::setupSearch()
                                ui->resultsTable,     // 데이터 테이블
                                ui->imageLabel,       // 차량번호판 이미지
                                ui->filterButton,     // 검색 필터링 버튼
+                               ui->textLabel,
                                this);
 }
 

@@ -25,6 +25,7 @@ public:
                     QTableView* resultsTable,
                     QLabel* imageLabel,
                     QPushButton* filterButton,
+                    QLabel* textLabel,
                     QObject *parent = nullptr);
 
     void createExampleData();
@@ -43,12 +44,18 @@ private:
     QLabel* m_imageLabel;
     QPushButton* m_filterButton;
     QString m_currentSearchType;
+    QLabel* m_textLabel;
 
     void setupConnections();
     bool setupDatabase();
     void setupImage();
     void updatePlaceholder();
     void clearImage();
+
+signals:
+    void dataSelected(const QString &name, const QString &plateNumber,
+                      const QString &entranceTime, const QString &exitTime,
+                      const QString &parkingDuration);
 
 private slots:
     void showSearchMenu();

@@ -67,7 +67,5 @@ private:
     void initDatabase();  // 데이터베이스 초기화 메서드
     void saveMessageToDatabase(const QString &message);  // 메시지를 데이터베이스에 저장하는 메서드
     bool saveToDatabase(const QString &tableName, const QMap<QString, QVariant> &data);    // 데이터베이스 저장 함수
-
-
 };
 #endif // MAINWINDOW_H
