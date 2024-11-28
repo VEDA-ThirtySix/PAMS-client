@@ -25,7 +25,8 @@ bool Search::setupDatabase()
 {
     // 데이터베이스 연결 설정
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db");
+    //m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db");
+    m_db.setDatabaseName("vehicles.db");
 
 
     if (!m_db.open()) {
