@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1052</width>
-    <height>647</height>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,16 +21,23 @@
     <property name="geometry">
      <rect>
       <x>10</x>
+<<<<<<< HEAD
       <y>80</y>
       <width>701</width>
       <height>541</height>
+=======
+      <y>50</y>
+      <width>1031</width>
+      <height>471</height>
+>>>>>>> ed8a8ce12593c0fb614030cb981da84c9c39f8f3
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true"> /* 탭 창 영역 */
  QTabWidget::pane {
         background-color:rgb(255, 255, 255);
-        border:none;
+        border: 1px solid rgb(243,115,33); 
+        margin-top: -1px;  
     }
 
 /*탭 버튼 영역*/
@@ -39,11 +46,12 @@ QTabBar::tab {
  	background-color:rgba(243,115,33,0.5);
     color: transparent;               /* 기본 텍스트를 숨김 */
     padding: 7px;                    /* 기본 패딩 */
-	margin-right:5px;
+
     width: 120px;                  /* 기본 너비 */
     height: 15px;                 /* 기본 높이 */
 	background-repeat: no-repeat;
     background-position: center;
+    border: 1px solid rgb(243,115,33); 
 }
 /*세번째 탭*/
 QTabBar::tab:first {
@@ -86,6 +94,174 @@ QTabBar::tab:hover {
     <property name="currentIndex">
      <number>0</number>
     </property>
+    <widget class="QWidget" name="searchTab">
+     <attribute name="title">
+      <string>Search</string>
+     </attribute>
+     <widget class="QTableView" name="resultsTable">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>661</width>
+        <height>351</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTableView {
+    background-color: rgb(255, 255, 255);
+}
+
+QHeaderView::section {
+    background-color: rgba(202,205,205,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+}</string>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::InputMethodHint::ImhNone</set>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+      </property>
+      <property name="textElideMode">
+       <enum>Qt::TextElideMode::ElideLeft</enum>
+      </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+     </widget>
+     <widget class="QLineEdit" name="searchInput">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>30</y>
+        <width>261</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
+
+border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="searchButton">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>30</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
+
+
+border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 0; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="images.qrc">
+        <normaloff>:/images/search5.png</normaloff>:/images/search5.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="filterButton">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>30</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">image: url(:/images/list.png);
+background-color: transparent;
+border:1px solid transparent;
+
+
+border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="imageLabel">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>20</y>
+        <width>320</width>
+        <height>200</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="textLabel">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>230</y>
+        <width>311</width>
+        <height>201</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand Light</family>
+        <pointsize>18</pointsize>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+font-size: 18pt;
+color:  rgb(0, 0, 0);
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="streamingTab">
      <property name="styleSheet">
       <string notr="true"/>
@@ -250,6 +426,7 @@ border:1px solid rgb(243,115,33);</string>
       <zorder>bestshotFrame_2</zorder>
      </widget>
     </widget>
+<<<<<<< HEAD
     <widget class="QWidget" name="searchTab">
      <attribute name="title">
       <string>Search</string>
@@ -358,6 +535,8 @@ border-radius:5px;
       </property>
      </widget>
     </widget>
+=======
+>>>>>>> ed8a8ce12593c0fb614030cb981da84c9c39f8f3
    </widget>
    <widget class="QLabel" name="guideLabel">
     <property name="geometry">
@@ -449,6 +628,7 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
      <string> HanwhaVision</string>
     </property>
    </widget>
+<<<<<<< HEAD
    <widget class="QLabel" name="imageLabel">
     <property name="geometry">
      <rect>
@@ -462,6 +642,8 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
      <string>ImageLabel</string>
     </property>
    </widget>
+=======
+>>>>>>> ed8a8ce12593c0fb614030cb981da84c9c39f8f3
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
