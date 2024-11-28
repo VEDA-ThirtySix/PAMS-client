@@ -52,7 +52,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::setupStreamingConnection()
 {
-    const QString serverIP = "192.168.0.40";
+    const QString serverIP = "192.168.0.39";
     const quint16 serverPort = 5100;
 
     streamSocket->connectToHost(serverIP, serverPort);
