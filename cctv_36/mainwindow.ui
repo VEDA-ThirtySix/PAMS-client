@@ -21,23 +21,17 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-<<<<<<< HEAD
-      <y>80</y>
-      <width>701</width>
-      <height>541</height>
-=======
       <y>50</y>
       <width>1031</width>
-      <height>471</height>
->>>>>>> ed8a8ce12593c0fb614030cb981da84c9c39f8f3
+      <height>491</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"> /* 탭 창 영역 */
+     <string notr="true">/* 탭 창 영역 */
  QTabWidget::pane {
         background-color:rgb(255, 255, 255);
-        border: 1px solid rgb(243,115,33); 
-        margin-top: -1px;  
+        border:none;
+
     }
 
 /*탭 버튼 영역*/
@@ -45,54 +39,58 @@ QTabBar::tab {
 	font: 9pt &quot;Sans Serif&quot;;
  	background-color:rgba(243,115,33,0.5);
     color: transparent;               /* 기본 텍스트를 숨김 */
-    padding: 7px;                    /* 기본 패딩 */
-
+    padding: 0px;                    /* 기본 패딩 */
+	margin-right:5px;
     width: 120px;                  /* 기본 너비 */
-    height: 15px;                 /* 기본 높이 */
+    height: 30px;                 /* 기본 높이 */
 	background-repeat: no-repeat;
     background-position: center;
-    border: 1px solid rgb(243,115,33); 
 }
-/*세번째 탭*/
+
+/*search 탭*/
 QTabBar::tab:first {
-    background-image: url(:/images/video2.png);
-	color:transparent;
-}
-QTabBar::tab:first:selected {
-	background-color:  rgba(243,115,33,0.5);
-	background-image:transparent;
-	color:rgb(0, 0, 0);
-	font: 300 bold 10pt &quot;Quicksand Light&quot;;
-    padding: 8px;                    /* 선택된 탭 패딩 */
-}
-
-
-/*두번째 탭*/
-QTabBar::tab:last {
+	background-color:rgba(243,115,33,0.1);
     background-image: url(:/images/search5.png);
 	color:transparent;
 }
-QTabBar::tab:last:selected {
+QTabBar::tab:first:selected {
+	background: none; /* 전체 배경 속성 초기화!!!!!!! 중요!! */
 	background-color:  rgba(243,115,33,0.5);
 	background-image:transparent;
 	color:rgb(0, 0, 0);
-	font: 300 bold 10pt &quot;Quicksand Light&quot;;
-    padding: 8px;                    /* 선택된 탭 패딩 */
+	font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;                    /* 선택된 탭 패딩 */
+}
+
+
+/*streaming 탭*/
+QTabBar::tab:last {
+    background-color:rgba(243,115,33,0.1);
+    background-image: url(:/images/video2.png);
+	color:transparent;
+}
+QTabBar::tab:last:selected {
+	background: none; /* 전체 배경 속성 초기화 */
+	background-color:  rgba(243,115,33,0.5);
+	background-image:none;
+	color:rgb(0, 0, 0);
+	font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;                    /* 선택된 탭 패딩 */
 }
 QTabBar::tab:hover {
-    background:none;
-	color:rgb(135, 135, 135);
-	font: 300 bold 10pt &quot;Quicksand Light&quot;;
+	background: none; /* 전체 배경 속성 초기화 */
+    background-color:rgb(223, 223, 223);
+	background-image:none;
+	color:rgb(255, 255, 255);
+	font: 500 10pt &quot;Quicksand Medium&quot;;
 
-}
-
-</string>
+}</string>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="searchTab">
      <attribute name="title">
@@ -121,13 +119,13 @@ QHeaderView::section {
 }</string>
       </property>
       <property name="inputMethodHints">
-       <set>Qt::InputMethodHint::ImhNone</set>
+       <set>Qt::ImhNone</set>
       </property>
       <property name="editTriggers">
-       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+       <set>QAbstractItemView::NoEditTriggers</set>
       </property>
       <property name="textElideMode">
-       <enum>Qt::TextElideMode::ElideLeft</enum>
+       <enum>Qt::ElideLeft</enum>
       </property>
       <attribute name="horizontalHeaderCascadingSectionResizes">
        <bool>false</bool>
@@ -226,9 +224,6 @@ border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
       <property name="text">
        <string/>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
-      </property>
      </widget>
      <widget class="QLabel" name="textLabel">
       <property name="geometry">
@@ -257,9 +252,6 @@ color:  rgb(0, 0, 0);
       <property name="text">
        <string/>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
-      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="streamingTab">
@@ -274,8 +266,8 @@ color:  rgb(0, 0, 0);
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>691</width>
-        <height>431</height>
+        <width>1001</width>
+        <height>451</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -290,8 +282,8 @@ border:none;</string>
         <rect>
          <x>10</x>
          <y>40</y>
-         <width>361</width>
-         <height>251</height>
+         <width>551</width>
+         <height>291</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -304,71 +296,12 @@ border:1px solid rgb(243,115,33);</string>
         <string>Streaming Video</string>
        </property>
       </widget>
-      <widget class="QFrame" name="bestshotFrame">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>40</y>
-         <width>311</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
-color:  rgb(243,115,33);
-background:none;
-border:1px solid rgb(243,115,33);</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <widget class="QLabel" name="label">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>150</y>
-          <width>291</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background:none;
-border:1px solid rgb(255, 255, 255);
-font: 300 bold 13pt &quot;Quicksand Light&quot;;
-color:  rgb(243,115,33);
-background:none;</string>
-        </property>
-        <property name="text">
-         <string>Detected Vehicle Image</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_3">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>271</width>
-          <height>91</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background:none;
-border:1px solid rgb(255, 255, 255);
-font: 300 bold 13pt &quot;Quicksand Light&quot;;
-color:  rgb(243,115,33);
-background:none;</string>
-        </property>
-        <property name="text">
-         <string>Vehicle1</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QLabel" name="dateTimeLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>361</width>
+         <width>551</width>
          <height>21</height>
         </rect>
        </property>
@@ -382,32 +315,13 @@ border:1px solid rgb(243,115,33);</string>
         <string>Date - Time</string>
        </property>
       </widget>
-      <widget class="QLabel" name="licensetitleLabel">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>311</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);
-font: 500 10pt &quot;Quicksand Medium&quot;;
-background-color: rgba(243,115,33,0.5);
-border:1px solid rgb(243,115,33);</string>
-       </property>
-       <property name="text">
-        <string>LicensePlate</string>
-       </property>
-      </widget>
       <widget class="QFrame" name="bestshotFrame_2">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>300</y>
-         <width>361</width>
-         <height>111</height>
+         <y>340</y>
+         <width>551</width>
+         <height>91</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -419,124 +333,86 @@ border:1px solid rgb(243,115,33);</string>
         <enum>QFrame::NoFrame</enum>
        </property>
       </widget>
-      <zorder>streamingLabel</zorder>
-      <zorder>dateTimeLabel</zorder>
-      <zorder>licensetitleLabel</zorder>
-      <zorder>bestshotFrame</zorder>
-      <zorder>bestshotFrame_2</zorder>
      </widget>
-    </widget>
-<<<<<<< HEAD
-    <widget class="QWidget" name="searchTab">
-     <attribute name="title">
-      <string>Search</string>
-     </attribute>
-     <widget class="QFrame" name="searchFrame">
+     <widget class="QLabel" name="licensetitleLabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>290</y>
-        <width>661</width>
-        <height>231</height>
+        <x>570</x>
+        <y>10</y>
+        <width>311</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:transparent;</string>
+       <string notr="true">color: rgb(255, 255, 255);
+font: 500 10pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border:1px solid rgb(243,115,33);</string>
+      </property>
+      <property name="text">
+       <string>LicensePlate</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="bestshotFrame">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>40</y>
+        <width>311</width>
+        <height>391</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
+color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
-      <widget class="QPushButton" name="searchButton">
+      <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>270</x>
-         <y>10</y>
-         <width>41</width>
-         <height>41</height>
+         <x>10</x>
+         <y>150</y>
+         <width>291</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(170, 255, 255,0.5);
-border:1px solid rgba(0, 168, 168,0.5);
-
-
-border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
-border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
-border-top-left-radius: 0; /* 왼쪽 위 모서리 */
-border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
+        <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
        </property>
        <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="images.qrc">
-         <normaloff>:/images/search5.png</normaloff>:/images/search5.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
+        <string>Detected Vehicle Image</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="searchInput">
+      <widget class="QLabel" name="label_3">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>261</width>
-         <height>41</height>
+         <x>20</x>
+         <y>20</y>
+         <width>271</width>
+         <height>91</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(170, 255, 255,0.5);
-border:1px solid rgba(0, 168, 168,0.5);
-
-border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
-border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
-border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
-border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
+        <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
+       </property>
+       <property name="text">
+        <string>Vehicle1</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="resultsList">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>301</width>
-         <height>331</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: transparent;
-border:1px solid rgba(0, 168, 168,0.5);
-border-radius:5px;
-</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QTableView" name="resultsTable">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>661</width>
-        <height>261</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(163, 182, 255);</string>
-      </property>
-      <property name="inputMethodHints">
-       <set>Qt::ImhNone</set>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
      </widget>
     </widget>
-=======
->>>>>>> ed8a8ce12593c0fb614030cb981da84c9c39f8f3
    </widget>
    <widget class="QLabel" name="guideLabel">
     <property name="geometry">
@@ -577,7 +453,7 @@ border-bottom:2px solid rgb(243,115,33);</string>
       <x>900</x>
       <y>0</y>
       <width>151</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -597,6 +473,9 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
     <property name="text">
      <string>Thirty-Six Stratagems </string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+    </property>
    </widget>
    <widget class="QLabel" name="hanwhaLogo">
     <property name="enabled">
@@ -607,7 +486,7 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
       <x>0</x>
       <y>0</y>
       <width>161</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -627,23 +506,10 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
     <property name="text">
      <string> HanwhaVision</string>
     </property>
-   </widget>
-<<<<<<< HEAD
-   <widget class="QLabel" name="imageLabel">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>80</y>
-      <width>221</width>
-      <height>341</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ImageLabel</string>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
     </property>
    </widget>
-=======
->>>>>>> ed8a8ce12593c0fb614030cb981da84c9c39f8f3
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

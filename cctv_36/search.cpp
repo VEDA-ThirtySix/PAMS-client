@@ -32,14 +32,8 @@ bool Search::setupDatabase()
 {
     // 데이터베이스 연결 설정
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-<<<<<<< HEAD
-    //m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db");
     m_db.setDatabaseName("vehicles.db");
-
-=======
-    //m_db.setDatabaseName("vehicles.db");
-    m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db"); // for MacOS
->>>>>>> ed8a8ce12593c0fb614030cb981da84c9c39f8f3
+    //m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db"); // for MacOS
 
     if (!m_db.open()) {
         QMessageBox::critical(nullptr, "Error", "데이터베이스 연결 실패!");
