@@ -87,10 +87,10 @@ QTabBar::tab:hover {
 }</string>
     </property>
     <property name="tabPosition">
-     <enum>QTabWidget::North</enum>
+     <enum>QTabWidget::TabPosition::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="searchTab">
      <attribute name="title">
@@ -108,24 +108,32 @@ QTabBar::tab:hover {
       <property name="styleSheet">
        <string notr="true">QTableView {
     background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
 }
 
 QHeaderView::section {
     background-color: rgba(202,205,205,0.5);
     border: 1px solid rgba(0, 0, 0, 0.5);
+    color: rgb(0, 0, 0);
     padding: 3px;
+    font-color: rgb(0, 0, 0);
     font-weight: bold;
     text-align: center;
+}
+
+QTableView::item:selected {
+    background-color: rgb(255, 165, 0); 
+    color: rgb(255, 255, 255);
 }</string>
       </property>
       <property name="inputMethodHints">
-       <set>Qt::ImhNone</set>
+       <set>Qt::InputMethodHint::ImhNone</set>
       </property>
       <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
+       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
       </property>
       <property name="textElideMode">
-       <enum>Qt::ElideLeft</enum>
+       <enum>Qt::TextElideMode::ElideLeft</enum>
       </property>
       <attribute name="horizontalHeaderCascadingSectionResizes">
        <bool>false</bool>
@@ -142,6 +150,7 @@ QHeaderView::section {
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
 border:1px solid rgb(0, 0, 0);
 
 border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
@@ -275,7 +284,7 @@ color:  rgb(0, 0, 0);
 border:none;</string>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <widget class="QLabel" name="streamingLabel">
        <property name="geometry">
@@ -330,7 +339,7 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
       </widget>
      </widget>
@@ -369,7 +378,7 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <widget class="QLabel" name="label">
        <property name="geometry">
@@ -441,7 +450,7 @@ border-bottom:2px solid rgb(243,115,33);</string>
      <string>LicensePlate Detection CCTV App</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="teamLogo">
@@ -474,7 +483,7 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
      <string>Thirty-Six Stratagems </string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+     <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignHCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="hanwhaLogo">
@@ -507,7 +516,7 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
      <string> HanwhaVision</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+     <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignHCenter</set>
     </property>
    </widget>
   </widget>
