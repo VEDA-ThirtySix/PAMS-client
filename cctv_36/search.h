@@ -50,7 +50,7 @@ private:
     bool setupDatabase();
     void setupImage();
     void updatePlaceholder();
-    void clearImage();
+    void clearImageAndText();
 
 signals:
     void dataSelected(const QString &name, const QString &plateNumber,

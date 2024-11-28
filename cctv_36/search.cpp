@@ -33,7 +33,7 @@ bool Search::setupDatabase()
     // 데이터베이스 연결 설정
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     //m_db.setDatabaseName("vehicles.db");
-    m_db.setDatabaseName("/Users/taewonkim/GitHub/PAMS-client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db"); // for MacOS
+    m_db.setDatabaseName("/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/vehicles.db"); // for MacOS
 
     if (!m_db.open()) {
         QMessageBox::critical(nullptr, "Error", "데이터베이스 연결 실패!");
@@ -205,9 +205,10 @@ void Search::handleDoubleClick(const QModelIndex &index)
     m_textLabel->setText(displayText);
 }
 
-void Search::clearImage()
+void Search::clearImageAndText()
 {
     m_imageLabel->setPixmap(QPixmap());
+    m_textLabel->setText("");
     //m_imageLabel->setText("이미지 없음");
 }
 
@@ -215,7 +216,7 @@ void Search::performSearch()
 {
     QString searchText = m_searchInput->text();
 
-    clearImage(); // 검색 시 이미지 초기화
+    clearImageAndText(); // 검색 시 이미지 초기화
 
     if (searchText.isEmpty()) {
         m_model->setFilter("");
@@ -251,7 +252,7 @@ void Search::showSearchMenu()
     QAction* timeSearch = menu->addAction("입차시간으로 검색");
 
     connect(nameSearch, &QAction::triggered, this, [this]() {
-        clearImage();
+        clearImageAndText();
         m_currentSearchType = "이름";
         m_searchInput->clear();
         updatePlaceholder();
@@ -260,7 +261,7 @@ void Search::showSearchMenu()
     });
 
     connect(plateSearch, &QAction::triggered, this, [this]() {
-        clearImage();
+        clearImageAndText();
         m_currentSearchType = "차량번호";
         m_searchInput->clear();
         updatePlaceholder();
@@ -269,7 +270,7 @@ void Search::showSearchMenu()
     });
 
     connect(timeSearch, &QAction::triggered, this, [this]() {
-        clearImage();
+        clearImageAndText();
         m_currentSearchType = "시간";
         m_searchInput->clear();
         updatePlaceholder();
