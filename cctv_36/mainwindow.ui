@@ -23,15 +23,15 @@
       <x>10</x>
       <y>50</y>
       <width>1031</width>
-      <height>471</height>
+      <height>491</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"> /* 탭 창 영역 */
+     <string notr="true">/* 탭 창 영역 */
  QTabWidget::pane {
         background-color:rgb(255, 255, 255);
-        border: 1px solid rgb(243,115,33); 
-        margin-top: -1px;  
+        border:none;
+
     }
 
 /*탭 버튼 영역*/
@@ -39,65 +39,58 @@ QTabBar::tab {
 	font: 9pt &quot;Sans Serif&quot;;
  	background-color:rgba(243,115,33,0.5);
     color: transparent;               /* 기본 텍스트를 숨김 */
-    padding: 7px;                    /* 기본 패딩 */
-
+    padding: 0px;                    /* 기본 패딩 */
+	margin-right:5px;
     width: 120px;                  /* 기본 너비 */
-    height: 15px;                 /* 기본 높이 */
+    height: 30px;                 /* 기본 높이 */
 	background-repeat: no-repeat;
     background-position: center;
-    border: 1px solid rgb(243,115,33); 
 }
-/*
-color: rgb(255, 255, 255);
-font: 500 10pt &quot;Quicksand Medium&quot;;
-background-color: rgba(243,115,33,0.5);
-border:1px solid rgb(243,115,33);
 
-*/
-/*세번째 탭*/
+/*search 탭*/
 QTabBar::tab:first {
-    background-image: url(:/images/video2.png);
+	background-color:rgba(243,115,33,0.1);
+    background-image: url(:/images/search5.png);
+	color:transparent;
 }
 QTabBar::tab:first:selected {
-    background:none;
-}
-QTabBar::tab:first:hover {
-    background:none;
+	background: none; /* 전체 배경 속성 초기화!!!!!!! 중요!! */
+	background-color:  rgba(243,115,33,0.5);
+	background-image:transparent;
+	color:rgb(0, 0, 0);
+	font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;                    /* 선택된 탭 패딩 */
 }
 
 
-/*두번째 탭*/
+/*streaming 탭*/
 QTabBar::tab:last {
-    background-image: url(:/images/search5.png);
+    background-color:rgba(243,115,33,0.1);
+    background-image: url(:/images/video2.png);
+	color:transparent;
 }
 QTabBar::tab:last:selected {
-    background:none;
+	background: none; /* 전체 배경 속성 초기화 */
+	background-color:  rgba(243,115,33,0.5);
+	background-image:none;
+	color:rgb(0, 0, 0);
+	font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;                    /* 선택된 탭 패딩 */
 }
-QTabBar::tab:last:hover {
-    background:none;
-}
-
-
-QTabBar::tab:selected {
-	background-color: rgba(243,115,33,0.5);
-	border:none;
-	color:rgb(255, 255, 255);
-	font: 300 bold 10pt &quot;Quicksand Light&quot;;
-    padding: 8px;                    /* 선택된 탭 패딩 */
-}
-
 QTabBar::tab:hover {
-    background-color:rgba(243,115,33,0.2);
-    color: rgb(255, 255, 255);                  /* 호버 시 텍스트 색상 */
-	border:none;
-}
-</string>
+	background: none; /* 전체 배경 속성 초기화 */
+    background-color:rgb(223, 223, 223);
+	background-image:none;
+	color:rgb(255, 255, 255);
+	font: 500 10pt &quot;Quicksand Medium&quot;;
+
+}</string>
     </property>
     <property name="tabPosition">
-     <enum>QTabWidget::TabPosition::North</enum>
+     <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="searchTab">
      <attribute name="title">
@@ -126,13 +119,13 @@ QHeaderView::section {
 }</string>
       </property>
       <property name="inputMethodHints">
-       <set>Qt::InputMethodHint::ImhNone</set>
+       <set>Qt::ImhNone</set>
       </property>
       <property name="editTriggers">
-       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+       <set>QAbstractItemView::NoEditTriggers</set>
       </property>
       <property name="textElideMode">
-       <enum>Qt::TextElideMode::ElideLeft</enum>
+       <enum>Qt::ElideLeft</enum>
       </property>
       <attribute name="horizontalHeaderCascadingSectionResizes">
        <bool>false</bool>
@@ -231,9 +224,6 @@ border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
       <property name="text">
        <string/>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
-      </property>
      </widget>
      <widget class="QLabel" name="textLabel">
       <property name="geometry">
@@ -262,9 +252,6 @@ color:  rgb(0, 0, 0);
       <property name="text">
        <string/>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
-      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="streamingTab">
@@ -279,8 +266,8 @@ color:  rgb(0, 0, 0);
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>691</width>
-        <height>431</height>
+        <width>1001</width>
+        <height>451</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -288,18 +275,15 @@ color:  rgb(0, 0, 0);
 border:none;</string>
       </property>
       <property name="frameShape">
-       <enum>QFrame::Shape::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Shadow::Raised</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <widget class="QLabel" name="streamingLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>40</y>
-         <width>361</width>
-         <height>251</height>
+         <width>551</width>
+         <height>291</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -311,84 +295,13 @@ border:1px solid rgb(243,115,33);</string>
        <property name="text">
         <string>Streaming Video</string>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QFrame" name="bestshotFrame">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>40</y>
-         <width>311</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
-color:  rgb(243,115,33);
-background:none;
-border:1px solid rgb(243,115,33);</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Shape::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Shadow::Raised</enum>
-       </property>
-       <widget class="QLabel" name="label">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>150</y>
-          <width>291</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background:none;
-border:1px solid rgb(255, 255, 255);
-font: 300 bold 13pt &quot;Quicksand Light&quot;;
-color:  rgb(243,115,33);
-background:none;</string>
-        </property>
-        <property name="text">
-         <string>Detected Vehicle Image</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_3">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>271</width>
-          <height>91</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background:none;
-border:1px solid rgb(255, 255, 255);
-font: 300 bold 13pt &quot;Quicksand Light&quot;;
-color:  rgb(243,115,33);
-background:none;</string>
-        </property>
-        <property name="text">
-         <string>Vehicle1</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignCenter</set>
-        </property>
-       </widget>
       </widget>
       <widget class="QLabel" name="dateTimeLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>361</width>
+         <width>551</width>
          <height>21</height>
         </rect>
        </property>
@@ -401,39 +314,14 @@ border:1px solid rgb(243,115,33);</string>
        <property name="text">
         <string>Date - Time</string>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="licensetitleLabel">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>311</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);
-font: 500 10pt &quot;Quicksand Medium&quot;;
-background-color: rgba(243,115,33,0.5);
-border:1px solid rgb(243,115,33);</string>
-       </property>
-       <property name="text">
-        <string>LicensePlate</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
       </widget>
       <widget class="QFrame" name="bestshotFrame_2">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>300</y>
-         <width>361</width>
-         <height>111</height>
+         <y>340</y>
+         <width>551</width>
+         <height>91</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -442,17 +330,87 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Shape::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Shadow::Raised</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
       </widget>
-      <zorder>streamingLabel</zorder>
-      <zorder>dateTimeLabel</zorder>
-      <zorder>licensetitleLabel</zorder>
-      <zorder>bestshotFrame</zorder>
-      <zorder>bestshotFrame_2</zorder>
+     </widget>
+     <widget class="QLabel" name="licensetitleLabel">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>10</y>
+        <width>311</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+font: 500 10pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border:1px solid rgb(243,115,33);</string>
+      </property>
+      <property name="text">
+       <string>LicensePlate</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="bestshotFrame">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>40</y>
+        <width>311</width>
+        <height>391</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
+color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>291</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
+       </property>
+       <property name="text">
+        <string>Detected Vehicle Image</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>271</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
+       </property>
+       <property name="text">
+        <string>Vehicle1</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -483,7 +441,7 @@ border-bottom:2px solid rgb(243,115,33);</string>
      <string>LicensePlate Detection CCTV App</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="teamLogo">
@@ -516,7 +474,7 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
      <string>Thirty-Six Stratagems </string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing</set>
+     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="hanwhaLogo">
@@ -549,7 +507,7 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
      <string> HanwhaVision</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
     </property>
    </widget>
   </widget>
