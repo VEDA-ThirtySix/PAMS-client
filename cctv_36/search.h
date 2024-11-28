@@ -2,6 +2,7 @@
 #define SEARCH_H
 
 #include <QObject>
+#include <QDebug>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QListWidget>
