@@ -14,19 +14,22 @@
 class BasicInfo {
 public:
     BasicInfo();
-    explicit BasicInfo(const QString& plate,
+    explicit BasicInfo(const QString& name,
+                       const QString& plate,
                        const QString& home,
                        const QString& phone);
-
+    QString get_name() const;
     QString get_plate() const;
     QString get_home()  const;
     QString get_phone() const;
 
+    void set_name(const QString& name);
     void set_plate(const QString& plate);
     void set_home(const QString& home);
     void set_phone(const QString& phone);
 
 private:
+    QString m_name;
     QString m_plate;
     QString m_home;
     QString m_phone;
@@ -54,3 +57,4 @@ private:
 };
 
 #endif // METADATA_H
+

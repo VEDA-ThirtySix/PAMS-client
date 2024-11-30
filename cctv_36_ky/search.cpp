@@ -1,33 +1,140 @@
 #include "search.h"
+#include "ui_search.h"
+#include "dialog_edit.h"
+#include <QMessageBox>
+#include <QPixmap>
+#include <QtWidgets/qmenu.h>
+#include <QItemSelectionModel>  //KIYUN_1127
+#include <QDebug>
+#include <QSqlError>
+#include <QSqlQuery>
 
-Search::Search(QLineEdit* searchInput,
-               QPushButton* searchButton,
-               QListWidget* resultsList,
-               QObject *parent)
-    : QObject(parent)  // QObject의 생성자 호출
+Search::Search(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::Search)
+    , userManager(new UserManager(this))
 {
-    m_searchInput = searchInput;
-    m_searchButton = searchButton;
-    m_resultsList = resultsList;
+    ui->setupUi(this);
+    m_currentSearchType = "차량번호"; // 기본 검색 타입
 
     setupConnections();
+    setupTable();
+    setupImage();
+    lineEdit_test();
+    updatePlaceholder();
 
-    m_searchInput->setPlaceholderText("Enter the license plate number");
+    connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
+    //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
+
 }
+
+Search::~Search() {
+    delete ui;
+}
+
+void Search::setupTable() {
+    // DB 초기화
+    //userManager->initiallize();
+
+    // Basic 테이블 모델 설정
+    m_db = userManager->getDatabase();
+    qDebug() << "DONE(SM): got DB:" << m_db;
+
+    QSqlQuery query1(m_db);
+    query1.exec("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Basic'");
+    if (query1.next()) {
+        qDebug() << "Table exists:" << query1.value(0).toInt();
+    }
+
+    m_modelBasic = new QSqlTableModel(this, m_db);
+    m_modelBasic->setTable("Basic");  //연결하려는 테이블명
+    m_modelBasic->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    if(!m_modelBasic->select()) {
+        qDebug() << "Error: " << m_modelBasic->lastError().text();
+    }
+
+    qDebug() << "Row count:" << m_modelBasic->rowCount();
+    qDebug() << "Column count:" << m_modelBasic->columnCount();
+    qDebug() << "Table: " << m_modelBasic->tableName();
+    qDebug() << "is Valid: " << m_modelBasic->database().isValid();
+
+    QSqlQuery query(m_db);
+    if (query.exec("SELECT * FROM Basic")) {
+        while (query.next()) {
+            qDebug() << "Data:" << query.value(0).toString() << query.value(1).toString();
+        }
+    }
+
+    // 열 헤더 설정
+    m_modelBasic->setHeaderData(0, Qt::Horizontal, "NAME");
+    m_modelBasic->setHeaderData(1, Qt::Horizontal, "PLATE");
+    m_modelBasic->setHeaderData(2, Qt::Horizontal, "HOME");
+    m_modelBasic->setHeaderData(3, Qt::Horizontal, "PHONE");
+
+
+    ui->resultsTable->setModel(m_modelBasic);
+    ui->resultsTable->resizeColumnsToContents();
+    //m_resultsTable->hideColumn(0); // ID 컬럼 숨기기
+    ui->resultsTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
+
+    // 열 너비 설정
+    /*
+    ui->resultsTable->setColumnWidth(2, 150); //HOME
+    ui->resultsTable->setColumnWidth(3, 150); //PHONE   */
+}
+
+void Search::setupImage()
+{
+    ui->imageLabel->setMinimumSize(320, 200);
+    ui->imageLabel->setScaledContents(true);
+    ui->imageLabel->setAlignment(Qt::AlignCenter);
+    ui->imageLabel->setText("이미지 없음");
+}
+
+/*
+    m_db.transaction();
+    for (const auto &example : examples) {
+        // 주차 시간 계산
+        qint64 seconds = example.entranceTime.secsTo(example.exitTime);
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        QString parkingDuration = QString("%1:%2:%3")
+                                      .arg(hours, 2, 10, QLatin1Char('0'))
+                                      .arg(minutes, 2, 10, QLatin1Char('0'))
+                                      .arg(secs, 2, 10, QLatin1Char('0'));
+
+        query.bindValue(0, example.name);
+        query.bindValue(1, example.plateNumber);
+        query.bindValue(2, example.entranceTime.toString("yyyy-MM-dd hh:mm:ss"));
+        query.bindValue(3, example.exitTime.toString("yyyy-MM-dd hh:mm:ss"));
+        query.bindValue(4, parkingDuration);
+        query.exec();
+    }
+    m_db.commit();
+    // 모델 새로고침
+    m_model->select();
+*/
+
+
 
 void Search::setupConnections()
 {
     // 검색 버튼 클릭 시 검색 수행
-    connect(m_searchButton, &QPushButton::clicked,
-            this, &Search::performSearch);
+    connect(ui->searchButton, &QPushButton::clicked, this, &Search::performSearch);
 
     // Enter 키 입력 시 검색 수행
-    connect(m_searchInput, &QLineEdit::returnPressed,
-            this, &Search::performSearch);
+    connect(ui->searchInput, &QLineEdit::returnPressed, this, &Search::performSearch);
 
     // 텍스트 변경 시 실시간 검색
-    connect(m_searchInput, &QLineEdit::textChanged,
-            this, &Search::handleSearchInput);
+    connect(ui->searchInput, &QLineEdit::textChanged, this, &Search::handleSearchInput);
+
+    // 테이블 뷰에 있는 컬럼 더블 클릭시 이벤트 연결
+    connect(ui->resultsTable, &QTableView::doubleClicked, this, &Search::handleDoubleClick);
+
+    // 검색어 필터링
+    connect(ui->filterButton, &QPushButton::clicked, this, &Search::showSearchMenu);
 }
 
 void Search::handleSearchInput(const QString &text)
@@ -35,118 +142,137 @@ void Search::handleSearchInput(const QString &text)
     // 실시간 검색을 위한 로직
     if (text.length() >= 3) {  // 3글자 이상 입력시 자동 검색
         performSearch();
+    } else if (text.isEmpty()){
+        m_modelBasic->setFilter("");
+        m_modelBasic->select();
     }
 }
 
-void Search::loadExampleData()
-{
-    // 현재 시간 기준으로 예시 데이터 생성
-    QDateTime current = QDateTime::currentDateTime();
+void Search::handleDoubleClick(const QModelIndex &index) {
+    // qDebug() << "클릭된 컬럼 번호:" << index.column();
 
-    // 다양한 시간대의 예시 데이터 생성
-    QList<QPair<QString, QDateTime>> examples = {
-        // 최근 1시간 내
-        {QString("12가3456"), current.addSecs(-1800)},  // 30분 전
-        {QString("34나5678"), current.addSecs(-2700)},  // 45분 전
+    QString basePath = "/home/kiyun/vFinal/rasp_project/cctv_36_ky/images";
+    //QString basePath = "/Users/taewonkim/GitHub/PAMS-client/cctv_36/images";
+    QString imagePath = QString("%1/image_%2.jpg")
+                            .arg(basePath)
+                            .arg(index.row() + 1);
 
-        // 오늘 다른 시간대
-        {QString("56다7890"), current.addSecs(-18000)}, // 5시간 전
-        {QString("78라1234"), current.addSecs(-25200)}, // 7시간 전
-
-        // 어제
-        {QString("90마5678"), current.addDays(-1)},
-        {QString("12바9012"), current.addDays(-1).addSecs(-14400)}, // 어제 4시간 전
-
-        // 이번 주 다른 날들
-        {QString("34사3456"), current.addDays(-2)},
-        {QString("56아7890"), current.addDays(-3)},
-        {QString("78자1234"), current.addDays(-4)}
-    };
-
-    // 리스트 위젯에 데이터 추가
-    for (const auto &example : examples) {
-        QString plateNumber = example.first;
-        QDateTime timestamp = example.second;
-
-        // 날짜/시간 포맷팅
-        QString timeStr;
-        qint64 secsTo = timestamp.secsTo(current);
-
-        if (secsTo < 3600) {  // 1시간 이내
-            int mins = secsTo / 60;
-            timeStr = QString("%1분 전").arg(mins);
-        } else if (secsTo < 86400) {  // 24시간 이내
-            int hours = secsTo / 3600;
-            timeStr = QString("%1시간 전").arg(hours);
-        } else {  // 24시간 이상
-            timeStr = timestamp.toString("yyyy-MM-dd hh:mm");
-        }
-
-        // 아이템 생성 및 추가
-        QString displayText = QString("%1  |  %2").arg(plateNumber, timeStr);
-        QListWidgetItem* item = new QListWidgetItem(displayText);
-
-        // 아이템 스타일 설정
-        item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-        // 폰트 설정
-        QFont font = item->font();
-        font.setPointSize(10);
-        item->setFont(font);
-
-        m_resultsList->addItem(item);
+    /* 이미지와 데이터를 Qt에서 연결 -> 이미지를 db자체에서 연결(비트맵?이진화?) */
+    QPixmap image(imagePath);
+    if (image.isNull()) {
+        ui->imageLabel->setText("이미지 없음");
+        qDebug() << "이미지 로드 실패:" << imagePath;
+    } else {
+        ui->imageLabel->setPixmap(image);
+        qDebug() << "이미지 로드 성공:" << imagePath;
     }
+}
+
+void Search::clearImage()
+{
+    ui->imageLabel->setPixmap(QPixmap());
+    ui->imageLabel->setText("이미지 없음");
 }
 
 void Search::performSearch()
 {
-    QString searchText = m_searchInput->text();
+    QString searchText = ui->searchInput->text();
+
+    clearImage(); // 검색 시 이미지 초기화
+
     if (searchText.isEmpty()) {
-        loadExampleData();  // 검색어가 비어있으면 전체 목록 표시
-        return;
-    }
+        m_modelBasic->setFilter("");
+    } else {
+        QString filter;
 
-    m_resultsList->clear();
-
-    // 예시 데이터 필터링
-    QDateTime current = QDateTime::currentDateTime();
-    QList<QPair<QString, QDateTime>> examples = {
-        {QString("12가3456"), current.addSecs(-1800)},
-        {QString("34나5678"), current.addSecs(-2700)},
-        {QString("56다7890"), current.addSecs(-18000)},
-        {QString("78라1234"), current.addSecs(-25200)},
-        {QString("90마5678"), current.addDays(-1)},
-        {QString("12바9012"), current.addDays(-1).addSecs(-14400)},
-        {QString("34사3456"), current.addDays(-2)},
-        {QString("56아7890"), current.addDays(-3)},
-        {QString("78자1234"), current.addDays(-4)}
-    };
-
-    // 검색어에 맞는 결과만 필터링하여 표시
-    for (const auto &example : examples) {
-        if (example.first.contains(searchText, Qt::CaseInsensitive)) {
-            QString timeStr;
-            qint64 secsTo = example.second.secsTo(current);
-
-            if (secsTo < 3600) {
-                int mins = secsTo / 60;
-                timeStr = QString("%1분 전").arg(mins);
-            } else if (secsTo < 86400) {
-                int hours = secsTo / 3600;
-                timeStr = QString("%1시간 전").arg(hours);
-            } else {
-                timeStr = example.second.toString("yyyy-MM-dd hh:mm");
-            }
-
-            QString displayText = QString("%1  |  %2").arg(example.first, timeStr);
-            QListWidgetItem* item = new QListWidgetItem(displayText);
-            item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-            QFont font = item->font();
-            font.setPointSize(10);
-            item->setFont(font);
-
-            m_resultsList->addItem(item);
+        if (m_currentSearchType == "이름") {
+            filter = QString("name LIKE '%%1%'").arg(searchText);
         }
+        else if (m_currentSearchType == "차량번호") {
+            filter = QString("plate LIKE '%%1%'").arg(searchText);
+        }
+        else if (m_currentSearchType == "시간") {
+            // 일단은 입차시간을 검색하게 만듬
+            filter = QString("entrance_time LIKE '%%1%'").arg(searchText);
+        }
+        m_modelBasic->setFilter(filter);
     }
+    m_modelBasic->select();
 }
+
+void Search::updatePlaceholder()
+{
+    ui->searchInput->setPlaceholderText(QString("%1을(를) 입력하세요").arg(m_currentSearchType));
+}
+
+void Search::showSearchMenu()
+{
+    QMenu* menu = new QMenu;
+
+    QAction* nameSearch = menu->addAction("이름으로 검색");
+    QAction* plateSearch = menu->addAction("차량번호로 검색");
+    QAction* timeSearch = menu->addAction("입차시간으로 검색");
+
+    connect(nameSearch, &QAction::triggered, this, [this]() {
+        clearImage();
+        m_currentSearchType = "이름";
+        ui->searchInput->clear();
+        updatePlaceholder();
+        m_modelBasic->setFilter("");
+        m_modelBasic->select();
+    });
+
+    connect(plateSearch, &QAction::triggered, this, [this]() {
+        clearImage();
+        m_currentSearchType = "차량번호";
+        ui->searchInput->clear();
+        updatePlaceholder();
+        m_modelBasic->setFilter("");
+        m_modelBasic->select();
+    });
+
+    connect(timeSearch, &QAction::triggered, this, [this]() {
+        clearImage();
+        m_currentSearchType = "시간";
+        ui->searchInput->clear();
+        updatePlaceholder();
+        m_modelBasic->setFilter("");
+        m_modelBasic->select();
+    });
+
+    // filterButton 위치를 기준으로 메뉴 표시
+    menu->exec(ui->filterButton->mapToGlobal(QPoint(0, ui->filterButton->height())));
+}
+
+
+
+/* KIYUN_1127 */
+QString Search::get_seletedData() {
+    QModelIndex currentIndex = ui->resultsTable->selectionModel()->currentIndex();
+
+    if(!currentIndex.isValid()) {
+        qDebug() << "MSG: no selection";
+        return QString();
+    }
+
+    int plateIndex_column = 1;
+
+    QModelIndex plateIndex = ui->resultsTable->model()->index(currentIndex.row(), plateIndex_column);
+    QString selected_plate = ui->resultsTable->model()->data(plateIndex).toString();
+
+    qDebug() << "DONE(SE): selected column(plate): " << selected_plate;
+    return selected_plate;
+}
+
+
+void Search::lineEdit_test() {
+    ui->lineEdit_test->setText("hi");
+}
+
+void Search::clicked_buttonEdit() {
+    EditDialog *editDialog = new EditDialog(this);
+    editDialog->setAttribute(Qt::WA_DeleteOnClose);
+    editDialog->exec();
+    qDebug() << "DONE(MW): Open Edit Dialog";
+}
+

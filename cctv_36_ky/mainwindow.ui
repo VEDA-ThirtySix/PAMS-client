@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>546</height>
+    <width>1052</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,51 +21,75 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
-      <width>701</width>
-      <height>481</height>
+      <y>50</y>
+      <width>921</width>
+      <height>461</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true"> /* 탭 창 영역 */
  QTabWidget::pane {
         background-color:rgb(255, 255, 255);
-        border:1px solid rgb(207, 207, 207);
-        border-radius: 5px; /* 둥근 모서리 */
-        padding: 2px; /* 내부 여백 */
+        border: 1px solid rgb(243,115,33); 
+        margin-top: -1px;  
     }
 
 /*탭 버튼 영역*/
-
 QTabBar::tab {
-    background-color: rgba(249, 255, 144,0.4);
-	border:1px solid rgb(240, 240, 240);
+	font: 9pt &quot;Sans Serif&quot;;
+ 	background-color:rgba(243,115,33,0.5);
     color: transparent;               /* 기본 텍스트를 숨김 */
     padding: 7px;                    /* 기본 패딩 */
+
     width: 120px;                  /* 기본 너비 */
     height: 15px;                 /* 기본 높이 */
-    border-radius: 5px;              /* 둥근 모서리 */
+	background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid rgb(243,115,33); 
+}
+/*
+color: rgb(255, 255, 255);
+font: 500 10pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border:1px solid rgb(243,115,33);
+
+*/
+/*세번째 탭*/
+QTabBar::tab:first {
+    background-image: url(:/images/video2.png);
+}
+QTabBar::tab:first:selected {
+    background:none;
+}
+QTabBar::tab:first:hover {
+    background:none;
+}
+
+
+/*두번째 탭*/
+QTabBar::tab:last {
+    background-image: url(:/images/search5.png);
+}
+QTabBar::tab:last:selected {
+    background:none;
+}
+QTabBar::tab:last:hover {
+    background:none;
 }
 
 
 QTabBar::tab:selected {
-    background-color: rgba(255, 158, 102,0.6);     /*선택된 탭의 배경색 */
-    color: black;                     /* 선택된 탭 텍스트 색상 */
-    font-weight: bold;
+	background-color: rgba(243,115,33,0.5);
+	border:none;
+	color:rgb(255, 255, 255);
+	font: 300 bold 10pt &quot;Quicksand Light&quot;;
     padding: 8px;                    /* 선택된 탭 패딩 */
-    font-size: 13px;
-	background-repeat: no-repeat;
-	background-position: center;
 }
 
 QTabBar::tab:hover {
-    background-color: rgb(211, 211, 211);
+    background-color:rgba(243,115,33,0.2);
     color: rgb(255, 255, 255);                  /* 호버 시 텍스트 색상 */
 	border:none;
-}
-
-QWidget#searchTab{
-	background-color: rgb(236, 236, 236);
 }
 </string>
     </property>
@@ -73,245 +97,31 @@ QWidget#searchTab{
      <enum>QTabWidget::TabPosition::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>-1</number>
     </property>
-    <widget class="QWidget" name="streamingTab">
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <attribute name="title">
-      <string>Streaming</string>
-     </attribute>
-     <widget class="QFrame" name="streamingFrame">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>701</width>
-        <height>441</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: transparent;</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Shape::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Shadow::Raised</enum>
-      </property>
-      <widget class="QLabel" name="streamingLabel">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>360</width>
-         <height>260</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">font: 500 13pt &quot;NotoSerifTamilSlanted Medium&quot;;
-background-color: transparent;
-border:1.5px dashed rgb(189, 189, 189);</string>
-       </property>
-       <property name="text">
-        <string>Streaming Video</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="carstateLabel">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>310</y>
-         <width>361</width>
-         <height>121</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(213, 213, 213);</string>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-      <widget class="QFrame" name="bestshotFrame">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>80</y>
-         <width>301</width>
-         <height>351</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(209, 209, 209);
-border:none;</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Shape::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Shadow::Raised</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="dateTimeLabel">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>701</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(0, 0, 127);
-font: bold 9pt &quot;Serif&quot;;
-background-color: rgba(170, 255, 255,0.5);</string>
-       </property>
-       <property name="text">
-        <string>Date - Time</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="streamingLabel_2">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>40</y>
-         <width>301</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">font: 500 12pt &quot;NotoSerifTamilSlanted Medium&quot;;
-background-color:  rgba(170, 255, 127,0.5);</string>
-       </property>
-       <property name="text">
-        <string>LicensePlate</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="searchTab">
-     <attribute name="title">
-      <string>Search</string>
-     </attribute>
-     <widget class="QFrame" name="searchFrame">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>321</width>
-        <height>421</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:transparent;</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Shape::NoFrame</enum>
-      </property>
-      <widget class="QPushButton" name="searchButton">
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>10</y>
-         <width>41</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgba(170, 255, 255,0.5);
-border:1px solid rgba(0, 168, 168,0.5);
-
-
-border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
-border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
-border-top-left-radius: 0; /* 왼쪽 위 모서리 */
-border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="images.qrc">
-         <normaloff>:/images/search.png</normaloff>:/images/search.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="searchInput">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>261</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgba(170, 255, 255,0.5);
-border:1px solid rgba(0, 168, 168,0.5);
-
-border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
-border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
-border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
-border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
-       </property>
-      </widget>
-      <widget class="QListWidget" name="resultsList">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>301</width>
-         <height>351</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: transparent;
-border:1px solid rgba(0, 168, 168,0.5);
-border-radius:5px;
-</string>
-       </property>
-      </widget>
-     </widget>
-    </widget>
    </widget>
    <widget class="QLabel" name="guideLabel">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>731</width>
-      <height>31</height>
+      <width>1051</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Quicksand Medium</family>
-      <pointsize>11</pointsize>
+      <pointsize>13</pointsize>
       <italic>false</italic>
-      <fontweight>Medium</fontweight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgba(120, 133, 255,0.6);
-color: rgb(0, 0, 127);
-font: 500 11pt &quot;Quicksand Medium&quot;;
-</string>
+     <string notr="true">color: rgb(255, 255, 255);
+font: 500 bold 13pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border-bottom:2px solid rgb(243,115,33);</string>
     </property>
     <property name="text">
      <string>LicensePlate Detection CCTV App</string>
@@ -326,38 +136,82 @@ font: 500 11pt &quot;Quicksand Medium&quot;;
     </property>
     <property name="geometry">
      <rect>
-      <x>640</x>
+      <x>900</x>
       <y>0</y>
-      <width>81</width>
+      <width>151</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>NotoSerifTamilSlanted Black</family>
-      <pointsize>10</pointsize>
+      <family>UnDotum</family>
+      <pointsize>9</pointsize>
       <italic>false</italic>
-      <fontweight>Black</fontweight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:transparent;
 color: rgb(255, 255, 255);
 
-font: 900 10pt &quot;NotoSerifTamilSlanted Black&quot;;</string>
+font: bold 9pt &quot;UnDotum&quot;;</string>
     </property>
     <property name="text">
-     <string>team.36</string>
+     <string>Thirty-Six Stratagems </string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="hanwhaLogo">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>UnDotum</family>
+      <pointsize>9</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+color: rgb(255, 255, 255);
+
+font: bold 9pt &quot;UnDotum&quot;;</string>
+    </property>
+    <property name="text">
+     <string> HanwhaVision</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_enroll">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>490</y>
+      <width>88</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ENROLL</string>
     </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

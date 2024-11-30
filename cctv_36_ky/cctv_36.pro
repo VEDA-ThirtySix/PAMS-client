@@ -9,22 +9,36 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    db.cpp \
+    dbManager.cpp \
+    dialog_edit.cpp \
+    dialog_enroll.cpp \
     main.cpp \
     mainwindow.cpp \
     metadata.cpp \
+    parseJson.cpp \
     search.cpp \
-    socket.cpp
+    socket.cpp \
+    streaming.cpp \
+    userManager.cpp
 
 HEADERS += \
-    db.h \
+    dbManager.h \
+    dialog_edit.h \
+    dialog_enroll.h \
     mainwindow.h \
     metadata.h \
+    parseJson.h \
     search.h \
-    socket.h
+    socket.h \
+    streaming.h \
+    userManager.h
 
 FORMS += \
-    mainwindow.ui
+    edit.ui \
+    enroll.ui \
+    mainwindow.ui \
+    search.ui \
+    streaming.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

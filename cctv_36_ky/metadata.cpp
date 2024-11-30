@@ -1,14 +1,17 @@
 #include "metadata.h"
 
 BasicInfo::BasicInfo()
-    : m_plate(QString()), m_home(QString()), m_phone(QString()) { }
+    : m_name(QString()), m_plate(QString()), m_home(QString()), m_phone(QString()) { }
 
-BasicInfo::BasicInfo(const QString& plate,
+BasicInfo::BasicInfo(const QString& name,
+                     const QString& plate,
                      const QString& home,
                      const QString& phone)
-    : m_plate(plate), m_home(home), m_phone(phone) { }
+    : m_name(name), m_plate(plate), m_home(home), m_phone(phone) { }
 
-
+QString BasicInfo::get_name() const {
+    return m_name;
+}
 QString BasicInfo::get_plate() const {
     return m_plate;
 }
@@ -19,7 +22,9 @@ QString BasicInfo::get_phone() const {
     return m_phone;
 }
 
-
+void BasicInfo::set_name(const QString& name) {
+    m_name = name;
+}
 void BasicInfo::set_plate(const QString& plate) {
     m_plate = plate;
 }
