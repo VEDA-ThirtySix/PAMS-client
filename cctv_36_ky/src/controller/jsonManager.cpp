@@ -9,7 +9,7 @@ JSONManager::JSONManager(QObject* parent)
 JSONManager::~JSONManager()
 { }
 
-QByteArray JSONManager::sendRequest_info(const BasicInfo& basicInfo) {
+QByteArray JSONManager::send_request_info(const BasicInfo& basicInfo) {
     QString name = basicInfo.get_name();
     QString plate = basicInfo.get_plate();
     QString home = basicInfo.get_home();

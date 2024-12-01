@@ -21,7 +21,7 @@ DBManager::~DBManager()
 bool DBManager::open_database() {
     db.setDatabaseName("metadata.db");
     if(!db.open()) {
-        qDebug() << "Error(DB): cannot open 'metadata.db'";
+        qDebug() << "Error(DB): Failed to Open Database: " << db;
         return false;
     }
 
@@ -33,7 +33,7 @@ bool DBManager::open_database() {
                    "plate VARCHAR,"
                    "home VARCHAR,"
                    "phone VARCHAR)")) {
-        qDebug() << "ERROR(DB): Failed to open the table(Basic)";
+        qDebug() << "ERROR(DB): Failed to Open Table: Basic";
     }
 
     /* 테이블(Time) 생성 */
@@ -44,17 +44,17 @@ bool DBManager::open_database() {
                    "type VARCHAR,"
                    "FOREIGN KEY (plate) REFERENCES Basic(plate)"
                    "ON DELETE CASCADE)")) {
-        qDebug() << "ERROR(DB): Failed to open the table(Time)";
+        qDebug() << "ERROR(DB): Failed to Open table: Time";
     }
 
-    qDebug() << "DONE(DM): open_database";
+    qDebug() << "DONE(DM): Open Database" << db;
     return true;
 }
 
 void DBManager::close_database() {
     if(db.isOpen()) {
         db.close();
-        qDebug() << "DONE(DM): close 'metadata.db";
+        qDebug() << "DONE(DM): Close Database: " << db;
     }
 }
 
@@ -69,27 +69,28 @@ void DBManager::create_basicInfo(const BasicInfo& basicInfo) {
     query.bindValue(":home",  basicInfo.get_home());
     query.bindValue(":phone", basicInfo.get_phone());
     if(!query.exec()) {
-        qDebug() << "ERROR(DB): create_basicInfo";
+        qDebug() << "ERROR(DB): Failed to Create BasicInfo";
+    } else {
+        qDebug() << "DONE(DM): Create BasicInfo(plate): " << basicInfo.get_plate();
     }
-    qDebug() << "DONE(DM): Created basicInfo data(" << basicInfo.get_plate() << ")";
 }
 
 BasicInfo DBManager::read_basicInfo(const QString& selected_plate) {
     QSqlQuery query(db);
 
     query.prepare("SELECT * FROM Basic WHERE plate = :selected_plate");
-    query.bindValue("selected_plate", selected_plate);
+    query.bindValue(":selected_plate", selected_plate);
     if(!query.exec() || !query.next()) {
-        qDebug() << "Error(DB): read_basicInfo";
+        qDebug() << "Error(DB): Failed to Read BasicInfo";
         return BasicInfo();
+    } else {
+        basicInfo.set_name(query.value(0).toString());
+        basicInfo.set_plate(query.value(1).toString());
+        basicInfo.set_home(query.value(2).toString());
+        basicInfo.set_phone(query.value(3).toString());
+        qDebug() << "DONE(DM): Read BasicInfo(plate): " << selected_plate;
+        return basicInfo;
     }
-
-    basicInfo.set_name(query.value(0).toString());
-    basicInfo.set_plate(query.value(1).toString());
-    basicInfo.set_home(query.value(2).toString());
-    basicInfo.set_phone(query.value(3).toString());
-    qDebug() << "DONE(DM): Read BasicInfo(plate):" << selected_plate;
-    return basicInfo;
 }
 
 
@@ -102,88 +103,27 @@ void DBManager::update_basicInfo(const BasicInfo& editted_basicInfo) {
     query.bindValue(":home",  editted_basicInfo.get_home());
     query.bindValue(":phone", editted_basicInfo.get_phone());
 
-    if (query.exec()) {
-        qDebug() << "DONE(DM): Updated basicInfo data for plate:" << editted_basicInfo.get_plate();
+    if(!query.exec()) {
+        qDebug() << "ERROR(DB): Failed to Update BasicInfo";
     } else {
-        qDebug() << "ERROR(DB): Failed to update basicInfo data:";
+        qDebug() << "DONE(DM): Update BasicInfo(plate): " << editted_basicInfo.get_plate();
     }
 }
 
-/*
-BasicInfo DBManager::read_basicInfo(int num, const QString& value) {
+void DBManager::delete_basicInfo(const QString& selected_plate) {
     QSqlQuery query(db);
 
-    switch(num) {
-    case 1:
-        query.prepare("SELECT * FROM Basic WHERE plate = :value");
-        query.bindValue(":value", value);
-        query.exec();
-
-        basicInfo.set_name(query.value(0).toString());
-        basicInfo.set_plate(query.value(1).toString());
-        basicInfo.set_home(query.value(2).toString());
-        basicInfo.set_phone(query.value(3).toString());
-        return basicInfo;
-        qDebug() << "DONE(DM): Read basicInfo data with plate";
-
-    case 2:
-        query.prepare("SELECT * FROM Basic WHERE home = :value");
-        query.bindValue(":value", value);
-
-        basicInfo.set_name(query.value(0).toString());
-        basicInfo.set_plate(query.value(1).toString());
-        basicInfo.set_home(query.value(2).toString());
-        basicInfo.set_phone(query.value(3).toString());
-        return basicInfo;
-        qDebug() << "DONE(DM): Read basicInfo data with home";
-
-    case 3:
-        query.prepare("SELECT * FROM Basic WHERE phone = :value");
-        query.bindValue(":value", value);
-
-        basicInfo.set_name(query.value(0).toString());
-        basicInfo.set_plate(query.value(1).toString());
-        basicInfo.set_home(query.value(2).toString());
-        basicInfo.set_phone(query.value(3).toString());
-        return basicInfo;
-        qDebug() << "DONE(DM): Read basicInfo data with phone";
-    }
-
-    qDebug() << "WARNING(DB): read_BasicInfo > Wrong Argument input (plate:1, home:2, phone:3)";
-    return BasicInfo();
-}
-*/
-
-
-/*
-void DBManager::update_basicInfo(const QString& plate, int num, const QString& value) {
-    QSqlQuery query(db);
-
-    switch(num) {
-    case 1: //update name
-        query.prepare("UPDATE Basic SET name= :value WHERE plate = :plate");
-        break;
-    case 2: //update home
-        query.prepare("UPDATE Basic SET home = :value WHERE plate = :plate");
-        break;
-    case 3: //update phone
-        query.prepare("UPDATE Basic SET phone = :value WHERE plate = :plate");
-        break;
-    }
-    query.bindValue(":value", value);
-    query.bindValue(":plate", plate);
-    query.exec();
-    qDebug() << "DONE(DM): Updated basicInfo data(" << plate << ")";
-}
-
-void DBManager::delete_basicInfo(const QString& plate) {
-    QSqlQuery query(db);
     query.prepare("DELETE FROM Basic WHERE plate = :plate");
-    query.bindValue(":plate", plate);
-    query.exec();
-    qDebug() << "DONE(DM): Deleted basicInfo data(" << plate << ")";
+    query.bindValue(":plate", selected_plate);
+
+    if(!query.exec()) {
+        qDebug() << "ERROR(DM): Failed to Delete BasicInfo";
+    } else {
+        qDebug() << "DONE(DM): Delete BasicInfo(plate): " << selected_plate;
+    }
 }
-*/
+
+
 
 
 /* CRUD: TIME_INFO */
@@ -193,40 +133,40 @@ void DBManager::create_timeInfo(const TimeInfo& timeInfo) {
     query.bindValue(":plate", timeInfo.get_plate());
     query.bindValue(":time",  timeInfo.get_time());
     query.bindValue(":type",  timeInfo.get_type());
-    query.exec();
-    qDebug() << "DONE(DM): Created timeInfo data(" << timeInfo.get_plate() << ")";
+    if(!query.exec()) {
+        qDebug() << "ERROR(DM): Failed to Create TimeInfo";
+    } else {
+        qDebug() << "DONE(DM): Create TimeInfo(plate): " << timeInfo.get_plate() << ")";
+    }
 }
 
-TimeInfo DBManager::read_timeInfo(int num, const QString& value) {
+TimeInfo DBManager::read_timeInfo(const QString& selected_plate) {
     QSqlQuery query(db);
 
-    switch(num) {
-    case 1:
-        query.prepare("SELECT * FROM Time WHERE plate = :value");
-        query.bindValue(":value", value);
-
+    query.prepare("SELECT * FROM Time WHERE plate = :selected_plate");
+    query.bindValue(":selected_plate", selected_plate);
+    if(!query.exec() || !query.next()) {
+        qDebug() << "Error(DB): Failed to Read TimeInfso";
+        return TimeInfo();
+    } else {
         timeInfo.set_plate(query.value(0).toString());
         timeInfo.set_time(query.value(1).toDateTime());
         timeInfo.set_type(query.value(2).toString());
+        qDebug() << "DONE(DM): Read BasicInfo(plate): " << selected_plate;
         return timeInfo;
-        qDebug() << "DONE(DM): Read timeInfo data with plate";
-
-    case 2:
-        query.prepare("SELECT * FROM Time WHERE type = :value");
-        query.bindValue(":value", value);
-
-        timeInfo.set_plate(query.value(0).toString());
-        timeInfo.set_time(query.value(1).toDateTime());
-        timeInfo.set_type(query.value(2).toString());
-        return timeInfo;
-        qDebug() << "DONE(DM): Read timeInfo data with type";
     }
-    return TimeInfo();
-    qDebug() << "WARNING(DB): read_timeInfo > Wrong Argument input (plate:1, type:2)";
 }
 
+qint64 DBManager::get_duration(const QDateTime& from, const QDateTime& to) {
+    qint64 seconds = from.secsTo(to);
 
-
+    return seconds;
+    /*
+     * minutes = seconds / 60;
+     * hours = seconds / 3600;
+     * days = seconds / (3600 * 24);
+     */
+}
 
 
 

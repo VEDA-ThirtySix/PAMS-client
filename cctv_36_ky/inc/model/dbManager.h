@@ -27,12 +27,12 @@ public:
     void create_basicInfo(const BasicInfo& new_basicInfo);
     BasicInfo read_basicInfo(const QString& selected_plate);
     void update_basicInfo(const BasicInfo& editted_basicInfo);
-    void delete_basicInfo(const QString& plate);
+    void delete_basicInfo(const QString& selected_plate);
 
     /* CRUD: TimeInfo */
     void create_timeInfo(const TimeInfo& timeInfo);
-    TimeInfo read_timeInfo(int num, const QString& value);
-    //TimeInfo read_timeInfo_duaration(int num, const QDateTime& timeFrom, const QDateTime& timeTo);
+    TimeInfo read_timeInfo(const QString& selected_plate);
+    qint64 get_duration(const QDateTime& from, const QDateTime& to);
     //void delete_timeInfo(const QString& plate);
 
     /* QList<TimeInfo> timeInfoList */

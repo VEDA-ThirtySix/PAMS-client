@@ -6,6 +6,7 @@ NetworkManager::NetworkManager(QObject* parent)
     : QObject(parent)
     , accessManager(nullptr)
     , jsonManager(nullptr)
+    , logManager(nullptr)
 { }
 
 NetworkManager::~NetworkManager()
@@ -48,7 +49,8 @@ bool NetworkManager::check_response(QByteArray& jsonArray) {
     }
 }
 
-TimeInfo NetworkManager::handle_response(QByteArray& jsonArray) {
+
+void NetworkManager::handle_response(QByteArray& jsonArray) {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonArray);
     QJsonObject jsonObj = jsonDoc.object();
 
@@ -56,10 +58,14 @@ TimeInfo NetworkManager::handle_response(QByteArray& jsonArray) {
         TimeInfo timeInfo;
         jsonManager = new JSONManager(this);
         timeInfo = jsonManager->parse_response(jsonArray);
+        qDebug() << "DONE(NM): Parse Response to TimeInfo";
 
-        return timeInfo;
+        logManager = new LogManager(this);
+        logManager->save_log(timeInfo);
+        qDebug() << "DONE(NM): Save TimeInfo to DB";
     } else {
         qDebug() << "ERROR(NM): cannot parse response due to status";
-        return TimeInfo();  //return empty TimeInfo
     }
 }
+
+

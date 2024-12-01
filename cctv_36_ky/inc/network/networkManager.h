@@ -4,6 +4,7 @@
 //#include <QSslSocket>
 #include "metadata.h"
 #include "jsonManager.h"
+#include "logManager.h"
 #include <QObject>
 #include <QUrl>
 #include <QByteArray>
@@ -20,11 +21,12 @@ public:
     void post_videoClip(const QUrl& url, const TimeInfo& timeInfo);
 
     bool check_response(QByteArray& jsonArray);
-    TimeInfo handle_response(QByteArray& jsonArray);
+    void handle_response(QByteArray& jsonArray);
 
 private:
     QNetworkAccessManager *accessManager;
     JSONManager *jsonManager;
+    LogManager *logManager;
 
 };
 #endif // NETWORKMANAGER_H
