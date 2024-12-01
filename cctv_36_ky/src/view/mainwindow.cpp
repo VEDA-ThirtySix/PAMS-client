@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->tabWidget->addTab(streaming, "Streaming");
     ui->tabWidget->addTab(search, "Search");
-    connect(ui->pushButton_enroll, &QPushButton::clicked, this, &MainWindow::clicked_buttonEnroll);
 }
 
 MainWindow::~MainWindow()
@@ -37,9 +36,4 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::clicked_buttonEnroll() {
-    EnrollDialog *enrollDialog = new EnrollDialog(this);
-    enrollDialog->setAttribute(Qt::WA_DeleteOnClose);
-    enrollDialog->exec();   //Enroll Dialog(Modal)
-    qDebug() << "DONE(MW): Open Enroll Dialog";
-}
+

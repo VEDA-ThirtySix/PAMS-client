@@ -1,6 +1,7 @@
 #include "search.h"
 #include "ui_search.h"
 #include "dialog_edit.h"
+#include "dialog_enroll.h"
 #include <QMessageBox>
 #include <QPixmap>
 #include <QtWidgets/qmenu.h>
@@ -23,6 +24,7 @@ Search::Search(QWidget *parent)
     lineEdit_test();
     updatePlaceholder();
 
+    connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
     //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
 
@@ -264,9 +266,21 @@ QString Search::get_seletedData() {
     return selected_plate;
 }
 
+void Search::refreshTable() {
+    setupTable();
+}
 
 void Search::lineEdit_test() {
     ui->lineEdit_test->setText("hi");
+}
+
+void Search::clicked_buttonEnroll() {
+    EnrollDialog *enrollDialog = new EnrollDialog(this);
+    connect(enrollDialog, &EnrollDialog::dataSubmitted, this, &Search::refreshTable);
+
+    enrollDialog->setAttribute(Qt::WA_DeleteOnClose);
+    enrollDialog->exec();   //Enroll Dialog(Modal)
+    qDebug() << "DONE(MW): Open Enroll Dialog";
 }
 
 void Search::clicked_buttonEdit() {
@@ -275,4 +289,3 @@ void Search::clicked_buttonEdit() {
     editDialog->exec();
     qDebug() << "DONE(MW): Open Edit Dialog";
 }
-

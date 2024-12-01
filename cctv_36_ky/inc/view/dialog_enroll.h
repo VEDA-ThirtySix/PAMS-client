@@ -26,6 +26,9 @@ private:
 private slots:
     void clicked_buttonPrev();
     void clicked_buttonEnroll();
+
+signals:
+    void dataSubmitted();
 };
 
 #endif // DIALOG_ENROLL_H

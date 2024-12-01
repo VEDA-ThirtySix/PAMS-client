@@ -17,6 +17,7 @@ public:
     ~Search();
 
     QString get_seletedData();   //KIYUN_1127
+    void refreshTable();
 
 
 public slots:
@@ -41,6 +42,7 @@ private:
     void updatePlaceholder();
     void clearImage();
 
+    void clicked_buttonEnroll();
     void clicked_buttonEdit();
     void clicked_buttonDelete();
 

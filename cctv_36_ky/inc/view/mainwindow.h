@@ -29,7 +29,6 @@ public:
     ~MainWindow();
 
 private slots:
-    void clicked_buttonEnroll();
 
 private:
     Ui::MainWindow *ui;

@@ -28,6 +28,7 @@ void EnrollDialog::clicked_buttonEnroll() {
     BasicInfo newBasicInfo(newName, newPlate, newHome, newPhone);
     if(userManager->enrollUser(newBasicInfo)) {
         qDebug() << "DONE: Enroll new Member: " << newName;
+        emit dataSubmitted();
         this->accept();
     } else {
         qDebug() << "ERROR: Enroll Failed! ";

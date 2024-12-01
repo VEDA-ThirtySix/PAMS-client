@@ -196,19 +196,6 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
      <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_enroll">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>490</y>
-      <width>88</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ENROLL</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
