@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QSqlTableModel>
+#include <QDir>
 
 class Search : public QWidget
 {
@@ -35,6 +36,9 @@ private:
     QSqlTableModel* m_modelBasic;
     QSqlTableModel* m_modelTime;
     QSqlDatabase m_db;
+    QDir projectDir;
+    QString imagesPath;
+    bool initializePath();
 
     void setupConnections();
     void setupTable();

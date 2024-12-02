@@ -13,6 +13,7 @@
 #include <QtSql/QSqlDatabase>
 #include <QMap>
 #include <QList>
+#include <QDir>
 
 class DBManager : public QObject {
 public:
@@ -37,6 +38,7 @@ public:
 
     /* QList<TimeInfo> timeInfoList */
     //void addNewTimeInfo(const TimeInfo& newTimeInfo);
+
 
     /*
      * 등록_입차시간

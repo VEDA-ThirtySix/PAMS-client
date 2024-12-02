@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QCoreApplication>
 
 Search::Search(QWidget *parent)
     : QWidget(parent)
@@ -23,6 +24,7 @@ Search::Search(QWidget *parent)
     setupImage();
     // lineEdit_test();
     updatePlaceholder();
+    initializePath();
 
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
@@ -80,6 +82,7 @@ void Search::setupTable() {
     ui->resultsTable->resizeColumnsToContents();
     //m_resultsTable->hideColumn(0); // ID 컬럼 숨기기
     ui->resultsTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
+
 
     // 열 너비 설정
     /*
@@ -151,14 +154,35 @@ void Search::handleSearchInput(const QString &text)
     }
 }
 
+bool Search::initializePath() {
+    projectDir = QDir::current();
+
+    // images 디렉토리를 찾을 때까지 상위 디렉토리로 이동
+    while (!projectDir.exists("images") && projectDir.cdUp()) {}
+
+    if (projectDir.exists("images")) {
+        imagesPath = projectDir.absoluteFilePath("images");
+        qDebug() << "Found images directory at:" << imagesPath;
+        return true;
+    } else {
+        qDebug() << "Warning: images 디렉토리를 찾을 수 없습니다.";
+        return false;
+    }
+}
+
 void Search::handleDoubleClick(const QModelIndex &index) {
     // qDebug() << "클릭된 컬럼 번호:" << index.column();
 
-    //QString basePath = "/home/kiyun/vFinal/rasp_project/cctv_36_ky/images";
-    QString basePath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/images";
-    QString imagePath = QString("%1/image_%2.jpg")
-                            .arg(basePath)
-                            .arg(index.row() + 1);
+    // QString basePath = "/home/kiyun/vFinal/rasp_project/cctv_36_ky/images";
+    // QString basePath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/images"; // for taewon MacOS
+
+    // QString imagePath = QString("%1/image_%2.jpg")
+    //                         .arg(basePath)
+    //                         .arg(index.row() + 1);
+
+    QString imagePath = QDir(imagesPath).filePath(
+        QString("image_%1.jpg").arg(index.row() + 1)
+        );
 
     /* 이미지와 데이터를 Qt에서 연결 -> 이미지를 db자체에서 연결(비트맵?이진화?) */
     QPixmap image(imagePath);
@@ -305,6 +329,11 @@ QString Search::get_seletedData() {
 
 void Search::refreshTable() {
     setupTable();
+    // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
+    connect(ui->resultsTable->selectionModel(),
+            &QItemSelectionModel::selectionChanged,
+            this,
+            &Search::updateCustomerInfo);
 }
 
 // void Search::lineEdit_test() {
