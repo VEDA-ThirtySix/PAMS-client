@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QByteArray>
 
+/* JSON: HTTP BODY */
+
 class JSONManager : public QObject {
 Q_OBJECT
 
@@ -12,10 +14,11 @@ public:
     JSONManager(QObject *parent);
     ~JSONManager();
 
+    QByteArray send_request_init(const ClientInfo& clientInfo);
     QByteArray send_request_info(const BasicInfo& basicInfo);
     QByteArray send_request_clip(const TimeInfo& timeInfo);
 
-    QString check_response(const QByteArray& jsonArray);
+    int check_response(const QByteArray& jsonArray);
     TimeInfo parse_response(const QByteArray& jsonArray);
 };
 

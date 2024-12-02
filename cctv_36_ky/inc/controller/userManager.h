@@ -20,7 +20,6 @@ public:
     bool editUser(BasicInfo& basicInfo);
     //bool deleteUser(int type, const QString& value);
 
-
 private:
     DBManager* dbManager;
 

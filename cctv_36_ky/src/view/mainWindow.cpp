@@ -1,8 +1,7 @@
-#include "mainwindow.h"
+#include "mainWindow.h"
 #include "ui_mainwindow.h"
-#include "dialog_enroll.h"
-#include "streaming.h"
-#include "search.h"
+#include "streamingWidget.h"
+#include "searchWidget.h"
 
 #include <QDateTime>
 #include <QMessageBox>
@@ -17,15 +16,13 @@
 #include <QVBoxLayout>
 #include <QDebug>
 
-
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     Streaming *streaming = new Streaming(this);
-    Search *search = new Search(this);
+    SearchWidget *search = new SearchWidget(this);
 
     ui->tabWidget->addTab(streaming, "Streaming");
     ui->tabWidget->addTab(search, "Search");

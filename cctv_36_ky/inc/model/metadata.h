@@ -10,7 +10,29 @@
  *@ Note :
  *@ Author: KIYUN
  **/
-\
+
+class ClientInfo {
+public:
+    ClientInfo();
+    explicit ClientInfo(const QString& name,
+                        const QString& ipAddr,
+                        const QDateTime& connectTime);
+
+    QString get_name() const;
+    QString get_ipAddr() const;
+    QDateTime get_connectTime() const;
+
+    void set_name(const QString& name);
+    void set_ipAddr(const QString& ipAddr);
+    void set_connectTime(const QDateTime& connectTime);
+
+private:
+    QString m_name;
+    QString m_ipAddr;
+    QDateTime m_connectTime;
+};
+
+
 class BasicInfo {
 public:
     BasicInfo();
@@ -18,7 +40,7 @@ public:
                        const QString& plate,
                        const QString& home,
                        const QString& phone);
-    QString get_name() const;
+    QString get_name()  const;
     QString get_plate() const;
     QString get_home()  const;
     QString get_phone() const;
@@ -34,6 +56,7 @@ private:
     QString m_home;
     QString m_phone;
 };
+
 
 class TimeInfo {
 public:

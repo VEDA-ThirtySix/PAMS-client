@@ -1,8 +1,8 @@
-#ifndef DIALOG_EDIT_H
-#define DIALOG_EDIT_H
+#ifndef EDITDIALOG_H
+#define EDITDIALOG_H
 
 #include "userManager.h"
-#include "search.h"
+#include "searchWidget.h"
 #include <QDialog>
 
 QT_BEGIN_NAMESPACE
@@ -23,11 +23,11 @@ public:
 private:
     Ui::EditDialog *ui;
     UserManager *userManager;
-    Search *search;
+    SearchWidget *searchWidget;
 
 private slots:
     void clicked_buttonPrev();
     void clicked_buttonEdit();
 };
 
-#endif // DIALOG_EDIT_H
+#endif // EDITDIALOG_H

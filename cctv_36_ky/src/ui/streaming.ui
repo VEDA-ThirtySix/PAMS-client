@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
-    <height>475</height>
+    <width>939</width>
+    <height>451</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -205,6 +205,84 @@ border:1px solid rgb(243,115,33);</string>
    <zorder>licensetitleLabel</zorder>
    <zorder>bestshotFrame</zorder>
    <zorder>bestshotFrame_2</zorder>
+  </widget>
+  <widget class="QPushButton" name="pushButton_network">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>360</y>
+     <width>88</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>NETWORK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_connect">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>390</y>
+     <width>88</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CONNECT</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_port">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>310</y>
+     <width>121</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>0000~00000</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_url">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>280</y>
+     <width>181</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>___.___.___.___</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>250</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:700;&quot;&gt;IPv4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>310</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:700;&quot;&gt;PORT&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
   </widget>
  </widget>
  <resources/>
