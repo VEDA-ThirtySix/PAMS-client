@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Search</class>
+ <widget class="QWidget" name="Search">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1052</width>
+    <height>473</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="filterButton">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>10</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">image: url(:/images/list.png);
+background-color: transparent;
+border:1px solid transparent;
+
+
+border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="searchInput">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>10</y>
+     <width>261</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
+
+border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="searchButton">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>10</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
+
+
+border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 0; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/search5.png</normaloff>:/images/search5.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>20</width>
+     <height>20</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QTableView" name="resultsTable">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>60</y>
+     <width>661</width>
+     <height>351</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTableView {
+    background-color: rgb(255, 255, 255);
+}
+
+QHeaderView::section {
+    background-color: rgba(202,205,205,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+}</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::InputMethodHint::ImhNone</set>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+   </property>
+   <property name="textElideMode">
+    <enum>Qt::TextElideMode::ElideLeft</enum>
+   </property>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_test">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>10</y>
+     <width>113</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>220</y>
+     <width>321</width>
+     <height>191</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="imageLabel">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>0</y>
+     <width>320</width>
+     <height>200</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ImageLabel</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_edit">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>340</y>
+     <width>88</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>EDIT</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_delete">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>370</y>
+     <width>88</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DELETE</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_enroll">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>310</y>
+     <width>88</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ENROLL</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
