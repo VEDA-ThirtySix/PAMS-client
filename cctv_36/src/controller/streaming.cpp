@@ -1,75 +1,63 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "search.h"
+#include "streaming.h"
+
+#include <QTimer>
 #include <QDateTime>
 #include <QMessageBox>
-#include <QImage>
-#include <QTabBar>
 
-#include <QMenu>
-#include <QAction>
-#include <QFileDialog>
-#include <QIcon>
-#include <QMenuBar>
-#include <QVBoxLayout>
-
-
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+Streaming::Streaming(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::Streaming)
 {
     ui->setupUi(this);
 
-    // 타이머 설정
     timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &MainWindow::updateDateTime);
+    connect(timer, &QTimer::timeout, this, &Streaming::updateDateTime);
     timer->start(1000);
 
     streamSocket = new QTcpSocket(this);
 
-    connect(streamSocket, &QTcpSocket::connected, this, &MainWindow::onConnected);
-    connect(streamSocket, &QTcpSocket::disconnected, this, &MainWindow::onDisconnected);
-    connect(streamSocket, &QTcpSocket::readyRead, this, &MainWindow::readStream);
-    connect(streamSocket, &QAbstractSocket::errorOccurred, this, &MainWindow::handleError);
+    connect(streamSocket, &QTcpSocket::connected, this, &Streaming::onConnected);
+    connect(streamSocket, &QTcpSocket::disconnected, this, &Streaming::onDisconnected);
+    connect(streamSocket, &QTcpSocket::readyRead, this, &Streaming::readStream);
+    connect(streamSocket, &QAbstractSocket::errorOccurred, this, &Streaming::handleError);
+
+
 
     ui->streamingLabel->setMinimumSize(FRAME_WIDTH, FRAME_HEIGHT);
     ui->streamingLabel->setAlignment(Qt::AlignCenter);
 
     setupStreamingConnection();
-    setupSearch();
     updateDateTime();// 초기 날짜/시간 표시
-
 }
 
-MainWindow::~MainWindow()
+Streaming::~Streaming()
 {
     if (streamSocket->state() == QAbstractSocket::ConnectedState) {
-            streamSocket->disconnectFromHost();
-        }
-
+        streamSocket->disconnectFromHost();
+    }
     delete ui;
 }
-void MainWindow::setupStreamingConnection()
+
+void Streaming::setupStreamingConnection()
 {
-    const QString serverIP = "192.168.0.39";
+    const QString serverIP = "192.168.0.40";
     const quint16 serverPort = 5100;
 
     streamSocket->connectToHost(serverIP, serverPort);
 }
 
-void MainWindow::onConnected()
+void Streaming::onConnected()
 {
     qDebug() << "Connected to streaming server";
 }
 
-void MainWindow::onDisconnected()
+void Streaming::onDisconnected()
 {
     qDebug() << "Disconnected from streaming server";
-    QTimer::singleShot(1000, this, &MainWindow::reconnectToStream);
+    QTimer::singleShot(1000, this, &Streaming::reconnectToStream);
 }
 
-void MainWindow::readStream()
+void Streaming::readStream()
 {
     frameBuffer.append(streamSocket->readAll());
 
@@ -81,7 +69,8 @@ void MainWindow::readStream()
         processYUYVFrame(frameData);
     }
 }
-void MainWindow::processYUYVFrame(const QByteArray &frameData)
+
+void Streaming::processYUYVFrame(const QByteArray &frameData)
 {
     // YUYV 데이터를 RGB로 변환
     QImage image(FRAME_WIDTH, FRAME_HEIGHT, QImage::Format_RGB888);
@@ -112,7 +101,7 @@ void MainWindow::processYUYVFrame(const QByteArray &frameData)
     ui->streamingLabel->setPixmap(QPixmap::fromImage(image));
 }
 
-void MainWindow::handleError(QAbstractSocket::SocketError socketError)
+void Streaming::handleError(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
@@ -135,30 +124,18 @@ void MainWindow::handleError(QAbstractSocket::SocketError socketError)
     default:
         break;
     }
-    
-    QTimer::singleShot(500, this, &MainWindow::reconnectToStream);
+
+    QTimer::singleShot(500, this, &Streaming::reconnectToStream);
 }
 
-void MainWindow::reconnectToStream()
+void Streaming::reconnectToStream()
 {
     if (streamSocket->state() == QAbstractSocket::UnconnectedState) {
         setupStreamingConnection();
     }
 }
 
-void MainWindow::setupSearch()
-{
-    // Search 클래스 초기화 - Search 탭의 위젯들 연결
-    searchManager = new Search(ui->searchInput,      // 검색어
-                               ui->searchButton,     // 검색 버튼
-                               ui->resultsTable,     // 데이터 테이블
-                               ui->imageLabel,       // 차량번호판 이미지
-                               ui->filterButton,     // 검색 필터링 버튼
-                               ui->textLabel,
-                               this);
-}
-
-void MainWindow::updateDateTime()
+void Streaming::updateDateTime()
 {
     QDateTime current = QDateTime::currentDateTime();
 
@@ -194,26 +171,4 @@ void MainWindow::updateDateTime()
 
     ui->dateTimeLabel->setText(dateTimeStr);
 }
-
-// /* 로컬 이미지를 데이터베이스에서 받아오기*/
-
-// void MainWindow::initDatabase() {                               // 데이터베이스 초기화
-//     db = QSqlDatabase::addDatabase("QSQLITE");              // SQLite 데이터베이스 사용
-//     db.setDatabaseName("shyun_test.db");                       // 데이터베이스 파일 이름 설정 (build 폴더에 저장되어 있음)
-
-//     if (!db.open()) {
-//         qDebug() << "Error: Unable to open database." << db.lastError().text();
-//         return;                                             // 데이터베이스가 열리지 않으면 종료
-//     }
-
-//     else {
-//         QSqlQuery image;                                       // 메세지 테이블 처리할 쿼리
-//         if (!image.exec("CREATE TABLE IF NOT EXISTS logins ("
-//                         "id TEXT NOT NULL,"
-//                         "image BLOB NOT NULL")) {
-//             qDebug() << "Error creating logins table:" << image.lastError().text();
-//         }
-//         qDebug() << "Database initialized successfully.";
-//     }
-// }
 

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1052</width>
+    <height>564</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>1031</width>
+      <height>461</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">/* 탭 창 영역 */
+ QTabWidget::pane {
+        background-color:rgb(255, 255, 255);
+        border:none;
+
+    }
+
+/*탭 버튼 영역*/
+QTabBar::tab {
+	font: 9pt &quot;Sans Serif&quot;;
+ 	background-color:rgba(243,115,33,0.5);
+    color: transparent;               /* 기본 텍스트를 숨김 */
+    padding: 0px;                    /* 기본 패딩 */
+	margin-right:5px;
+    width: 120px;                  /* 기본 너비 */
+    height: 30px;                 /* 기본 높이 */
+	background-repeat: no-repeat;
+    background-position: center;
+}
+
+/*search 탭*/
+QTabBar::tab:first {
+	background-color:rgba(243,115,33,0.1);
+    background-image: url(:/images/search5.png);
+	color:transparent;
+}
+QTabBar::tab:first:selected {
+	background: none; /* 전체 배경 속성 초기화!!!!!!! 중요!! */
+	background-color:  rgba(243,115,33,0.5);
+	background-image:transparent;
+	color:rgb(0, 0, 0);
+	font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;                    /* 선택된 탭 패딩 */
+}
+
+
+/*streaming 탭*/
+QTabBar::tab:last {
+    background-color:rgba(243,115,33,0.1);
+    background-image: url(:/images/video2.png);
+	color:transparent;
+}
+QTabBar::tab:last:selected {
+	background: none; /* 전체 배경 속성 초기화 */
+	background-color:  rgba(243,115,33,0.5);
+	background-image:none;
+	color:rgb(0, 0, 0);
+	font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;                    /* 선택된 탭 패딩 */
+}
+QTabBar::tab:hover {
+	background: none; /* 전체 배경 속성 초기화 */
+    background-color:rgb(223, 223, 223);
+	background-image:none;
+	color:rgb(255, 255, 255);
+	font: 500 10pt &quot;Quicksand Medium&quot;;
+
+}</string>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::TabPosition::North</enum>
+    </property>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="guideLabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1051</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Quicksand Medium</family>
+      <pointsize>13</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+font: 500 bold 13pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border-bottom:2px solid rgb(243,115,33);</string>
+    </property>
+    <property name="text">
+     <string>LicensePlate Detection CCTV App</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="teamLogo">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>0</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>UnDotum</family>
+      <pointsize>9</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+color: rgb(255, 255, 255);
+
+font: bold 9pt &quot;UnDotum&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Thirty-Six Stratagems </string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="hanwhaLogo">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>UnDotum</family>
+      <pointsize>9</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+color: rgb(255, 255, 255);
+
+font: bold 9pt &quot;UnDotum&quot;;</string>
+    </property>
+    <property name="text">
+     <string> HanwhaVision</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

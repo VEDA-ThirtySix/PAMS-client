@@ -1,49 +1,24 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef STREAMING_H
+#define STREAMING_H
 
-#include <QMainWindow>
-#include <QLabel>
-#include <QTimer>
+#include <QWidget>
+#include "ui_streaming.h"
 
+#include <QAbstractSocket>
 #include <QTcpSocket>
-#include <QBuffer>
-#include "search.h"
-
-#include <QDebug>
-#include <QThread>
-#include <QVector>
-#include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QSqlError>
-#include <QMutex>
-#include <QRegularExpression>
-#include <QDateTime>
 
-QT_BEGIN_NAMESPACE
-namespace Ui {class MainWindow;}
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
+class Streaming : public QWidget
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-
-private slots:
-    void updateDateTime();
-    void readStream();
-    void handleError(QAbstractSocket::SocketError socketError);
-    void reconnectToStream();
-    void onConnected();
-    void onDisconnected();
+    explicit Streaming(QWidget *parent = nullptr);
+    ~Streaming();
 
 private:
-
-    Ui::MainWindow *ui;
+    Ui::Streaming *ui;
     QTimer *timer;
-    Search *searchManager;
 
     QTcpSocket *streamSocket;
     QByteArray frameBuffer;
@@ -61,11 +36,17 @@ private:
     void setupStreamingConnection();
     void processYUYVFrame(const QByteArray &frameData);
 
-    void setupSearch();
-
-
-    void initDatabase();  // 데이터베이스 초기화 메서드
     void saveMessageToDatabase(const QString &message);  // 메시지를 데이터베이스에 저장하는 메서드
     bool saveToDatabase(const QString &tableName, const QMap<QString, QVariant> &data);    // 데이터베이스 저장 함수
+
+
+private slots:
+    void updateDateTime();
+    void readStream();
+    void handleError(QAbstractSocket::SocketError socketError);
+    void reconnectToStream();
+    void onConnected();
+    void onDisconnected();
 };
-#endif // MAINWINDOW_H
+
+#endif // STREAMING_H

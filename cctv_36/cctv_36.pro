@@ -1,24 +1,30 @@
-QT       += core gui network sql
+QT       += core gui network sql#추가
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+INCLUDEPATH += inc              \
+               inc/model        \
+               inc/view         \
+               inc/controller   \
+               inc/network
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \
-    search.cpp
+    $$files($$PWD/src/model/*.cpp)       \
+    $$files($$PWD/src/view/*.cpp)        \
+    $$files($$PWD/src/controller/*.cpp)  \
+    $$files($$PWD/src/network/*.cpp)     \
 
 HEADERS += \
-    mainwindow.h \
-    search.h
+    $$files($$PWD/inc/model/*.h)      \
+    $$files($$PWD/inc/view/*.h)       \
+    $$files($$PWD/inc/controller/*.h) \
+    $$files($$PWD/inc/network/*.h)    \
 
 FORMS += \
-    mainwindow.ui
+    $$files($$PWD/src/ui/*.ui) \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
