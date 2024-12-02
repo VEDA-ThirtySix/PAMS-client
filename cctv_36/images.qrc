@@ -3,5 +3,9 @@
         <file>zoom.png</file>
         <file>search2.png</file>
         <file>search.png</file>
+        <file>list.png</file>
+        <file>camera-recorder.png</file>
+        <file>search5.png</file>
+        <file>video2.png</file>
     </qresource>
 </RCC>

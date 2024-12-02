@@ -21,7 +21,7 @@ Search::Search(QWidget *parent)
     setupConnections();
     setupTable();
     setupImage();
-    lineEdit_test();
+    // lineEdit_test();
     updatePlaceholder();
 
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
@@ -270,9 +270,9 @@ void Search::refreshTable() {
     setupTable();
 }
 
-void Search::lineEdit_test() {
-    ui->lineEdit_test->setText("hi");
-}
+// void Search::lineEdit_test() {
+//     ui->lineEdit_test->setText("hi");
+// }
 
 void Search::clicked_buttonEnroll() {
     EnrollDialog *enrollDialog = new EnrollDialog(this);

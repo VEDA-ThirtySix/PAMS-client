@@ -24,7 +24,7 @@ public slots:
     void performSearch();
     void handleSearchInput(const QString &text);
     void handleDoubleClick(const QModelIndex &index);
-    void lineEdit_test();
+    //void lineEdit_test();
 
 private:
     Ui::Search *ui;

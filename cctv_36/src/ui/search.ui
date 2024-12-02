@@ -64,7 +64,7 @@ border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
   <widget class="QPushButton" name="searchButton">
    <property name="geometry">
     <rect>
-     <x>450</x>
+     <x>490</x>
      <y>10</y>
      <width>41</width>
      <height>41</height>
@@ -84,7 +84,7 @@ border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
     <string/>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../../images.qrc">
      <normaloff>:/images/search5.png</normaloff>:/images/search5.png</iconset>
    </property>
    <property name="iconSize">
@@ -129,37 +129,17 @@ QHeaderView::section {
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_test">
-   <property name="geometry">
-    <rect>
-     <x>760</x>
-     <y>10</y>
-     <width>113</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="textEdit">
-   <property name="geometry">
-    <rect>
-     <x>680</x>
-     <y>220</y>
-     <width>321</width>
-     <height>191</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="imageLabel">
    <property name="geometry">
     <rect>
      <x>680</x>
-     <y>0</y>
+     <y>20</y>
      <width>320</width>
      <height>200</height>
     </rect>
    </property>
    <property name="text">
-    <string>ImageLabel</string>
+    <string>차량 번호판</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -168,8 +148,8 @@ QHeaderView::section {
   <widget class="QPushButton" name="pushButton_edit">
    <property name="geometry">
     <rect>
-     <x>690</x>
-     <y>340</y>
+     <x>920</x>
+     <y>350</y>
      <width>88</width>
      <height>25</height>
     </rect>
@@ -181,8 +161,8 @@ QHeaderView::section {
   <widget class="QPushButton" name="pushButton_delete">
    <property name="geometry">
     <rect>
-     <x>690</x>
-     <y>370</y>
+     <x>920</x>
+     <y>380</y>
      <width>88</width>
      <height>25</height>
     </rect>
@@ -194,8 +174,8 @@ QHeaderView::section {
   <widget class="QPushButton" name="pushButton_enroll">
    <property name="geometry">
     <rect>
-     <x>690</x>
-     <y>310</y>
+     <x>920</x>
+     <y>320</y>
      <width>88</width>
      <height>25</height>
     </rect>
@@ -204,7 +184,59 @@ QHeaderView::section {
     <string>ENROLL</string>
    </property>
   </widget>
+  <widget class="QLabel" name="textLabel">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>240</y>
+     <width>331</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>고객 정보</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="listButton">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>10</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
+
+
+border-top-right-radius: 0px; /* 오른쪽 위 모서리 */
+border-bottom-right-radius: 0px; /* 오른쪽 아래 모서리 */
+border-top-left-radius: 0; /* 왼쪽 위 모서리 */
+border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../../images.qrc">
+     <normaloff>:/images/list.png</normaloff>:/images/list.png</iconset>
+   </property>
+  </widget>
+  <zorder>textLabel</zorder>
+  <zorder>filterButton</zorder>
+  <zorder>searchInput</zorder>
+  <zorder>searchButton</zorder>
+  <zorder>resultsTable</zorder>
+  <zorder>imageLabel</zorder>
+  <zorder>pushButton_edit</zorder>
+  <zorder>pushButton_delete</zorder>
+  <zorder>pushButton_enroll</zorder>
+  <zorder>listButton</zorder>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../images.qrc"/>
+ </resources>
  <connections/>
 </ui>

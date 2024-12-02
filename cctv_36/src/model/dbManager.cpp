@@ -19,7 +19,8 @@ DBManager::~DBManager()
 }
 
 bool DBManager::open_database() {
-    db.setDatabaseName("metadata.db");
+    //db.setDatabaseName("metadata.db");
+    db.setDatabaseName("/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/metadata.db"); // for MacOS
     if(!db.open()) {
         qDebug() << "Error(DB): Failed to Open Database: " << db;
         return false;
