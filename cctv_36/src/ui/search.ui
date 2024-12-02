@@ -13,35 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="filterButton">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>10</y>
-     <width>51</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">image: url(:/images/list.png);
-background-color: transparent;
-border:1px solid transparent;
-
-
-border-top-right-radius: 5px; /* 오른쪽 위 모서리 */
-border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리 */
-border-top-left-radius: 5px; /* 왼쪽 위 모서리 */
-border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리 */</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="searchInput">
    <property name="geometry">
     <rect>
@@ -197,7 +168,7 @@ QHeaderView::section {
     <string>고객 정보</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="listButton">
+  <widget class="QPushButton" name="filterButton">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -225,7 +196,6 @@ border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
    </property>
   </widget>
   <zorder>textLabel</zorder>
-  <zorder>filterButton</zorder>
   <zorder>searchInput</zorder>
   <zorder>searchButton</zorder>
   <zorder>resultsTable</zorder>
@@ -233,7 +203,7 @@ border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 */</string>
   <zorder>pushButton_edit</zorder>
   <zorder>pushButton_delete</zorder>
   <zorder>pushButton_enroll</zorder>
-  <zorder>listButton</zorder>
+  <zorder>filterButton</zorder>
  </widget>
  <resources>
   <include location="../../images.qrc"/>

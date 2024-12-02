@@ -42,13 +42,14 @@ private:
     void updatePlaceholder();
     void clearImage();
 
+
     void clicked_buttonEnroll();
     void clicked_buttonEdit();
     void clicked_buttonDelete();
 
 private slots:
     void showSearchMenu();
-
+    void updateCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected);
 };
 
 #endif // SEARCH_H

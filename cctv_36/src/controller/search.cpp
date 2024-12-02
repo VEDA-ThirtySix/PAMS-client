@@ -27,6 +27,7 @@ Search::Search(QWidget *parent)
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
     //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
+    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::updateCustomerInfo);
 
 }
 
@@ -153,8 +154,8 @@ void Search::handleSearchInput(const QString &text)
 void Search::handleDoubleClick(const QModelIndex &index) {
     // qDebug() << "클릭된 컬럼 번호:" << index.column();
 
-    QString basePath = "/home/kiyun/vFinal/rasp_project/cctv_36_ky/images";
-    //QString basePath = "/Users/taewonkim/GitHub/PAMS-client/cctv_36/images";
+    //QString basePath = "/home/kiyun/vFinal/rasp_project/cctv_36_ky/images";
+    QString basePath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/images";
     QString imagePath = QString("%1/image_%2.jpg")
                             .arg(basePath)
                             .arg(index.row() + 1);
@@ -168,12 +169,16 @@ void Search::handleDoubleClick(const QModelIndex &index) {
         ui->imageLabel->setPixmap(image);
         qDebug() << "이미지 로드 성공:" << imagePath;
     }
+
+    ui->resultsTable->selectRow(index.row());
+
 }
 
 void Search::clearImage()
 {
     ui->imageLabel->setPixmap(QPixmap());
     ui->imageLabel->setText("이미지 없음");
+    ui->textLabel->setText("고객정보 없음");
 }
 
 void Search::performSearch()
@@ -205,6 +210,38 @@ void Search::performSearch()
 void Search::updatePlaceholder()
 {
     ui->searchInput->setPlaceholderText(QString("%1을(를) 입력하세요").arg(m_currentSearchType));
+}
+
+void Search::updateCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    Q_UNUSED(deselected);
+
+    if (selected.indexes().isEmpty()) {
+        ui->textLabel->setText("고객 정보");
+        return;
+    }
+
+    int row = selected.indexes().first().row();
+
+    // Get data from each column
+    QString name = m_modelBasic->data(m_modelBasic->index(row, 0)).toString();
+    QString plate = m_modelBasic->data(m_modelBasic->index(row, 1)).toString();
+    QString home = m_modelBasic->data(m_modelBasic->index(row, 2)).toString();
+    QString phone = m_modelBasic->data(m_modelBasic->index(row, 3)).toString();
+
+    // Format the customer information
+    QString customerInfo = QString(
+                               "[ 고객 정보 ]\n\n"
+                               "이름: %1\n"
+                               "차량번호: %2\n"
+                               "주소: %3\n"
+                               "전화번호: %4"
+                               ).arg(name)
+                               .arg(plate)
+                               .arg(home)
+                               .arg(phone);
+
+    ui->textLabel->setText(customerInfo);
 }
 
 void Search::showSearchMenu()
