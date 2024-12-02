@@ -27,11 +27,11 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"> /* 탭 창 영역 */
+     <string notr="true">/* 탭 창 영역 */
  QTabWidget::pane {
         background-color:rgb(255, 255, 255);
-        border: 1px solid rgb(243,115,33); 
-        margin-top: -1px;  
+        border:none;
+
     }
 
 /*탭 버튼 영역*/
@@ -39,59 +39,52 @@ QTabBar::tab {
 	font: 9pt &quot;Sans Serif&quot;;
  	background-color:rgba(243,115,33,0.5);
     color: transparent;               /* 기본 텍스트를 숨김 */
-    padding: 7px;                    /* 기본 패딩 */
-
+    padding: 0px;                    /* 기본 패딩 */
+	margin-right:5px;
     width: 120px;                  /* 기본 너비 */
-    height: 15px;                 /* 기본 높이 */
+    height: 30px;                 /* 기본 높이 */
 	background-repeat: no-repeat;
     background-position: center;
-    border: 1px solid rgb(243,115,33); 
 }
-/*
-color: rgb(255, 255, 255);
-font: 500 10pt &quot;Quicksand Medium&quot;;
-background-color: rgba(243,115,33,0.5);
-border:1px solid rgb(243,115,33);
 
-*/
-/*세번째 탭*/
+/*search 탭*/
 QTabBar::tab:first {
-    background-image: url(:/images/video2.png);
+	background-color:rgba(243,115,33,0.1);
+    background-image: url(:/images/search5.png);
+	color:transparent;
 }
 QTabBar::tab:first:selected {
-    background:none;
-}
-QTabBar::tab:first:hover {
-    background:none;
+	background: none; /* 전체 배경 속성 초기화!!!!!!! 중요!! */
+	background-color:  rgba(243,115,33,0.5);
+	background-image:transparent;
+	color:rgb(0, 0, 0);
+	font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;                    /* 선택된 탭 패딩 */
 }
 
 
-/*두번째 탭*/
+/*streaming 탭*/
 QTabBar::tab:last {
-    background-image: url(:/images/search5.png);
+    background-color:rgba(243,115,33,0.1);
+    background-image: url(:/images/video2.png);
+	color:transparent;
 }
 QTabBar::tab:last:selected {
-    background:none;
+	background: none; /* 전체 배경 속성 초기화 */
+	background-color:  rgba(243,115,33,0.5);
+	background-image:none;
+	color:rgb(0, 0, 0);
+	font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;                    /* 선택된 탭 패딩 */
 }
-QTabBar::tab:last:hover {
-    background:none;
-}
-
-
-QTabBar::tab:selected {
-	background-color: rgba(243,115,33,0.5);
-	border:none;
-	color:rgb(255, 255, 255);
-	font: 300 bold 10pt &quot;Quicksand Light&quot;;
-    padding: 8px;                    /* 선택된 탭 패딩 */
-}
-
 QTabBar::tab:hover {
-    background-color:rgba(243,115,33,0.2);
-    color: rgb(255, 255, 255);                  /* 호버 시 텍스트 색상 */
-	border:none;
-}
-</string>
+	background: none; /* 전체 배경 속성 초기화 */
+    background-color:rgb(223, 223, 223);
+	background-image:none;
+	color:rgb(255, 255, 255);
+	font: 500 10pt &quot;Quicksand Medium&quot;;
+
+}</string>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::TabPosition::North</enum>
