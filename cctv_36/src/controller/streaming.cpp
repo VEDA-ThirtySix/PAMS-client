@@ -1,4 +1,9 @@
 #include "streaming.h"
+#include "ui_streaming.h"
+#include <QDebug>
+#include <QPixmap>
+#include <QImage>
+#include <QLayout>
 
 #include <QTimer>
 #include <QDateTime>
@@ -6,14 +11,17 @@
 
 Streaming::Streaming(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::Streaming)
+    , ui(new Ui::Streaming),
+    ffmpegProcess(new QProcess(this)),
+    frameTimer(new QTimer(this))
 {
     ui->setupUi(this);
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Streaming::updateDateTime);
     timer->start(1000);
-
+/*
+ * 기존 태원 tcp 스트리밍 코드
     streamSocket = new QTcpSocket(this);
 
     connect(streamSocket, &QTcpSocket::connected, this, &Streaming::onConnected);
@@ -21,23 +29,32 @@ Streaming::Streaming(QWidget *parent)
     connect(streamSocket, &QTcpSocket::readyRead, this, &Streaming::readStream);
     connect(streamSocket, &QAbstractSocket::errorOccurred, this, &Streaming::handleError);
 
-
-
     ui->streamingLabel->setMinimumSize(FRAME_WIDTH, FRAME_HEIGHT);
     ui->streamingLabel->setAlignment(Qt::AlignCenter);
 
     setupStreamingConnection();
+*/
     updateDateTime();// 초기 날짜/시간 표시
+
+    // 버튼 클릭으로 스트리밍 시작
+    connect(ui->startButton, &QPushButton::clicked, this, &Streaming::startFFmpeg);
+    // 프레임 캡처를 위한 타이머 설정
+    connect(frameTimer, &QTimer::timeout, this, &Streaming::captureFrame);
 }
 
 Streaming::~Streaming()
 {
+    /*
     if (streamSocket->state() == QAbstractSocket::ConnectedState) {
         streamSocket->disconnectFromHost();
+    }*/
+    if (ffmpegProcess->state() == QProcess::Running) {
+        ffmpegProcess->terminate();
+        ffmpegProcess->waitForFinished();
     }
     delete ui;
 }
-
+/*
 void Streaming::setupStreamingConnection()
 {
     const QString serverIP = "192.168.0.40";
@@ -134,7 +151,7 @@ void Streaming::reconnectToStream()
         setupStreamingConnection();
     }
 }
-
+*/
 void Streaming::updateDateTime()
 {
     QDateTime current = QDateTime::currentDateTime();
@@ -170,5 +187,72 @@ void Streaming::updateDateTime()
                                             current.time().second());
 
     ui->dateTimeLabel->setText(dateTimeStr);
+}
+
+
+
+/* ffmpeg 함수 */
+
+void Streaming::startFFmpeg() {
+    QString ffmpegPath = "/bin/ffmpeg"; // FFmpeg 실행 경로
+    QStringList arguments = {
+        "-fflags", "discardcorrupt",    // 손상된 프레임 무시
+        "-i", "rtsp://192.168.0.39:8554/stream1", // RTSP URL
+        "-vf", "fps=25",                    // 프레임 속도 설정
+        "-s", "640x360",                         // 해상도 설정
+        "-f", "image2pipe",                 // 이미지 파이프 형식
+        "-vcodec", "mjpeg",                 // MJPEG 형식으로 디코딩
+        "-q:v", "2",    // 품질 설정 (1~31, 낮을수록 품질이 좋음)
+        "-pix_fmt", "yuvj420p",  // 색 공간 최적화
+
+        "pipe:1"                            // 출력 파이프
+    };
+
+    ffmpegProcess->start(ffmpegPath, arguments);
+
+    if (!ffmpegProcess->waitForStarted()) {
+        qDebug() << "FFmpeg failed to start!";
+        return;
+    }
+
+    frameTimer->start(40); // 25fps (1000ms / 25 = 40ms)
+}
+
+void Streaming::captureFrame() {
+    if (!ffmpegProcess->isReadable()) return;
+
+    QByteArray frameData = ffmpegProcess->readAllStandardOutput();
+    if (frameData.isEmpty()) return;
+
+    // MJPEG 이미지를 QPixmap으로 변환
+    QPixmap pixmap;
+    if (!pixmap.loadFromData(frameData, "JPEG")) {
+        qDebug() << "Failed to load frame data!";
+        return;
+    }
+
+    /*
+    // QLabel에 표시
+    ui->streamingLabel->setPixmap(pixmap.scaled(ui->streamingLabel->size(),
+                                                Qt::KeepAspectRatio,
+                                                Qt::SmoothTransformation));
+    */
+    QPixmap scaledPixmap = pixmap.scaled(
+        ui->streamingLabel->size(),
+        Qt::KeepAspectRatio,
+        Qt::SmoothTransformation
+    );
+    ui->streamingLabel->setPixmap(scaledPixmap);
+    if (frameData.isEmpty()) {
+        qDebug() << "No frame data received!";
+        return;
+    }
+}
+
+void Streaming::processOutput() {
+    QByteArray errorOutput = ffmpegProcess->readAllStandardError();
+    if (!errorOutput.isEmpty()) {
+            qDebug() << "FFmpeg Error:" << errorOutput;
+        }
 }
 
