@@ -1,7 +1,7 @@
 #ifndef NETWORKDIALOG_H
 #define NETWORKDIALOG_H
 
-#include "networkManager.h"
+#include "httpManager.h"
 
 #include <QDialog>
 
@@ -21,7 +21,7 @@ public:
 
 private:
     Ui::NetworkDialog *ui;
-    NetworkManager *networkManager;
+    HttpManager *httpManager;
 
 private slots:
     void clicked_buttonPrev();

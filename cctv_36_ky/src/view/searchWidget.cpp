@@ -41,7 +41,7 @@ void SearchWidget::setupTable() {
 
     // Basic 테이블 모델 설정
     m_db = userManager->getDatabase();
-    qDebug() << "DONE(SM): got DB:" << m_db;
+    qDebug() << "DONE(SW): got DB:" << m_db;
 
     QSqlQuery query1(m_db);
     query1.exec("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Basic'");
@@ -289,7 +289,7 @@ QString SearchWidget::get_seletedData() {
     QModelIndex plateIndex = ui->resultsTable->model()->index(currentIndex.row(), plateIndex_column);
     QString selected_plate = ui->resultsTable->model()->data(plateIndex).toString();
 
-    qDebug() << "DONE(SE): selected column(plate): " << selected_plate;
+    qDebug() << "DONE(SW): selected column(plate): " << selected_plate;
     return selected_plate;
 }
 
@@ -307,12 +307,12 @@ void SearchWidget::clicked_buttonEnroll() {
 
     enrollDialog->setAttribute(Qt::WA_DeleteOnClose);
     enrollDialog->exec();   //Enroll Dialog(Modal)
-    qDebug() << "DONE(MW): Open Enroll Dialog";
+    qDebug() << "DONE(SW): Open Enroll Dialog";
 }
 
 void SearchWidget::clicked_buttonEdit() {
     EditDialog *editDialog = new EditDialog(this);
     editDialog->setAttribute(Qt::WA_DeleteOnClose);
     editDialog->exec();
-    qDebug() << "DONE(MW): Open Edit Dialog";
+    qDebug() << "DONE(SW): Open Edit Dialog";
 }

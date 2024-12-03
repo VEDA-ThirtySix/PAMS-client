@@ -1,6 +1,6 @@
 #include "streamingWidget.h"
 #include "networkDialog.h"
-#include "networkManager.h"
+#include "httpManager.h"
 #include <QTimer>
 #include <QDateTime>
 #include <QMessageBox>
@@ -183,28 +183,28 @@ void Streaming::clicked_buttonNetwork() {
 
     networkDialog->setAttribute(Qt::WA_DeleteOnClose);
     networkDialog->exec();
-    qDebug() << "DONE(TM): Set Network configuration";
+    qDebug() << "DONE(TW): Set Network configuration";
 }
 
 void Streaming::clicked_buttonConnect() {
-    NetworkManager *networkManager = new NetworkManager(this);
+    HttpManager *httpManager = new HttpManager(this);
 
     ClientInfo clientInfo;
     clientInfo.set_name("ThritySix");
-    clientInfo.set_ipAddr(networkManager->getLocalIPInSameSubnet(m_url));
+    clientInfo.set_ipAddr(httpManager->getLocalIPInSameSubnet(m_url));
     clientInfo.set_connectTime(QDateTime::currentDateTime());
-    //networkManager->post_initInfo(m_url, clientInfo);
+    //httpManager->post_initInfo(m_url, clientInfo);
 
-    if(networkManager->set_connection(m_url, clientInfo)) {
-        qDebug() << "DONE(TM): Successfully Connected!";
+    if(httpManager->post_initInfo(m_url, clientInfo)) {
+        qDebug() << "DONE(TW): Successfully Connected!";
     } else {
-        qDebug() << "ERROR(TM): Connection Failure";
+        qDebug() << "ERROR(TW): Connection Failure";
     }
 }
 
 void Streaming::update_networkPanel(const QString& url, const QString& port) {
-    NetworkManager *networkManager = new NetworkManager(this);
-    m_url = networkManager->set_config(url, port);
+    HttpManager *httpManager = new HttpManager(this);
+    m_url = httpManager->set_config(url, port);
     ui->lineEdit_url->setText(m_url.url());
     ui->lineEdit_port->setText(QString::number(m_url.port())); // 포트번호
 }

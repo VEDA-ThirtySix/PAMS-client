@@ -2,7 +2,6 @@
 #define STREAMINGWIDGET_H
 
 #include "ui_streaming.h"
-#include "streamingManager.h"
 #include <QWidget>
 #include <QAbstractSocket>
 #include <QTcpSocket>

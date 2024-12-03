@@ -4,7 +4,7 @@
 NetworkDialog::NetworkDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::NetworkDialog)
-    , networkManager(nullptr)
+    , httpManager(nullptr)
 {
     ui->setupUi(this);
 

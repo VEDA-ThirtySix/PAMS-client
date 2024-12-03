@@ -1,4 +1,6 @@
 #include "server.h"
+#include "b64.c/b64.h"  //$ git clone https://github.com/jwerle/b64.c.git
+#include "time.h"
 
 int init_server(int port) {
     int server_fd;
@@ -337,58 +339,133 @@ void send_response(struct http_response *response, int status_code,\
     strcpy(response->body, body);
 }
 
+char* build_json(const TimeInfo* timeInfo, const char* encoded) {
+    struct json_object *response, *status, *data, *image;
 
-/*
-void handle_client(int client_socket) {
-    printf("do handle_client\n");
-    char buffer[4096] = {0};
-    struct http_request req;
-    struct http_response res;
-    char response_buffer[8192];
+    // 최상위 객체 생성
+    response = json_object_new_object();
+    status = json_object_new_object();
+    data = json_object_new_object();
+    image = json_object_new_object();
 
-    ssize_t bytes_read = read(client_socket, buffer, sizeof(buffer));
-    if (bytes_read <= 0) {
-        close(client_socket);
-        return;
-    }
+    // code(status) 객체 설정
+    json_object_object_add(status, "code",
+        json_object_new_string("success"));
+    // code(message) 객체 설정
+    json_object_object_add(status, "message",
+        json_object_new_string("successful!"));
 
-    parse_header(buffer, &req);
+    // data(plate, time, type) 객체 설정
+    json_object_object_add(data, "plate",
+        json_object_new_string(timeInfo->plate));
+    json_object_object_add(data, "time",
+        json_object_new_string(timeInfo->time));
+    json_object_object_add(data, "type",
+        json_object_new_string(timeInfo->type));
 
-    if (strcmp(req.method, "GET") == 0) {
-        send_response(&res, 500, "text/html", "<html><body>Hello</body></html>");
-    } 
-    else if (strcmp(req.method, "POST") == 0) {
-        if (strstr(req.content_type, "application/json") != NULL) {
-            // manage_request 함수에 위임
-            ClientInfo clientInfo;
-            BasicInfo basicInfo;
-            TimeInfo timeInfo;
-            
-            int result = manage_request(req.body, &clientInfo, &basicInfo, &timeInfo);
-            if (result > 0) {
-                send_response(&res, 200, "application/json", "{\"status\":\"success\"}");
-            } else {
-                send_response(&res, 400, "application/json", "{\"error\":\"Invalid request\"}");
-            }
-        } else {
-            send_response(&res, 415, "application/json", "{\"error\":\"Unsupported Media Type\"}");
-        }
-    } else {
-        send_response(&res, 405, "application/json", "{\"error\":\"Method Not Allowed\"}");
-    }
+    // image 객체 생성
+    image = json_object_new_object();
+    // image(base64) 객체 설정
+    json_object_object_add(image, "image",
+        json_object_new_string(encoded));
 
-    snprintf(response_buffer, sizeof(response_buffer), 
-             "%s %d %s\r\n"
-             "Content-Type: %s\r\n"
-             "Content-Length: %zu\r\n"
-             "Connection: %s\r\n"
-             "\r\n"
-             "%s", 
-             res.version, res.status_code, res.status_message,
-             res.content_type, res.content_length,
-             res.connection, res.body);
-
-    write(client_socket, response_buffer, strlen(response_buffer));
-    close(client_socket);
+    // response(root) 객체에 추가
+    json_object_object_add(response, "status", status);
+    json_object_object_add(response, "data", data);
+    json_object_object_add(response, "image", image);
+    
+    // JSON 문자열로 변환
+    const char* json_string = json_object_to_json_string(response);
+    char* result = strdup(json_string);
+    
+    // 메모리 해제
+    json_object_put(response);
+    
+    return result;
 }
-*/
+
+unsigned char* get_packet(size_t* out_size) {
+    FILE* fp = fopen("./images/image_1.jpg", "rb");
+    if(!fp) {
+        printf("get_packet: fopen failed\n");
+        *out_size = 0;
+        return NULL;
+    }
+    //get file size
+    fseek(fp, 0, SEEK_END);
+    size_t file_size = ftell(fp);
+    rewind(fp);
+
+    //memory allocation
+    unsigned char* packet = (unsigned char*)malloc(file_size);
+    if(!packet) {
+        printf("get_packet: malloc failed\n");
+        fclose(fp);
+        *out_size = 0;
+        return NULL;
+    }
+
+    //read file
+    size_t read_size = fread(packet, 1, file_size, fp);
+    fclose(fp);
+
+    //when file read fail
+    if(read_size != file_size) {
+        printf("get_packet: fread failed\n");
+        free(packet);
+        *out_size = 0;
+        return NULL;
+    }
+
+    *out_size = read_size;
+    return packet;
+}
+
+char* encode_base64(void) {
+    printf("DEBUG: encode_base64\n");
+    size_t packet_size = 0;
+    unsigned char* packet = get_packet(&packet_size);
+
+    if(!packet || packet_size == 0) {
+        printf("encode_base64: get_packet failed\n");
+        return NULL;
+    }
+
+    char* encoded = b64_encode(packet, packet_size);
+    printf("encode_base64: packet_size: %zu\n", packet_size);
+    
+    if(encoded) {
+        printf("encode_base64: encoded: %s\n", encoded);
+    } else {
+        printf("encode_base64: b64_encode failed\n");
+    }
+
+    free(packet);
+    return encoded;
+}
+
+void send_plateData(int client_socket, char* json) {
+    printf("DEBUG: send_plateData\n");
+    printf("json: %s\n", json);
+    
+    //send json
+    write(client_socket, json, strlen(json));
+    printf("send_plateData: json sent\n");
+    printf("send_plateData: client_socket: %d\n", client_socket);
+    free(json);
+}
+
+TimeInfo* get_timeInfo(void) {
+    time_t currentTime = time(NULL);
+    struct tm* tm_info = localtime(&currentTime);
+    char buffer[26];
+
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
+
+    TimeInfo* timeInfo = malloc(sizeof(TimeInfo));
+    strcpy(timeInfo->plate, "123가4568");
+    strcpy(timeInfo->time, buffer);
+    strcpy(timeInfo->type, "entry");
+
+    return timeInfo;
+}

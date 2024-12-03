@@ -10,7 +10,7 @@ JSONManager::JSONManager(QObject* parent)
 JSONManager::~JSONManager()
 { }
 
-QByteArray JSONManager::send_request_init(const ClientInfo& clientInfo) {
+QByteArray JSONManager::build_init(const ClientInfo& clientInfo) {
     QString name = clientInfo.get_name();
     QString ipAddr = clientInfo.get_ipAddr();
     QDateTime connectTime = clientInfo.get_connectTime();
@@ -33,7 +33,7 @@ QByteArray JSONManager::send_request_init(const ClientInfo& clientInfo) {
 }
 
 
-QByteArray JSONManager::send_request_info(const BasicInfo& basicInfo) {
+QByteArray JSONManager::build_info(const BasicInfo& basicInfo) {
     QString name = basicInfo.get_name();
     QString plate = basicInfo.get_plate();
     QString home = basicInfo.get_home();
@@ -58,7 +58,7 @@ QByteArray JSONManager::send_request_info(const BasicInfo& basicInfo) {
 }
 
 
-QByteArray JSONManager::send_request_clip(const TimeInfo& timeInfo) {
+QByteArray JSONManager::build_clip(const TimeInfo& timeInfo) {
     QString plate = timeInfo.get_plate();
     QDateTime time = timeInfo.get_time();
     QString type = timeInfo.get_type();

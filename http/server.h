@@ -44,7 +44,6 @@ struct http_request {
     char body[4096];
 };
 
-
 struct http_response {
     char version[16];
     int status_code;
@@ -74,16 +73,42 @@ typedef struct {
     char type[16];
 } TimeInfo;
 
+typedef struct {
+    uint32_t size;
+    uint16_t width;
+    uint16_t height;
+    unsigned char data[];
+} ImagePacket;
 
 
+/* 1. [INIT] INTIALIZE WITH HTTP PROTOCOL */
 int init_server(int port);
 void handle_client(int client_socket);
 void parse_header(char* jsonBuffer, struct http_request *request);
 int manage_request(char* jsonBuffer, ClientInfo* clientInfo, BasicInfo* basicInfo, TimeInfo* timeInfo);
 
 void parse_init(char* jsonBuffer, ClientInfo* clientInfo);
-void parse_user(char* jsonBuffer, BasicInfo* basicInfo);
 void parse_clip(char* jsonBuffer, TimeInfo* timeInfo);
+
+/* 2. [USER] HANDLE USER REQUEST[POST] */
+void handle_user();
+void parse_user(char* jsonBuffer, BasicInfo* basicInfo);
+void saveDB_user();
+
+/* 3. [CLIP] HANDLE USER REQUEST[GET] */
+void handle_clip();
+void parse_clip();
+void stream_clip();
+
+/* 4. [PLATE] SEND PLATE DATA */
+void get_pakcet();
+TimeInfo* get_timeInfo();
+char* build_json(const TimeInfo* timeInfo, const char* encoded);
+char* encode_base64(void); //packet -> base64
+void send_plateData(int client_socket, char* json);
+//Qt: parse_metadata();
+//Qt: decode_base64();
+//Qt: logManager->save_log(timeInfo, imgBuffer);
 
 void send_response(struct http_response *response, int status_code, const char* content_type, const char* body);
 
