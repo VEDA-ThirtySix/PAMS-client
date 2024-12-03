@@ -260,10 +260,7 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
                                "차량번호: %2\n"
                                "주소: %3\n"
                                "전화번호: %4"
-                               ).arg(name)
-                               .arg(plate)
-                               .arg(home)
-                               .arg(phone);
+                               ).arg(name, plate, home, phone);
 
     ui->textLabel->setText(customerInfo);
 
@@ -346,10 +343,7 @@ QString Search::get_seletedData() {
 void Search::refreshTable() {
     setupTable();
     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
-    connect(ui->resultsTable->selectionModel(),
-            &QItemSelectionModel::selectionChanged,
-            this,
-            &Search::selectCustomerInfo);
+    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 }
 
 // void Search::lineEdit_test() {
