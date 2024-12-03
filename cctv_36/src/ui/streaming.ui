@@ -40,10 +40,7 @@
 border:none;</string>
    </property>
    <property name="frameShape">
-    <enum>QFrame::Shape::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Shadow::Raised</enum>
+    <enum>QFrame::NoFrame</enum>
    </property>
    <widget class="QLabel" name="streamingLabel">
     <property name="geometry">
@@ -63,9 +60,6 @@ border:1px solid rgb(243,115,33);</string>
     <property name="text">
      <string>Streaming Video</string>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
    </widget>
    <widget class="QFrame" name="bestshotFrame">
     <property name="geometry">
@@ -83,10 +77,7 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <widget class="QLabel" name="label">
      <property name="geometry">
@@ -106,9 +97,6 @@ background:none;</string>
      </property>
      <property name="text">
       <string>Detected Vehicle Image</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
@@ -130,9 +118,6 @@ background:none;</string>
      <property name="text">
       <string>Vehicle1</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
    </widget>
    <widget class="QLabel" name="dateTimeLabel">
@@ -153,9 +138,6 @@ border:1px solid rgb(243,115,33);</string>
     <property name="text">
      <string>Date - Time</string>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
    </widget>
    <widget class="QLabel" name="licensetitleLabel">
     <property name="geometry">
@@ -175,17 +157,14 @@ border:1px solid rgb(243,115,33);</string>
     <property name="text">
      <string>LicensePlate</string>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
    </widget>
    <widget class="QFrame" name="bestshotFrame_2">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>300</y>
+      <y>320</y>
       <width>361</width>
-      <height>111</height>
+      <height>91</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -194,10 +173,27 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
+   </widget>
+   <widget class="QPushButton" name="startButton">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>290</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../images.qrc">
+      <normaloff>:/images/play.png</normaloff>:/images/play.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
     </property>
    </widget>
    <zorder>streamingLabel</zorder>
@@ -205,8 +201,11 @@ border:1px solid rgb(243,115,33);</string>
    <zorder>licensetitleLabel</zorder>
    <zorder>bestshotFrame</zorder>
    <zorder>bestshotFrame_2</zorder>
+   <zorder>startButton</zorder>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../images.qrc"/>
+ </resources>
  <connections/>
 </ui>

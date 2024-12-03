@@ -2,11 +2,16 @@
 #define STREAMING_H
 
 #include <QWidget>
-#include "ui_streaming.h"
 
 #include <QAbstractSocket>
 #include <QTcpSocket>
 #include <QSqlQuery>
+
+#include <QMainWindow>
+#include <QLabel>
+#include <QProcess>
+#include <QTimer>
+#include "ui_streaming.h"
 
 class Streaming : public QWidget
 {
@@ -20,6 +25,10 @@ private:
     Ui::Streaming *ui;
     QTimer *timer;
 
+    QProcess *ffmpegProcess;
+    QTimer *frameTimer;
+
+    /*
     QTcpSocket *streamSocket;
     QByteArray frameBuffer;
 
@@ -35,18 +44,23 @@ private:
 
     void setupStreamingConnection();
     void processYUYVFrame(const QByteArray &frameData);
-
+*/
     void saveMessageToDatabase(const QString &message);  // 메시지를 데이터베이스에 저장하는 메서드
     bool saveToDatabase(const QString &tableName, const QMap<QString, QVariant> &data);    // 데이터베이스 저장 함수
 
 
 private slots:
     void updateDateTime();
+/*
     void readStream();
     void handleError(QAbstractSocket::SocketError socketError);
     void reconnectToStream();
     void onConnected();
     void onDisconnected();
+*/
+    void startFFmpeg();
+    void captureFrame();
+    void processOutput();
 };
 
 #endif // STREAMING_H

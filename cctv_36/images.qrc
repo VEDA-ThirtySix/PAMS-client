@@ -7,5 +7,7 @@
         <file>camera-recorder.png</file>
         <file>search5.png</file>
         <file>video2.png</file>
+        <file>start.png</file>
+        <file>play.png</file>
     </qresource>
 </RCC>
