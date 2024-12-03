@@ -29,7 +29,7 @@ Search::Search(QWidget *parent)
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
     //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
-    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::updateCustomerInfo);
+    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 
 }
 
@@ -137,7 +137,7 @@ void Search::setupConnections()
     connect(ui->searchInput, &QLineEdit::textChanged, this, &Search::handleSearchInput);
 
     // 테이블 뷰에 있는 컬럼 더블 클릭시 이벤트 연결
-    connect(ui->resultsTable, &QTableView::doubleClicked, this, &Search::handleDoubleClick);
+    // connect(ui->resultsTable, &QTableView::doubleClicked, this, &Search::handleDoubleClick);
 
     // 검색어 필터링
     connect(ui->filterButton, &QPushButton::clicked, this, &Search::showSearchMenu);
@@ -170,33 +170,33 @@ bool Search::initializePath() {
     }
 }
 
-void Search::handleDoubleClick(const QModelIndex &index) {
-    // qDebug() << "클릭된 컬럼 번호:" << index.column();
+// void Search::handleDoubleClick(const QModelIndex &index) {
+//     // qDebug() << "클릭된 컬럼 번호:" << index.column();
 
-    // QString basePath = "/home/kiyun/vFinal/rasp_project/cctv_36_ky/images";
-    // QString basePath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/images"; // for taewon MacOS
+//     // QString basePath = "/home/kiyun/vFinal/rasp_project/cctv_36_ky/images";
+//     // QString basePath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/images"; // for taewon MacOS
 
-    // QString imagePath = QString("%1/image_%2.jpg")
-    //                         .arg(basePath)
-    //                         .arg(index.row() + 1);
+//     // QString imagePath = QString("%1/image_%2.jpg")
+//     //                         .arg(basePath)
+//     //                         .arg(index.row() + 1);
 
-    QString imagePath = QDir(imagesPath).filePath(
-        QString("image_%1.jpg").arg(index.row() + 1)
-        );
+//     QString imagePath = QDir(imagesPath).filePath(
+//         QString("image_%1.jpg").arg(index.row() + 1)
+//         );
 
-    /* 이미지와 데이터를 Qt에서 연결 -> 이미지를 db자체에서 연결(비트맵?이진화?) */
-    QPixmap image(imagePath);
-    if (image.isNull()) {
-        ui->imageLabel->setText("이미지 없음");
-        qDebug() << "이미지 로드 실패:" << imagePath;
-    } else {
-        ui->imageLabel->setPixmap(image);
-        qDebug() << "이미지 로드 성공:" << imagePath;
-    }
+//     /* 이미지와 데이터를 Qt에서 연결 -> 이미지를 db자체에서 연결(비트맵?이진화?) */
+//     QPixmap image(imagePath);
+//     if (image.isNull()) {
+//         ui->imageLabel->setText("이미지 없음");
+//         qDebug() << "이미지 로드 실패:" << imagePath;
+//     } else {
+//         ui->imageLabel->setPixmap(image);
+//         qDebug() << "이미지 로드 성공:" << imagePath;
+//     }
 
-    ui->resultsTable->selectRow(index.row());
+//     ui->resultsTable->selectRow(index.row());
 
-}
+// }
 
 void Search::clearImage()
 {
@@ -236,7 +236,7 @@ void Search::updatePlaceholder()
     ui->searchInput->setPlaceholderText(QString("%1을(를) 입력하세요").arg(m_currentSearchType));
 }
 
-void Search::updateCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected)
+void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_UNUSED(deselected);
 
@@ -266,6 +266,22 @@ void Search::updateCustomerInfo(const QItemSelection &selected, const QItemSelec
                                .arg(phone);
 
     ui->textLabel->setText(customerInfo);
+
+
+    QString imagePath = QDir(imagesPath).filePath(
+        QString("image_%1.jpg").arg(row + 1)
+        );
+
+    /* 이미지와 데이터를 Qt에서 연결 -> 이미지를 db자체에서 연결(비트맵?이진화?) */
+    QPixmap image(imagePath);
+    if (image.isNull()) {
+        ui->imageLabel->setText("이미지 없음");
+        qDebug() << "이미지 로드 실패:" << imagePath;
+    } else {
+        ui->imageLabel->setPixmap(image);
+        qDebug() << "이미지 로드 성공:" << imagePath;
+    }
+
 }
 
 void Search::showSearchMenu()
@@ -333,7 +349,7 @@ void Search::refreshTable() {
     connect(ui->resultsTable->selectionModel(),
             &QItemSelectionModel::selectionChanged,
             this,
-            &Search::updateCustomerInfo);
+            &Search::selectCustomerInfo);
 }
 
 // void Search::lineEdit_test() {

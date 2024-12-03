@@ -24,7 +24,7 @@ public:
 public slots:
     void performSearch();
     void handleSearchInput(const QString &text);
-    void handleDoubleClick(const QModelIndex &index);
+    //void handleDoubleClick(const QModelIndex &index);
     //void lineEdit_test();
 
 private:
@@ -53,7 +53,7 @@ private:
 
 private slots:
     void showSearchMenu();
-    void updateCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected);
+    void selectCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected);
 };
 
 #endif // SEARCH_H
