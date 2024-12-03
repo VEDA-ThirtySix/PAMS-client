@@ -2,11 +2,9 @@
 #define STREAMING_H
 
 #include <QWidget>
-
 #include <QAbstractSocket>
 #include <QTcpSocket>
 #include <QSqlQuery>
-
 #include <QMainWindow>
 #include <QLabel>
 #include <QProcess>
@@ -24,43 +22,31 @@ public:
 private:
     Ui::Streaming *ui;
     QTimer *timer;
-
     QProcess *ffmpegProcess;
     QTimer *frameTimer;
+    QString rtspUrl;  // RTSP 서버 주소
 
-    /*
-    QTcpSocket *streamSocket;
-    QByteArray frameBuffer;
-
-    QSqlDatabase db;  // 데이터베이스 객체
-    QSqlQuery image_Query; //이미지 저장 테이블을 관리할 쿼리
-    QMenu *windowMenu;
-
-    const int FRAME_WIDTH = 320;
-    const int FRAME_HEIGHT = 240;
-    const int FRAME_SIZE = FRAME_WIDTH * FRAME_HEIGHT * 2;  // YUYV format
-
-    bool errorMessageShown = false;  // 에러 메시지 표시 여부를 추적하는 플래그
-
-    void setupStreamingConnection();
-    void processYUYVFrame(const QByteArray &frameData);
-*/
+    // 데이터베이스 관련 메서드
     void saveMessageToDatabase(const QString &message);  // 메시지를 데이터베이스에 저장하는 메서드
     bool saveToDatabase(const QString &tableName, const QMap<QString, QVariant> &data);    // 데이터베이스 저장 함수
 
 
 private slots:
+    // UI 업데이트
     void updateDateTime();
-/*
-    void readStream();
-    void handleError(QAbstractSocket::SocketError socketError);
-    void reconnectToStream();
-    void onConnected();
-    void onDisconnected();
-*/
+    void updateUIState(bool isRunning);
+
+    // RTSP 및 FFmpeg 관련
+    void setupAddressInput();
+    bool eventFilter(QObject *watched, QEvent *event);
     void startFFmpeg();
+    void stopFFmpeg();
     void captureFrame();
     void processOutput();
+
+    // RTSP 설정
+    void on_setButton_clicked();
+    void rtsp_setting();
 };
 
 #endif // STREAMING_H
