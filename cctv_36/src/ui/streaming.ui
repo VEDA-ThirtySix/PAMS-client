@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
   <widget class="QPushButton" name="pushButton_enroll">
    <property name="geometry">
     <rect>
@@ -32,7 +35,7 @@
      <x>0</x>
      <y>0</y>
      <width>691</width>
-     <height>431</height>
+     <height>451</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -46,15 +49,15 @@ border:none;</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
-      <width>361</width>
-      <height>251</height>
+      <y>80</y>
+      <width>440</width>
+      <height>250</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">font: 300 bold 13pt &quot;Quicksand Light&quot;;
 color:  rgb(243,115,33);
-background:none;
+background:rgba(243,115,33,0.2);
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="text">
@@ -64,10 +67,10 @@ border:1px solid rgb(243,115,33);</string>
    <widget class="QFrame" name="bestshotFrame">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>460</x>
       <y>40</y>
-      <width>311</width>
-      <height>371</height>
+      <width>231</width>
+      <height>391</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -83,8 +86,8 @@ border:1px solid rgb(243,115,33);</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>150</y>
-       <width>291</width>
+       <y>230</y>
+       <width>211</width>
        <height>51</height>
       </rect>
      </property>
@@ -102,9 +105,9 @@ background:none;</string>
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>20</y>
-       <width>271</width>
+       <width>211</width>
        <height>91</height>
       </rect>
      </property>
@@ -125,13 +128,13 @@ background:none;</string>
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>361</width>
-      <height>21</height>
+      <width>440</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(255, 255, 255);
-font: 500 10pt &quot;Quicksand Medium&quot;;
+font: 500 12pt &quot;Quicksand Medium&quot;;
 background-color: rgba(243,115,33,0.5);
 border:1px solid rgb(243,115,33);</string>
     </property>
@@ -142,15 +145,15 @@ border:1px solid rgb(243,115,33);</string>
    <widget class="QLabel" name="licensetitleLabel">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>460</x>
       <y>10</y>
-      <width>311</width>
-      <height>21</height>
+      <width>231</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(255, 255, 255);
-font: 500 10pt &quot;Quicksand Medium&quot;;
+font: 500 13pt &quot;Quicksand Medium&quot;;
 background-color: rgba(243,115,33,0.5);
 border:1px solid rgb(243,115,33);</string>
     </property>
@@ -162,8 +165,8 @@ border:1px solid rgb(243,115,33);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>320</y>
-      <width>361</width>
+      <y>340</y>
+      <width>441</width>
       <height>91</height>
      </rect>
     </property>
@@ -179,15 +182,34 @@ border:1px solid rgb(243,115,33);</string>
    <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>290</y>
-      <width>31</width>
+      <x>10</x>
+      <y>60</y>
+      <width>221</width>
       <height>21</height>
      </rect>
     </property>
-    <property name="icon">
-     <iconset resource="../../images.qrc">
-      <normaloff>:/images/play.png</normaloff>:/images/play.png</iconset>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	color:  rgb(243,115,33);
+	background:none;
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton:selected{
+	color:  rgb(243,115,33);
+	background-color: rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton:hover {
+	color:  rgb(255, 255, 255);
+	background-color:rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 8pt &quot;Quicksand Medium&quot;;
+}</string>
+    </property>
+    <property name="text">
+     <string>Start</string>
     </property>
     <property name="iconSize">
      <size>
@@ -196,16 +218,106 @@ border:1px solid rgb(243,115,33);</string>
      </size>
     </property>
    </widget>
+   <widget class="QPushButton" name="stopButton">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>60</y>
+      <width>220</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	color:  rgb(243,115,33);
+	background:none;
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton:selected{
+	color:  rgb(243,115,33);
+	background-color: rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton:hover {
+	color:  rgb(255, 255, 255);
+	background-color:rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 8pt &quot;Quicksand Medium&quot;;
+}</string>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="addressInput">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>390</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 10pt &quot;Sans Serif&quot;;
+color:  rgb(243,115,33);
+background:rgba(243,115,33,0.2);
+border:1px solid rgb(243,115,33);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="setButton">
+    <property name="geometry">
+     <rect>
+      <x>399</x>
+      <y>40</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	color:  rgb(243,115,33);
+	background:rgba(243,115,33,0.2);
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton::selected{
+	color:  rgb(243,115,33);
+	background: rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+
+}
+QPushButton::hover {
+	color:  rgb(255, 255, 255);
+	background:rgb(208, 208, 208);
+	border:none;
+	font: 500 8pt &quot;Quicksand Medium&quot;;
+}</string>
+    </property>
+    <property name="text">
+     <string>Set</string>
+    </property>
+   </widget>
    <zorder>streamingLabel</zorder>
    <zorder>dateTimeLabel</zorder>
    <zorder>licensetitleLabel</zorder>
    <zorder>bestshotFrame</zorder>
    <zorder>bestshotFrame_2</zorder>
    <zorder>startButton</zorder>
+   <zorder>stopButton</zorder>
+   <zorder>addressInput</zorder>
+   <zorder>setButton</zorder>
   </widget>
  </widget>
- <resources>
-  <include location="../../images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
