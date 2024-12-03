@@ -13,7 +13,7 @@ public:
     TcpManager(QObject *parent);
     ~TcpManager();
 
-    void connect_server(const QString& host, quint16 port);
+    bool connect_server(const QString& host, quint16 port);
     void disconnect_server();
 
 private:

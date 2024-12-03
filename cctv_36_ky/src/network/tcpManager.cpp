@@ -17,9 +17,10 @@ TcpManager::TcpManager(QObject *parent)
 TcpManager::~TcpManager()
 { }
 
-void TcpManager::connect_server(const QString& host, quint16 port) {
+bool TcpManager::connect_server(const QString& host, quint16 port) {
     tcpSocket->connectToHost(host, port);
     qDebug() << "DONE(TM): connect_server(host:port): " << host << ":" << port;
+    return true;
 }
 
 void TcpManager::disconnect_server() {

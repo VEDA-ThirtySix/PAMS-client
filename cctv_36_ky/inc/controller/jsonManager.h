@@ -7,21 +7,20 @@
 
 /* JSON: HTTP BODY */
 
-class JSONManager : public QObject {
+class JsonManager : public QObject {
 Q_OBJECT
 
 public:
-    JSONManager(QObject *parent);
-    ~JSONManager();
+    JsonManager(QObject *parent);
+    ~JsonManager();
 
     QByteArray build_init(const ClientInfo& clientInfo);
     QByteArray build_info(const BasicInfo& basicInfo);
     QByteArray build_clip(const TimeInfo& timeInfo);
 
-    int check_response(const QByteArray& jsonArray);
-    int parse_response(const QByteArray& jsonArray);    //[Core] parse status, return status code
-    TimeInfo* parse_data(const QByteArray& dataArray);
-    void decode_base64(const QByteArray& imageArray);
+    int parse_status(const QByteArray& jsonArray);
+    TimeInfo parse_data(const QByteArray& jsonArray);
+    QByteArray decode_base64(const QByteArray& jsonArray);
 };
 
 #endif // JSONMANAGER_H

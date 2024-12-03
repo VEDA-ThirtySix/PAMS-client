@@ -8,9 +8,9 @@ LogManager::LogManager(QObject *parent)
 LogManager::~LogManager()
 { }
 
-void LogManager::save_log(const TimeInfo& timeInfo) {
+void LogManager::save_dataImage(const TimeInfo& timeInfo, const QByteArray& imageArray) {
     dbManager = new DBManager;
 
-    dbManager->create_timeInfo(timeInfo);
+    dbManager->create_timeInfo(timeInfo, imageArray);
     qDebug() << "DONE(LM): Create TimeInfo(plate): " << timeInfo.get_plate();
 }

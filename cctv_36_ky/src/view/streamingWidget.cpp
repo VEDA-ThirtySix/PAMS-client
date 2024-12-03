@@ -1,5 +1,6 @@
 #include "streamingWidget.h"
 #include "networkDialog.h"
+#include "tcpManager.h"
 #include "httpManager.h"
 #include <QTimer>
 #include <QDateTime>
@@ -187,18 +188,29 @@ void Streaming::clicked_buttonNetwork() {
 }
 
 void Streaming::clicked_buttonConnect() {
+    TcpManager *tcpManager = new TcpManager(this);
     HttpManager *httpManager = new HttpManager(this);
 
+    // Connect to Server(TCP)
+    QString host = m_url.host();
+    quint16 port = static_cast<quint16>(m_url.port());
+    if(tcpManager->connect_server(host, port)) {
+        qDebug() << "DONE(TW): Successfully Connected with TCP Protocol";
+        qDebug() << "host: " << host << ", port: " << port;
+    } else {
+        qDebug() << "ERROR(TW): Connection Failure";
+    }
+
+    // Post Request to Server(INIT)
     ClientInfo clientInfo;
     clientInfo.set_name("ThritySix");
     clientInfo.set_ipAddr(httpManager->getLocalIPInSameSubnet(m_url));
     clientInfo.set_connectTime(QDateTime::currentDateTime());
-    //httpManager->post_initInfo(m_url, clientInfo);
 
     if(httpManager->post_initInfo(m_url, clientInfo)) {
-        qDebug() << "DONE(TW): Successfully Connected!";
+        qDebug() << "DONE(TW): post_initInfo";
     } else {
-        qDebug() << "ERROR(TW): Connection Failure";
+        qDebug() << "ERROR(TW): post_initInfo";
     }
 }
 

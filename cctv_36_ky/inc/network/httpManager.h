@@ -5,6 +5,7 @@
 #include "metadata.h"
 #include "jsonManager.h"
 #include "logManager.h"
+#include "dbManager.h"
 #include <QObject>
 #include <QByteArray>
 #include <QNetworkAccessManager>
@@ -30,8 +31,9 @@ public:
 
 private:
     QNetworkAccessManager *accessManager;
-    JSONManager *jsonManager;
+    JsonManager *jsonManager;
     LogManager *logManager;
+    DBManager *dbManager;
 
 };
 #endif // HTTPMANAGER_H

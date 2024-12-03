@@ -11,6 +11,7 @@ HttpManager::HttpManager(QObject* parent)
     , accessManager(nullptr)
     , jsonManager(nullptr)
     , logManager(nullptr)
+    , dbManager(nullptr)
 { }
 
 HttpManager::~HttpManager()
@@ -26,14 +27,14 @@ QUrl HttpManager::set_config(const QString& url, const QString& port) {
     if(port.toInt() > 0) {
         serverURL.setPort(port.toInt());
     } else {
-        qDebug() << "ERROR(NM): set_config >> Wrong Port Number";
+        qDebug() << "ERROR(HM): set_config >> Wrong Port Number";
     }
 
     if(!serverURL.isValid()) {
-        qDebug() << "ERROR(NM): set_config >> Invalid URL Format: " << serverURL;
+        qDebug() << "ERROR(HM): set_config >> Invalid URL Format: " << serverURL;
         return QUrl();
     } else {
-        qDebug() << "DONE(NM): set_config >> set_config(network) Successful(URL): " << serverURL;
+        qDebug() << "DONE(HM): set_config >> set_config(network) Successful(URL): " << serverURL;
         return serverURL;
     }
 }
@@ -49,72 +50,83 @@ bool HttpManager::post_initInfo(const QUrl& url, const ClientInfo& clientInfo) {
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    jsonManager = new JSONManager(this);
+    jsonManager = new JsonManager(this);
     QByteArray jsonArray = jsonManager->build_init(clientInfo);
     connect(accessManager, &QNetworkAccessManager::finished, this, &HttpManager::reply_finished);
-    qDebug() << "DONE(NM): post_initInfo";
+    qDebug() << "DONE(HM): post_initInfo";
 
     accessManager->post(request, jsonArray);
     return true;
 }
 
 void HttpManager::post_userInfo(const QUrl& url, const BasicInfo& basicInfo) {
-    jsonManager = new JSONManager(this);
+    jsonManager = new JsonManager(this);
     accessManager = new QNetworkAccessManager(this);
 
     QByteArray jsonArray = jsonManager->build_info(basicInfo);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    qDebug() << "DONE(NM): post_userInfo";
+    qDebug() << "DONE(HM): post_userInfo";
 
     accessManager->post(request, jsonArray);
 }
 
 void HttpManager::post_clipInfo(const QUrl& url, const TimeInfo& timeInfo) {
-    jsonManager = new JSONManager(this);
+    jsonManager = new JsonManager(this);
     accessManager = new QNetworkAccessManager(this);
 
     QByteArray jsonArray = jsonManager->build_clip(timeInfo);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    qDebug() << "DONE(NM): post_clipInfo";
+    qDebug() << "DONE(HM): post_clipInfo";
 
     accessManager->post(request, jsonArray);
 }
 
-/* HttpManager::handle_response
- * - jsonManager->parse_
- *
- *
- */
+
 void HttpManager::handle_response(QByteArray& jsonArray) {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonArray);
     QJsonObject jsonObj = jsonDoc.object();
 
-    jsonManager = new JSONManager(this);
-    switch(jsonManager->check_response(jsonArray)) {
-        case 1: //response: status = "success"
-        {
-            TimeInfo timeInfo;
-            timeInfo = jsonManager->parse_response(jsonArray);
-            qDebug() << "DONE(NM): Parse Response to TimeInfo";
+    jsonManager = new JsonManager(this);
 
+    switch(jsonManager->parse_status(jsonArray)) {
+        case 1: //response: All clear
+        {
+            //Parse Response(data)
+            TimeInfo timeInfo;
+            timeInfo = jsonManager->parse_data(jsonArray);
+            qDebug() << "DONE(HM): Parse Response to TimeInfo";
+
+            //Parse Response(image)
+            QByteArray decoded;
+            jsonManager->decode_base64(jsonArray);
+
+            //Save data(TimeInfo + Image(blob)) to DB
             logManager = new LogManager(this);
-            logManager->save_log(timeInfo);
-            qDebug() << "DONE(NM): Save TimeInfo to DB";
+            logManager->save_dataImage(timeInfo, decoded);
+            qDebug() << "DONE(HM): Save TimeInfo to DB";
+
+            //Save Plate Image file(.jpeg)
+            dbManager = new DBManager(this);
+            dbManager->save_jpeg(decoded);
+            qDebug() << "DONE(HM): Save Image File(.jpeg)";
+            break;
         }
-        case 2: //response: status = else
-            qDebug() << "ERROR(NM): cannot parse response due to status(!success)";
-        case 3: //response: wrong status
-            qDebug() << "ERROR(NM): cannot parse response due to status(wrong status)";
+        case 2: //for other response objectives
+            qDebug() << "ERROR(HM): cannot parse response due to status(wrong code)";
+        case 3: //for other response objectives
+            qDebug() << "ERROR(HM): cannot parse response due to status(wrong message)";
+        case 4:
+            qDebug() << "ERROR(HM): cannot parse response due to status(wrong response)";
     }
 }
 
 void HttpManager::reply_finished(QNetworkReply* reply) {
     if(reply->error()) {
-        qDebug() << "ERROR(NM): Connection Error: " << reply->errorString();
+        qDebug() << "ERROR(HM): Connection Error: " << reply->errorString();
     } else {
-        qDebug() << "DONE(NM): Connection Successful";
+        qDebug() << "DONE(HM): Connection Successful";
     }
     reply->deleteLater();
 }

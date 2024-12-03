@@ -1,6 +1,7 @@
 #include "dbManager.h"
 #include <QDebug>
 #include <QtSql/QSqlQuery>
+#include <QFile>
 
 DBManager::DBManager(QObject* parent)
     : QObject(parent)
@@ -42,6 +43,7 @@ bool DBManager::open_database() {
                    "plate VARCHAR,"
                    "time DATETIME,"
                    "type VARCHAR,"
+                   "image BLOB,"
                    "FOREIGN KEY (plate) REFERENCES Basic(plate)"
                    "ON DELETE CASCADE)")) {
         qDebug() << "ERROR(DB): Failed to Open table: Time";
@@ -125,14 +127,15 @@ void DBManager::delete_basicInfo(const QString& selected_plate) {
 
 
 
-
 /* CRUD: TIME_INFO */
-void DBManager::create_timeInfo(const TimeInfo& timeInfo) {
+void DBManager::create_timeInfo(const TimeInfo& timeInfo, const QByteArray& imageArray) {
     QSqlQuery query(db);
-    query.prepare("INSERT INTO Time (plate, time, type) VALUES (:plate, :time, :type)");
+    query.prepare("INSERT INTO Time (plate, time, type, image) VALUES (:plate, :time, :type, :image)");
     query.bindValue(":plate", timeInfo.get_plate());
     query.bindValue(":time",  timeInfo.get_time());
     query.bindValue(":type",  timeInfo.get_type());
+    query.bindValue(":image",  imageArray);
+
     if(!query.exec()) {
         qDebug() << "ERROR(DM): Failed to Create TimeInfo";
     } else {
@@ -142,9 +145,9 @@ void DBManager::create_timeInfo(const TimeInfo& timeInfo) {
 
 TimeInfo DBManager::read_timeInfo(const QString& selected_plate) {
     QSqlQuery query(db);
-
-    query.prepare("SELECT * FROM Time WHERE plate = :selected_plate");
+    query.prepare("SELECT plate, time, type FROM Time WHERE plate = :selected_plate");
     query.bindValue(":selected_plate", selected_plate);
+
     if(!query.exec() || !query.next()) {
         qDebug() << "Error(DB): Failed to Read TimeInfso";
         return TimeInfo();
@@ -154,6 +157,20 @@ TimeInfo DBManager::read_timeInfo(const QString& selected_plate) {
         timeInfo.set_type(query.value(2).toString());
         qDebug() << "DONE(DM): Read BasicInfo(plate): " << selected_plate;
         return timeInfo;
+    }
+}
+
+QByteArray DBManager::read_image(const QString& selected_plate) {
+    QSqlQuery query(db);
+    query.prepare("SELECT image FROM Time WHERE plate = :selected_plate");
+    query.bindValue(":selected_plate", selected_plate);
+
+    if(!query.exec() || !query.next()) {
+        qDebug() << "Error(DB): Failed to Read TimeInfso";
+        return QByteArray();
+    } else {
+        qDebug() << "DONE(DM): Read BasicInfo(plate): " << selected_plate;
+        return query.value(0).toByteArray();
     }
 }
 
@@ -168,12 +185,18 @@ qint64 DBManager::get_duration(const QDateTime& from, const QDateTime& to) {
      */
 }
 
+/* Save Plate Image */
+void DBManager::save_jpeg(const QByteArray& imageArray) {
+    QFile file("plate.jpg");
+    if(file.open(QIODevice::WriteOnly)) {
+        file.write(imageArray);
+        file.close();
+        qDebug() << "DONE(DM): Saved JPEG file(plate.jpg) Successfully";
+    } else {
+        qDebug() << "ERROR(DM): Saving JPEG file(plate.jpg) Failed";
+    }
+}
 
-
-/*
-void DBManager::addNewTimeInfo(const TimeInfo& newTimeInfo) {
-    timeInfoList.append(newTimeInfo);
-}*/
 
 /**
     *@ ********************************************************************
