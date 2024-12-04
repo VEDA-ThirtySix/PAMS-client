@@ -40,7 +40,7 @@ Streaming::Streaming(QWidget *parent)
     //connect(ffmpegProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(captureFrame()));
 
     // Set 버튼 클릭으로 RTSP URL 설정
-    connect(ui->setButton, &QPushButton::clicked, this, &Streaming::rtsp_setting);
+    //connect(ui->setButton, &QPushButton::clicked, this, &Streaming::rtsp_setting);
 
     // AddressInput 내용 변경 시 SetButton 상태 해제
     connect(ui->addressInput, &QLineEdit::textChanged, this, [this]() {

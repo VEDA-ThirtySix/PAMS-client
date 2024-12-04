@@ -24,7 +24,7 @@ HEADERS += \
     $$files($$PWD/inc/network/*.h)    \
 
 FORMS += \
-    $$files($$PWD/src/ui/*.ui) \
+    $$files($$PWD/src/ui/*.ui)
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

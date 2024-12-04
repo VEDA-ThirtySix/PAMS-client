@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1047</width>
-    <height>479</height>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@
 border:none;</string>
    </property>
    <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
+    <enum>QFrame::Shape::NoFrame</enum>
    </property>
    <widget class="QLabel" name="streamingLabel">
     <property name="geometry">
@@ -80,7 +80,7 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <widget class="QLabel" name="label">
      <property name="geometry">
@@ -176,7 +176,7 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="startButton">
@@ -270,7 +270,7 @@ border:1px solid rgb(243,115,33);</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="setButton">
