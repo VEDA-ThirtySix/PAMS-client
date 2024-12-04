@@ -34,6 +34,7 @@ void TcpManager::on_connected() {
 void TcpManager::on_readyRead() {
     httpManager = new HttpManager(this);
     QByteArray responseArray = tcpSocket->readAll();
+    qDebug() << "************ New Response Occurred ************";
     httpManager->handle_response(responseArray);
 }
 

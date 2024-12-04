@@ -101,8 +101,7 @@ int JsonManager::parse_status(const QByteArray& jsonArray) {
                 qDebug() << "DONE(JM): code: " << code;
                 codeValid = false;
             }
-        } else {
-            qWarning() << "ERROR(JM): parse_status : Received Wrong Status(code)";
+        } else {            qWarning() << "ERROR(JM): parse_status : Received Wrong Status(code)";
             codeValid = false;
         }
 

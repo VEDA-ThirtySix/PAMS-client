@@ -97,7 +97,7 @@ void saveDB_user();
 
 /* 3. [CLIP] HANDLE USER REQUEST[GET] */
 void handle_clip();
-void parse_clip();
+void parse_clip(char* jsonBuffer, TimeInfo *timeInfo);
 void stream_clip();
 
 /* 4. [PLATE] SEND PLATE DATA */

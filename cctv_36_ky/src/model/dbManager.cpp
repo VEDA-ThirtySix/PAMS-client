@@ -16,7 +16,7 @@ QSqlDatabase DBManager::getDatabase() const {
 
 DBManager::~DBManager()
 {
-
+    close_database();
 }
 
 bool DBManager::open_database() {

@@ -351,23 +351,31 @@ char* build_json(const TimeInfo* timeInfo, const char* encoded) {
     // code(status) 객체 설정
     json_object_object_add(status, "code",
         json_object_new_string("success"));
-    // code(message) 객체 설정
+    // message(status) 객체 설정
     json_object_object_add(status, "message",
         json_object_new_string("successful!"));
+    printf("STATUS: %s\n", json_object_to_json_string(status));
 
-    // data(plate, time, type) 객체 설정
+    // plate, time, type(data) 객체 설정
     json_object_object_add(data, "plate",
         json_object_new_string(timeInfo->plate));
     json_object_object_add(data, "time",
         json_object_new_string(timeInfo->time));
     json_object_object_add(data, "type",
         json_object_new_string(timeInfo->type));
+    printf("DATA: %s\n", json_object_to_json_string(data));
 
     // image 객체 생성
     image = json_object_new_object();
-    // image(base64) 객체 설정
+    // base64(image) 객체 설정
     json_object_object_add(image, "image",
         json_object_new_string(encoded));
+    // DEBUG: base64 출력(앞의 20자까지)   
+    const char* encode_charArray = json_object_to_json_string(image);
+    char debugArray[21];
+    strncpy(debugArray, encode_charArray, 20);
+    debugArray[20] = '\0';
+    printf("IMAGE: %s\n", debugArray);
 
     // response(root) 객체에 추가
     json_object_object_add(response, "status", status);
@@ -416,8 +424,14 @@ unsigned char* get_packet(size_t* out_size) {
         *out_size = 0;
         return NULL;
     }
+    
+    printf("get_packet: file_size: %zu\n", file_size);
+    printf("get_packet: read_size: %zu\n", read_size);  //packet_size
+    printf("get_packet: packet: %s\n", packet);
 
     *out_size = read_size;
+    printf("");
+
     return packet;
 }
 
@@ -425,19 +439,25 @@ char* encode_base64(void) {
     printf("DEBUG: encode_base64\n");
     size_t packet_size = 0;
     unsigned char* packet = get_packet(&packet_size);
-
-    if(!packet || packet_size == 0) {
+    
+    //
+    size_t encode_size = (packet_size * 4 + 2) / 3;
+    if(!packet || encode_size == 0) {
         printf("encode_base64: get_packet failed\n");
         return NULL;
     }
-
-    char* encoded = b64_encode(packet, packet_size);
     printf("encode_base64: packet_size: %zu\n", packet_size);
+    printf("encode_base64: encode_size: %zu\n", encode_size);
+
+    char* encoded = (char*)malloc(encode_size + 1);
+    encoded = b64_encode(packet, packet_size);
     
-    if(encoded) {
-        printf("encode_base64: encoded: %s\n", encoded);
+    if(!encoded) {
+        printf("encode_base64: b64_encode Failed\n");
+        free(packet);
+        return NULL;
     } else {
-        printf("encode_base64: b64_encode failed\n");
+        printf("encode_base64: Encoding Successful\n");
     }
 
     free(packet);
@@ -446,7 +466,7 @@ char* encode_base64(void) {
 
 void send_plateData(int client_socket, char* json) {
     printf("DEBUG: send_plateData\n");
-    printf("json: %s\n", json);
+    //printf("json: %s\n", json);
     
     //send json
     write(client_socket, json, strlen(json));
