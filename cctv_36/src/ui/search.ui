@@ -71,10 +71,13 @@ QHeaderView::section {
     padding: 3px;
     font-weight: bold;
     text-align: center;
-}</string>
+	url(:/images/start.png)QTableView 
+}
+
+</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="customerTab">
     <attribute name="title">
@@ -88,6 +91,19 @@ QHeaderView::section {
        <width>491</width>
        <height>351</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTableView {
+    background-color: rgb(255, 255, 255);
+}
+
+QHeaderView::section {
+    background-color: rgba(202,205,205,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+}</string>
      </property>
     </widget>
     <widget class="QLabel" name="textLabel">
@@ -134,7 +150,17 @@ QHeaderView::section {
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">QTableView {
+    background-color: rgb(255, 255, 255);
+}
+
+QHeaderView::section {
+    background-color: rgba(202,205,205,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+}</string>
      </property>
     </widget>
    </widget>
