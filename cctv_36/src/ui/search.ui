@@ -13,52 +13,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLineEdit" name="searchInput">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>261</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
-border:1px solid rgb(0, 0, 0);
-border-top-right-radius: 0px;
-border-bottom-right-radius: 0px;
-border-top-left-radius: 5px;
-border-bottom-left-radius: 5px;</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="searchButton">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>20</y>
-     <width>41</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
-border:1px solid rgb(0, 0, 0);
-border-top-right-radius: 5px;
-border-bottom-right-radius: 5px;
-border-top-left-radius: 0;
-border-bottom-left-radius: 0;</string>
-   </property>
-   <property name="text">
-    <string>검색</string>
-   </property>
-  </widget>
   <widget class="QTabWidget" name="searchTabWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>90</y>
+     <y>80</y>
      <width>881</width>
-     <height>411</height>
+     <height>421</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -106,34 +67,53 @@ QHeaderView::section {
 }</string>
      </property>
     </widget>
-    <widget class="QLabel" name="textLabel">
+    <widget class="QFrame" name="frame">
      <property name="geometry">
       <rect>
-       <x>520</x>
-       <y>200</y>
-       <width>331</width>
-       <height>171</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>고객 정보</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="imageLabel">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
+       <x>510</x>
        <y>10</y>
-       <width>331</width>
-       <height>181</height>
+       <width>361</width>
+       <height>351</height>
       </rect>
      </property>
-     <property name="text">
-      <string>차량 번호판</string>
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
+     <widget class="QLabel" name="imageLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>331</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>차량 번호판</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="textLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>331</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>고객 정보</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="videoTab">
@@ -207,8 +187,8 @@ QHeaderView::section {
   <widget class="QPushButton" name="filterButton">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>20</y>
+     <x>240</x>
+     <y>30</y>
      <width>41</width>
      <height>41</height>
     </rect>
@@ -227,6 +207,45 @@ border-bottom-left-radius: 0;</string>
    <property name="icon">
     <iconset resource="../../images.qrc">
      <normaloff>:/images/list.png</normaloff>:/images/list.png</iconset>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="searchInput">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>231</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
+border-top-right-radius: 0px;
+border-bottom-right-radius: 0px;
+border-top-left-radius: 5px;
+border-bottom-left-radius: 5px;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="searchButton">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>30</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+border:1px solid rgb(0, 0, 0);
+border-top-right-radius: 5px;
+border-bottom-right-radius: 5px;
+border-top-left-radius: 0;
+border-bottom-left-radius: 0;</string>
+   </property>
+   <property name="text">
+    <string>검색</string>
    </property>
   </widget>
  </widget>

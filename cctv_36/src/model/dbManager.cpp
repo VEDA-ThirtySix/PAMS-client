@@ -20,9 +20,9 @@ DBManager::~DBManager()
 
 bool DBManager::open_database() {
 
-    //db.setDatabaseName("metadata.db");
-
-    db.setDatabaseName("/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/metadata.db"); // for MacOS
+    db.setDatabaseName("metadata.db");
+    db.setDatabaseName(getDatabasePath());
+    //db.setDatabaseName("/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/metadata.db"); // for MacOS
 
     if(!db.open()) {
         qDebug() << "Error(DB): Failed to Open Database: " << db;
@@ -170,6 +170,40 @@ qint64 DBManager::get_duration(const QDateTime& from, const QDateTime& to) {
      * hours = seconds / 3600;
      * days = seconds / (3600 * 24);
      */
+}
+
+QString DBManager::getDatabasePath() const {
+    QString dbName = "metadata.db";
+
+#ifdef Q_OS_MAC
+    // 현재 실행 파일 위치 (*.app/Contents/MacOS)
+    QDir dir(QCoreApplication::applicationDirPath());
+
+    // Contents, cctv_36.app, Debug, build 폴더를 거슬러 올라가기
+    dir.cdUp(); // MacOS -> Contents
+    dir.cdUp(); // Contents -> cctv_36.app
+    dir.cdUp(); // cctv_36.app -> Debug
+    dir.cdUp(); // Debug -> build
+    dir.cdUp(); // build -> cctv_36
+
+    QString dbPath = dir.path() + QDir::separator() + dbName;
+
+    // 디버그 정보
+    qDebug() << "Project Root:" << dir.path();
+    qDebug() << "Database Path:" << dbPath;
+#else
+    // Windows/Linux의 경우
+    QString dbPath = QCoreApplication::applicationDirPath() + QDir::separator() + dbName;
+#endif
+
+    // 디렉토리 존재 확인
+    QDir dbDir(QFileInfo(dbPath).path());
+    if (!dbDir.exists()) {
+        dbDir.mkpath(".");
+        qDebug() << "Created directory:" << dbDir.path();
+    }
+
+    return dbPath;
 }
 
 
