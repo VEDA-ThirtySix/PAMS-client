@@ -98,7 +98,14 @@ void Streaming::startFFmpeg() {
         return;
     }
 
-    QString ffmpegPath = "/bin/ffmpeg"; // FFmpeg 실행 경로
+#ifdef Q_OS_MAC
+    QString ffmpegPath = "/opt/homebrew/bin/ffmpeg"; // macOS의 FFmpeg 경로
+#elif defined(Q_OS_LINUX)
+    QString ffmpegPath = "/usr/bin/ffmpeg"; // Linux의 일반적인 FFmpeg 경로
+#else
+    QString ffmpegPath = "/bin/ffmpeg"; // Debian의 기본 경로
+#endif
+
 
     /*FFMPEG 실행시 전달되는 옵션*/
     QStringList arguments = {
