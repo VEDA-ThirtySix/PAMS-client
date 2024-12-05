@@ -34,6 +34,7 @@ private:
     /* KIYUN 1129 */
     QString m_currentSearchType;
     QSqlTableModel* m_modelBasic;
+    QSqlTableModel *m_modelVideo;
     QSqlTableModel* m_modelTime;
     QSqlDatabase m_db;
     QDir projectDir;
@@ -41,10 +42,12 @@ private:
     bool initializePath();
 
     void setupConnections();
-    void setupTable();
+    void setupCustomerTable();
+    void setupVideoTable();
     void setupImage();
     void updatePlaceholder();
     void clearImage();
+
 
 
     void clicked_buttonEnroll();

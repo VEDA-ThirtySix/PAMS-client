@@ -14,6 +14,7 @@
 #include <QMap>
 #include <QList>
 #include <QDir>
+#include <QCoreApplication>
 
 class DBManager : public QObject {
 public:
@@ -34,11 +35,15 @@ public:
     void create_timeInfo(const TimeInfo& timeInfo);
     TimeInfo read_timeInfo(const QString& selected_plate);
     qint64 get_duration(const QDateTime& from, const QDateTime& to);
+
+    QString getDatabasePath() const;
     //void delete_timeInfo(const QString& plate);
 
     /* QList<TimeInfo> timeInfoList */
     //void addNewTimeInfo(const TimeInfo& newTimeInfo);
 
+
+    // void insertExampleTimeData();
 
     /*
      * 등록_입차시간
@@ -52,6 +57,7 @@ private:
     BasicInfo basicInfo;
     TimeInfo timeInfo;
     QList<TimeInfo> timeInfoList;
+
 };
 
 #endif // DBMANAGER_H

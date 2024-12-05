@@ -20,7 +20,11 @@ Search::Search(QWidget *parent)
     m_currentSearchType = "차량번호"; // 기본 검색 타입
 
     setupConnections();
-    setupTable();
+    setupCustomerTable();
+    setupVideoTable();
+
+    //userManager->getDBManager()->insertExampleTimeData();
+
     setupImage();
     // lineEdit_test();
     updatePlaceholder();
@@ -29,7 +33,7 @@ Search::Search(QWidget *parent)
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
     //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
-    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 
 }
 
@@ -37,7 +41,7 @@ Search::~Search() {
     delete ui;
 }
 
-void Search::setupTable() {
+void Search::setupCustomerTable() {
     // DB 초기화
     //userManager->initiallize();
 
@@ -78,16 +82,36 @@ void Search::setupTable() {
     m_modelBasic->setHeaderData(3, Qt::Horizontal, "PHONE");
 
 
-    ui->resultsTable->setModel(m_modelBasic);
-    ui->resultsTable->resizeColumnsToContents();
+    ui->customerTable->setModel(m_modelBasic);
+    ui->customerTable->resizeColumnsToContents();
     //m_resultsTable->hideColumn(0); // ID 컬럼 숨기기
-    ui->resultsTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
+    ui->customerTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
 
 
     // 열 너비 설정
     /*
     ui->resultsTable->setColumnWidth(2, 150); //HOME
     ui->resultsTable->setColumnWidth(3, 150); //PHONE   */
+}
+
+void Search::setupVideoTable() {
+    m_modelTime = new QSqlTableModel(this, m_db);
+    m_modelTime->setTable("Time");
+    m_modelTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    if(!m_modelTime->select()) {
+        qDebug() << "Time Table Error: " << m_modelTime->lastError().text();
+    }
+
+    // Time 테이블의 컬럼에 맞게 헤더 설정
+    m_modelTime->setHeaderData(0, Qt::Horizontal, "ID");
+    m_modelTime->setHeaderData(1, Qt::Horizontal, "PLATE");
+    m_modelTime->setHeaderData(2, Qt::Horizontal, "TIME");
+    m_modelTime->setHeaderData(3, Qt::Horizontal, "TYPE");
+
+    ui->videoTable->setModel(m_modelTime);
+    ui->videoTable->resizeColumnsToContents();
+    ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void Search::setupImage()
@@ -324,7 +348,7 @@ void Search::showSearchMenu()
 
 /* KIYUN_1127 */
 QString Search::get_seletedData() {
-    QModelIndex currentIndex = ui->resultsTable->selectionModel()->currentIndex();
+    QModelIndex currentIndex = ui->customerTable->selectionModel()->currentIndex();
 
     if(!currentIndex.isValid()) {
         qDebug() << "MSG: no selection";
@@ -333,17 +357,18 @@ QString Search::get_seletedData() {
 
     int plateIndex_column = 1;
 
-    QModelIndex plateIndex = ui->resultsTable->model()->index(currentIndex.row(), plateIndex_column);
-    QString selected_plate = ui->resultsTable->model()->data(plateIndex).toString();
+    QModelIndex plateIndex = ui->customerTable->model()->index(currentIndex.row(), plateIndex_column);
+    QString selected_plate = ui->customerTable->model()->data(plateIndex).toString();
 
     qDebug() << "DONE(SE): selected column(plate): " << selected_plate;
     return selected_plate;
 }
 
 void Search::refreshTable() {
-    setupTable();
+    setupCustomerTable();
+    setupVideoTable();
     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
-    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 }
 
 // void Search::lineEdit_test() {

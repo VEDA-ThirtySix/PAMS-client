@@ -39,6 +39,10 @@ bool UserManager::editUser(BasicInfo& editted_basicInfo) {
     return true;
 }
 
+// DBManager* UserManager::getDBManager() const {
+//     return dbManager;
+// }
+
 /*
 bool UserManager::deleteUser(int type, const QString& value) {
 
