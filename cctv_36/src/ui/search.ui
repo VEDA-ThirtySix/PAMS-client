@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1052</width>
-    <height>566</height>
+    <height>616</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>80</y>
      <width>881</width>
-     <height>421</height>
+     <height>521</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -75,7 +75,7 @@ QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
 }</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="customerTab">
     <attribute name="title">
@@ -87,7 +87,7 @@ QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
        <x>10</x>
        <y>10</y>
        <width>491</width>
-       <height>341</height>
+       <height>441</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -112,11 +112,11 @@ QHeaderView::section {
        <x>510</x>
        <y>10</y>
        <width>361</width>
-       <height>351</height>
+       <height>461</height>
       </rect>
      </property>
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <widget class="QLabel" name="imageLabel">
       <property name="geometry">
@@ -124,7 +124,7 @@ QHeaderView::section {
         <x>10</x>
         <y>30</y>
         <width>331</width>
-        <height>131</height>
+        <height>171</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -139,9 +139,9 @@ border:1px solid rgb(67,188,205);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>200</y>
+        <y>280</y>
         <width>331</width>
-        <height>141</height>
+        <height>161</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -171,14 +171,14 @@ border:1px solid rgb(67,188,205);</string>
        <string>차량번호판</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="plateTitle_2">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>170</y>
+        <y>250</y>
         <width>331</width>
         <height>31</height>
        </rect>
@@ -193,7 +193,7 @@ border:1px solid rgb(67,188,205);</string>
        <string>고객정보</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </widget>
@@ -208,7 +208,7 @@ border:1px solid rgb(67,188,205);</string>
        <x>10</x>
        <y>10</y>
        <width>851</width>
-       <height>351</height>
+       <height>411</height>
       </rect>
      </property>
      <property name="styleSheet">

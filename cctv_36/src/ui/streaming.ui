@@ -27,7 +27,7 @@
 border:none;</string>
    </property>
    <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
+    <enum>QFrame::Shape::NoFrame</enum>
    </property>
    <widget class="QLabel" name="streamingLabel">
     <property name="geometry">
@@ -64,7 +64,7 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <widget class="QLabel" name="label">
      <property name="geometry">
@@ -161,7 +161,7 @@ background:none;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="startButton">
@@ -247,7 +247,7 @@ QPushButton:hover {
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <zorder>streamingLabel</zorder>
