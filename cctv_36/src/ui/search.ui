@@ -23,22 +23,61 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QTableView {
- background-color: rgb(255, 255, 255);
-}
-QHeaderView::section {
-    background-color: rgba(202,205,205,0.5);
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    padding: 3px;
-    font-weight: bold;
-    text-align: center;
-	url(:/images/start.png)QTableView 
+    <string notr="true">QTabWidget#searchTabWidget::pane {
+    background-color: rgb(255, 255, 255);
+    border: none;
 }
 
-</string>
+QTabWidget#searchTabWidget &gt; QTabBar::tab {
+    font: 9pt &quot;Sans Serif&quot;;
+    background-color: rgba(154, 255, 195,0.5);
+    color: black;
+    padding: 0px;
+    margin-right: 5px;
+    width: 120px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:first {
+    background-color: rgba(154, 255, 195,0.5);
+    color: black;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:first:selected {
+    background: none;
+    background-color: rgba(154, 255, 195,0.5);
+    background-image: transparent;
+    color: rgb(0, 0, 0);
+    font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:last {
+    background-color: rgba(154, 255, 195,0.1);
+    color: transparent;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:last:selected {
+    background: none;
+    background-color: rgba(154, 255, 195,0.5);
+    background-image: none;
+    color: rgb(0, 0, 0);
+    font: 500 12pt &quot;Quicksand Medium&quot;;
+    padding: 0px;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
+    background: none;
+    background-color: rgba(154, 255, 195,0.1);
+    background-image: none;
+    color: rgb(255, 255, 255);
+    font: 500 10pt &quot;Quicksand Medium&quot;;
+}</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="customerTab">
     <attribute name="title">
