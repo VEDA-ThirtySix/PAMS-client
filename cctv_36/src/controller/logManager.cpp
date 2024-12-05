@@ -1,4 +1,5 @@
 #include "logManager.h"
+#include <QDebug>
 
 LogManager::LogManager(QObject *parent)
     : QObject(parent)
