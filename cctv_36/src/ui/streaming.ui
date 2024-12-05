@@ -256,15 +256,22 @@ QPushButton:hover {
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>390</width>
+      <width>391</width>
       <height>21</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 10pt &quot;Sans Serif&quot;;
-color:  rgb(243,115,33);
-background:rgba(243,115,33,0.2);
-border:1px solid rgb(243,115,33);</string>
+     <string notr="true">QLineEdit{
+	font: 10pt &quot;Sans Serif&quot;;
+	color:  rgb(243,115,33);
+	background:rgba(243,115,33,0.2);
+	border:1px solid rgb(243,115,33);
+}
+QLineEdit:focus {
+    	border:1px solid rgb(243,115,33);
+    background-color: lightyellow; /* 배경색 변경 */
+}
+</string>
     </property>
     <property name="text">
      <string/>
@@ -276,9 +283,9 @@ border:1px solid rgb(243,115,33);</string>
    <widget class="QPushButton" name="setButton">
     <property name="geometry">
      <rect>
-      <x>399</x>
+      <x>400</x>
       <y>40</y>
-      <width>51</width>
+      <width>50</width>
       <height>21</height>
      </rect>
     </property>
@@ -288,13 +295,6 @@ border:1px solid rgb(243,115,33);</string>
 	background:rgba(243,115,33,0.2);
 	border:1px solid rgb(243,115,33);
 	font: 500 9pt &quot;Quicksand Medium&quot;;
-}
-QPushButton::selected{
-	color:  rgb(243,115,33);
-	background: rgba(243,115,33,0.3);
-	border:1px solid rgb(243,115,33);
-	font: 500 9pt &quot;Quicksand Medium&quot;;
-
 }
 QPushButton::hover {
 	color:  rgb(255, 255, 255);
