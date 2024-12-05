@@ -43,6 +43,8 @@ public:
     //void addNewTimeInfo(const TimeInfo& newTimeInfo);
 
 
+    // void insertExampleTimeData();
+
     /*
      * 등록_입차시간
      * 등록_출차시간

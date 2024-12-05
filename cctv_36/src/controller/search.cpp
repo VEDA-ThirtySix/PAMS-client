@@ -20,7 +20,11 @@ Search::Search(QWidget *parent)
     m_currentSearchType = "차량번호"; // 기본 검색 타입
 
     setupConnections();
-    setupTable();
+    setupCustomerTable();
+    setupVideoTable();
+
+    //userManager->getDBManager()->insertExampleTimeData();
+
     setupImage();
     // lineEdit_test();
     updatePlaceholder();
@@ -37,7 +41,7 @@ Search::~Search() {
     delete ui;
 }
 
-void Search::setupTable() {
+void Search::setupCustomerTable() {
     // DB 초기화
     //userManager->initiallize();
 
@@ -88,6 +92,26 @@ void Search::setupTable() {
     /*
     ui->resultsTable->setColumnWidth(2, 150); //HOME
     ui->resultsTable->setColumnWidth(3, 150); //PHONE   */
+}
+
+void Search::setupVideoTable() {
+    m_modelTime = new QSqlTableModel(this, m_db);
+    m_modelTime->setTable("Time");
+    m_modelTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    if(!m_modelTime->select()) {
+        qDebug() << "Time Table Error: " << m_modelTime->lastError().text();
+    }
+
+    // Time 테이블의 컬럼에 맞게 헤더 설정
+    m_modelTime->setHeaderData(0, Qt::Horizontal, "ID");
+    m_modelTime->setHeaderData(1, Qt::Horizontal, "PLATE");
+    m_modelTime->setHeaderData(2, Qt::Horizontal, "TIME");
+    m_modelTime->setHeaderData(3, Qt::Horizontal, "TYPE");
+
+    ui->videoTable->setModel(m_modelTime);
+    ui->videoTable->resizeColumnsToContents();
+    ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void Search::setupImage()
@@ -341,7 +365,8 @@ QString Search::get_seletedData() {
 }
 
 void Search::refreshTable() {
-    setupTable();
+    setupCustomerTable();
+    setupVideoTable();
     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 }

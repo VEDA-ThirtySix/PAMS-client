@@ -20,9 +20,9 @@ DBManager::~DBManager()
 
 bool DBManager::open_database() {
 
-    db.setDatabaseName("metadata.db");
-    db.setDatabaseName(getDatabasePath());
+    //db.setDatabaseName("metadata.db");
     //db.setDatabaseName("/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/metadata.db"); // for MacOS
+    db.setDatabaseName(getDatabasePath());
 
     if(!db.open()) {
         qDebug() << "Error(DB): Failed to Open Database: " << db;
@@ -176,10 +176,9 @@ QString DBManager::getDatabasePath() const {
     QString dbName = "metadata.db";
 
 #ifdef Q_OS_MAC
-    // 현재 실행 파일 위치 (*.app/Contents/MacOS)
-    QDir dir(QCoreApplication::applicationDirPath());
 
-    // Contents, cctv_36.app, Debug, build 폴더를 거슬러 올라가기
+    QDir dir(QCoreApplication::applicationDirPath()); // 현재 실행 파일 위치 (*.app/Contents/MacOS)
+
     dir.cdUp(); // MacOS -> Contents
     dir.cdUp(); // Contents -> cctv_36.app
     dir.cdUp(); // cctv_36.app -> Debug
@@ -188,15 +187,13 @@ QString DBManager::getDatabasePath() const {
 
     QString dbPath = dir.path() + QDir::separator() + dbName;
 
-    // 디버그 정보
-    qDebug() << "Project Root:" << dir.path();
-    qDebug() << "Database Path:" << dbPath;
-#else
-    // Windows/Linux의 경우
+    // qDebug() << "Project Root:" << dir.path();
+    // qDebug() << "Database Path:" << dbPath;
+
+#else // Windows/Linux의 경우
     QString dbPath = QCoreApplication::applicationDirPath() + QDir::separator() + dbName;
 #endif
 
-    // 디렉토리 존재 확인
     QDir dbDir(QFileInfo(dbPath).path());
     if (!dbDir.exists()) {
         dbDir.mkpath(".");
@@ -206,6 +203,21 @@ QString DBManager::getDatabasePath() const {
     return dbPath;
 }
 
+// void DBManager::insertExampleTimeData() {
+//     QSqlQuery query(db);
+
+//     // 현재 시간을 기준으로 예제 데이터 생성
+//     QDateTime currentTime = QDateTime::currentDateTime();
+//     QDateTime earlierTime = currentTime.addSecs(-3600); // 1시간 전
+
+//     // 첫 번째 예제 데이터: 입차
+//     TimeInfo timeInfo1("12가3456", earlierTime, "입차");
+//     create_timeInfo(timeInfo1);
+
+//     // 두 번째 예제 데이터: 출차
+//     TimeInfo timeInfo2("12가3456", currentTime, "출차");
+//     create_timeInfo(timeInfo2);
+// }
 
 
 /*
