@@ -1,0 +1,56 @@
+#ifndef STREAMING_H
+#define STREAMING_H
+
+#include "ui_streaming.h"
+#include <QWidget>
+
+#include <QSqlQuery>
+#include <QMainWindow>
+#include <QLabel>
+#include <QProcess>
+#include <QTimer>
+#include <QUrl>
+
+class Streaming : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit Streaming(QWidget *parent = nullptr);
+    ~Streaming();
+
+    // RTSP 설정
+    void get_host(const QString& host);
+    void rtsp_setting();
+    void set_config(const QString& url, const QString& port);
+
+private:
+    Ui::Streaming *ui;
+    QTimer *timer;
+    QProcess *ffmpegProcess;
+    QTimer *frameTimer;
+    QString m_host;
+    QString m_rtspUrl;  // RTSP 서버 주소
+
+    // 데이터베이스 관련 메서드
+    //void saveMessageToDatabase(const QString &message);  // 메시지를 데이터베이스에 저장하는 메서드
+    //bool saveToDatabase(const QString &tableName, const QMap<QString, QVariant> &data);    // 데이터베이스 저장 함수
+
+
+private slots:
+    // UI 업데이트
+    void updateDateTime();
+    void updateUIState(bool isRunning);
+
+    // RTSP 및 FFmpeg 관련
+    void startFFmpeg();
+    void stopFFmpeg();
+    void captureFrame();
+    void processOutput();
+
+    // 슬롯 정의
+    void on_startButton_clicked();
+    void on_stopButton_clicked();
+};
+
+#endif // STREAMING_H

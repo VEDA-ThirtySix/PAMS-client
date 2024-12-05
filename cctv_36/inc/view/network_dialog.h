@@ -1,0 +1,4 @@
+#ifndef NETWORK_DIALOG_H
+#define NETWORK_DIALOG_H
+
+#endif // NETWORK_DIALOG_H

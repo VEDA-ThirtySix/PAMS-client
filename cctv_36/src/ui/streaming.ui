@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Streaming</class>
+ <widget class="QWidget" name="Streaming">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1052</width>
+    <height>564</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QFrame" name="streamingFrame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>691</width>
+     <height>451</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: transparent;
+border:none;</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Shape::NoFrame</enum>
+   </property>
+   <widget class="QLabel" name="streamingLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>440</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:rgba(243,115,33,0.2);
+border:1px solid rgb(243,115,33);</string>
+    </property>
+    <property name="text">
+     <string>Streaming Video</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="bestshotFrame">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>40</y>
+      <width>231</width>
+      <height>391</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
+color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::NoFrame</enum>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>230</y>
+       <width>211</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
+     </property>
+     <property name="text">
+      <string>Detected Vehicle Image</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>211</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
+     </property>
+     <property name="text">
+      <string>Vehicle1</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="dateTimeLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>440</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+font: 500 12pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border:1px solid rgb(243,115,33);</string>
+    </property>
+    <property name="text">
+     <string>Date - Time</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="licensetitleLabel">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>10</y>
+      <width>231</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+font: 500 13pt &quot;Quicksand Medium&quot;;
+background-color: rgba(243,115,33,0.5);
+border:1px solid rgb(243,115,33);</string>
+    </property>
+    <property name="text">
+     <string>LicensePlate</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="bestshotFrame_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>340</y>
+      <width>441</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="startButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>221</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	color:  rgb(243,115,33);
+	background:none;
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton:selected{
+	color:  rgb(243,115,33);
+	background-color: rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton:hover {
+	color:  rgb(255, 255, 255);
+	background-color:rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 8pt &quot;Quicksand Medium&quot;;
+}</string>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stopButton">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>60</y>
+      <width>220</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	color:  rgb(243,115,33);
+	background:none;
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton:selected{
+	color:  rgb(243,115,33);
+	background-color: rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+}
+QPushButton:hover {
+	color:  rgb(255, 255, 255);
+	background-color:rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 8pt &quot;Quicksand Medium&quot;;
+}</string>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_url">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>440</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <zorder>streamingLabel</zorder>
+   <zorder>dateTimeLabel</zorder>
+   <zorder>licensetitleLabel</zorder>
+   <zorder>bestshotFrame</zorder>
+   <zorder>bestshotFrame_2</zorder>
+   <zorder>startButton</zorder>
+   <zorder>stopButton</zorder>
+   <zorder>label_url</zorder>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
