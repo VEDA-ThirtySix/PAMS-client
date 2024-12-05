@@ -21,9 +21,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>90</y>
-      <width>1031</width>
-      <height>521</height>
+      <y>50</y>
+      <width>1041</width>
+      <height>561</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -83,7 +83,7 @@ QTabWidget#tabWidget &gt; QTabBar::tab:hover {
 }</string>
     </property>
     <property name="tabPosition">
-     <enum>QTabWidget::TabPosition::North</enum>
+     <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
      <number>-1</number>
@@ -110,13 +110,14 @@ QTabWidget#tabWidget &gt; QTabBar::tab:hover {
      <string notr="true">color: rgb(255, 255, 255);
 font: 500 bold 13pt &quot;Quicksand Medium&quot;;
 background-color: rgba(243,115,33,0.5);
-border-bottom:2px solid rgb(243,115,33);</string>
+border-bottom:2px solid rgb(243,115,33);
+text-align: center; /* 수평 중앙 정렬 */</string>
     </property>
     <property name="text">
      <string>LicensePlate Detection CCTV App</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="teamLogo">
@@ -182,11 +183,18 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
    <widget class="QLineEdit" name="lineEdit_host">
     <property name="geometry">
      <rect>
-      <x>770</x>
+      <x>720</x>
       <y>50</y>
-      <width>191</width>
+      <width>200</width>
       <height>25</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">	color:  rgb(243,115,33);
+	background-color:white;
+	border:1px solid rgb(243,115,33);
+	font: 500 9pt &quot;Quicksand Medium&quot;;
+</string>
     </property>
     <property name="placeholderText">
      <string>Enter HOST IP Address</string>
@@ -195,16 +203,28 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
    <widget class="QPushButton" name="pushButton_apply">
     <property name="geometry">
      <rect>
-      <x>970</x>
+      <x>921</x>
       <y>50</y>
-      <width>71</width>
+      <width>90</width>
       <height>25</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(243,115,33);
+background:rgba(243,115,33,0.2);
+border:1px solid rgb(243,115,33);
+font: 500 10pt &quot;Quicksand Medium&quot;;</string>
     </property>
     <property name="text">
      <string>APPLY</string>
     </property>
    </widget>
+   <zorder>tabWidget</zorder>
+   <zorder>guideLabel</zorder>
+   <zorder>teamLogo</zorder>
+   <zorder>hanwhaLogo</zorder>
+   <zorder>pushButton_apply</zorder>
+   <zorder>lineEdit_host</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

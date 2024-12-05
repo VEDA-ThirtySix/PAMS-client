@@ -30,8 +30,7 @@ Streaming::Streaming(QWidget *parent)
     connect(frameTimer, &QTimer::timeout, this, &Streaming::captureFrame);
     //connect(ffmpegProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(captureFrame()));
 
-    // 초기 UI 상태 설정
-    updateUIState(false); // Start 버튼 활성화, Stop 버튼 비활성화
+
 }
 
 Streaming::~Streaming()
@@ -104,19 +103,19 @@ void Streaming::startFFmpeg() {
     QString ffmpegPath = "/usr/bin/ffmpeg"; // Linux의 일반적인 FFmpeg 경로
 #endif
 
-
-    /*FFMPEG 실행시 전달되는 옵션*/
+    //FFMPEG 실행시 전달되는 옵션
     QStringList arguments = {
-        "-fflags", "discardcorrupt",        //   손상된 프레임 무시
+        "-protocol_whitelist","file,tcp,udp,rtp,rtsp",
         "-i",m_rtspUrl, //동적으로 설정된 RTSP URL
         "-vf", "fps=30",                    // 출력 프레임 속도 설정
-        "-s", "680x360",                         // 출력 영상의 해상도 설정
-        "-f", "image2pipe",                 // 이미지전송: 파이프 형식
-        "-vcodec", "mjpeg",                 // MJPEG 형식으로 디코딩
-        "-q:v", "2",    // 품질 설정 (1~31, 낮을수록 품질이 좋음)
-        "-pix_fmt", "yuvj420p",  // 색 공간 최적화
-        "pipe:1"                            // 출력 파이프
+        "-s", "800x600",                         // 출력 영상의 해상도 설정
+        "-f","rawvideo",
+        "-pix_fmt","rgb24",  // 픽셀 포맷: RGB888
+        //"-pix_fmt", "yuvj420p",  // 색 공간 최적화
+        "-loglevel","debug",
+        "-"
     };
+
 
     ffmpegProcess->start(ffmpegPath, arguments);
 
@@ -127,47 +126,51 @@ void Streaming::startFFmpeg() {
     frameTimer->start(33); // 30fps (1000ms /33 = 30ms)
     qDebug() << "FFmpeg started with URL:" << m_rtspUrl;
 
-    ui->startButton->setStyleSheet("background-color:rgba(243,115,33,0.4);  \
-                                    border:1px solid rgb(243,115,33); \
-                                    color: white;\
-                                    font: 500 bold 9pt 'Quicksand Medium'; ");
-    ui->stopButton->setStyleSheet("	color:  rgb(243,115,33);\
-                                  background:none; \
-                                  border:1px solid rgb(243,115,33);\
-                                  font: 500 9pt 'Quicksand Medium';");
+    setButtonStyle(ui->startButton, true);
+    setButtonStyle(ui->stopButton, false);
 
-    ui->startButton->setEnabled(false);
-    ui->stopButton->setEnabled(true);
 }
 
 void Streaming::captureFrame() {
-    while(ffmpegProcess->canReadLine()){
-        // FFmpeg 프로세스에서 데이터를 읽기
+    while (ffmpegProcess->bytesAvailable() > 0) {
+        // FFmpeg에서 데이터 읽기
         QByteArray frameData = ffmpegProcess->readAllStandardOutput();
         if (frameData.isEmpty()) {
             qDebug() << "No frame data received!";
             return;
         }
+        //qDebug() << "frameData Size : " << frameData.size();
+        // 이전에 누적된 데이터와 합치기
+        incompleteBuffer.append(frameData);
 
-        // 프레임데이터를 QPixmap으로 변환
-        QPixmap pixmap;
-        if (!pixmap.loadFromData(frameData, "JPEG")) {
-            qDebug() << "Failed to load frame data!";
-            return;
+        // 한 프레임 크기 계산 (RGB888)
+        const int width = 800;
+        const int height = 600;
+        const int bytesPerPixel = 3;
+        const int frameSize = width * height * bytesPerPixel;
+
+        // 버퍼가 프레임 크기 이상인지 확인
+        while (incompleteBuffer.size() >= frameSize) {
+            QByteArray singleFrameData = incompleteBuffer.left(frameSize);
+            incompleteBuffer.remove(0, frameSize);
+
+            // QImage 생성
+            QImage image(reinterpret_cast<const uchar*>(singleFrameData.data()),
+                         width, height, QImage::Format_RGB888);
+
+            // QLabel에 맞게 크기 조정
+            QPixmap scaledPixmap = QPixmap::fromImage(image).scaled(
+                ui->streamingLabel->size(),
+                Qt::KeepAspectRatioByExpanding,
+                Qt::SmoothTransformation
+            );
+
+            // QLabel에 QPixmap 설정
+            ui->streamingLabel->setPixmap(scaledPixmap);
         }
-
-        // QLabel 크기에 맞게 조정
-        QPixmap scaledPixmap = pixmap.scaled(
-            ui->streamingLabel->size(),
-            Qt::KeepAspectRatio,
-            Qt::SmoothTransformation
-        );
-        // QLabel에 표시
-        ui->streamingLabel->setPixmap(scaledPixmap);
     }
-
-
 }
+
 /*FFmpeg을 종료하고 마지막 프레임을 고정*/
 void Streaming::stopFFmpeg() {
     if (ffmpegProcess->state() == QProcess::Running) {
@@ -181,16 +184,8 @@ void Streaming::stopFFmpeg() {
         qDebug() << "FFmpeg is not running.";
     }
 
-    ui->startButton->setStyleSheet("color:  rgb(243,115,33);\
-                                   background:none; \
-                                   border:1px solid rgb(243,115,33);\
-                                   font: 500 9pt 'Quicksand Medium'; ");
-    ui->stopButton->setStyleSheet("background-color:rgba(243,115,33,0.4);  \
-                                    border:1px solid rgb(243,115,33); \
-                                    color: white;\
-                                    font: 500 bold 9pt 'Quicksand Medium'; ");
-    ui->startButton->setEnabled(true);
-    ui->stopButton->setEnabled(false);
+    setButtonStyle(ui->startButton, false);
+    setButtonStyle(ui->stopButton, true);
 }
 
 /*FFmpeg 프로세스의 에러로그를 읽어서 출력*/
@@ -201,11 +196,6 @@ void Streaming::processOutput() {
         }
 }
 
-/*startButton과 stopButton의 활성화 상태를 FFmpeg 프로세스의 실행 상태에 따라 동기화*/
-void Streaming::updateUIState(bool isRunning) {
-    ui->startButton->setEnabled(!isRunning);
-    ui->stopButton->setEnabled(isRunning);
-}
 
 /*UI에서 입력된 RTSP주소 가져오기*/
 void Streaming::get_host(const QString& host) {
@@ -224,14 +214,29 @@ void Streaming::rtsp_setting(){
     qDebug() << "QDEBUG(SW)$ RTSP URL:" << m_rtspUrl;
 }
 
-void Streaming::on_startButton_clicked()
-{
+void Streaming::on_startButton_clicked(){
     startFFmpeg();
 }
 
-void Streaming::on_stopButton_clicked()
-{
+void Streaming::on_stopButton_clicked(){
     stopFFmpeg();
+}
+
+//버튼 true, false에 따른 스타일 지정 함수
+void Streaming::setButtonStyle(QPushButton* button, bool isActive) {
+    if (isActive) {
+        button->setChecked(true);
+        button->setStyleSheet("color: white; \
+                              background-color:rgba(243,115,33,0.7); \
+                              border:1px solid rgb(243,115,33); \
+                              font: 500 9pt 'Quicksand Medium';");
+    } else {
+        button->setChecked(false);
+        button->setStyleSheet("color: rgb(243,115,33); \
+                              background:none; \
+                              border:1px solid rgb(243,115,33); \
+                              font: 500 9pt 'Quicksand Medium';");
+    }
 }
 
 

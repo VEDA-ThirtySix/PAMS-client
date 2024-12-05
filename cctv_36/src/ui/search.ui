@@ -25,12 +25,12 @@
    <property name="styleSheet">
     <string notr="true">QTabWidget#searchTabWidget::pane {
     background-color: rgb(255, 255, 255);
-    border: none;
+    border: 1px solid rgb(67,188,205);
 }
 
 QTabWidget#searchTabWidget &gt; QTabBar::tab {
     font: 9pt &quot;Sans Serif&quot;;
-    background-color: rgba(154, 255, 195,0.5);
+    background-color: rgba(67,188,205,0.5);
     color: black;
     padding: 0px;
     margin-right: 5px;
@@ -41,43 +41,41 @@ QTabWidget#searchTabWidget &gt; QTabBar::tab {
 }
 
 QTabWidget#searchTabWidget &gt; QTabBar::tab:first {
-    background-color: rgba(154, 255, 195,0.5);
-    color: black;
+    background-color: rgba(67,188,205,0.5);
+    color: white;
 }
 
 QTabWidget#searchTabWidget &gt; QTabBar::tab:first:selected {
     background: none;
-    background-color: rgba(154, 255, 195,0.5);
-    background-image: transparent;
+    background-color: rgba(67,188,205,0.8);
+    background-image:none;
     color: rgb(0, 0, 0);
     font: 500 12pt &quot;Quicksand Medium&quot;;
-    padding: 0px;
 }
 
 QTabWidget#searchTabWidget &gt; QTabBar::tab:last {
-    background-color: rgba(154, 255, 195,0.1);
-    color: transparent;
+    background-color: rgba(67,188,205,0.5);
+    color: white;
 }
 
 QTabWidget#searchTabWidget &gt; QTabBar::tab:last:selected {
     background: none;
-    background-color: rgba(154, 255, 195,0.5);
+    background-color: rgba(67,188,205,0.8);
     background-image: none;
     color: rgb(0, 0, 0);
     font: 500 12pt &quot;Quicksand Medium&quot;;
-    padding: 0px;
 }
 
 QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
     background: none;
-    background-color: rgba(154, 255, 195,0.1);
+    background-color:rgb(209, 209, 209);
     background-image: none;
     color: rgb(255, 255, 255);
     font: 500 10pt &quot;Quicksand Medium&quot;;
 }</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="customerTab">
     <attribute name="title">
@@ -89,12 +87,14 @@ QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
        <x>10</x>
        <y>10</y>
        <width>491</width>
-       <height>351</height>
+       <height>341</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QTableView {
-    background-color: rgb(255, 255, 255);
+
+background-color: white;
+border:1px solid rgb(67,188,205);
 }
 
 QHeaderView::section {
@@ -116,41 +116,84 @@ QHeaderView::section {
       </rect>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Shape::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Shadow::Raised</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <widget class="QLabel" name="imageLabel">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
+        <y>30</y>
         <width>331</width>
-        <height>171</height>
+        <height>131</height>
        </rect>
       </property>
-      <property name="text">
-       <string>차량 번호판</string>
+      <property name="styleSheet">
+       <string notr="true">background-color: white;
+border:1px solid rgb(67,188,205);</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+      <property name="text">
+       <string/>
       </property>
      </widget>
      <widget class="QLabel" name="textLabel">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>190</y>
+        <y>200</y>
         <width>331</width>
-        <height>151</height>
+        <height>141</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: white;
+border:1px solid rgb(67,188,205);</string>
+      </property>
       <property name="text">
-       <string>고객 정보</string>
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="plateTitle">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>331</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
+color:rgb(67,188,205);
+background-color: rgba(67,188,205,0.3);
+border:1px solid rgb(67,188,205);</string>
+      </property>
+      <property name="text">
+       <string>차량번호판</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="plateTitle_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>170</y>
+        <width>331</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
+color: rgb(67,188,205);
+background-color: rgba(67,188,205,0.3);
+border:1px solid rgb(67,188,205);</string>
+      </property>
+      <property name="text">
+       <string>고객정보</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
@@ -162,7 +205,7 @@ QHeaderView::section {
     <widget class="QTableView" name="videoTable">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>10</x>
        <y>10</y>
        <width>851</width>
        <height>351</height>
@@ -187,11 +230,25 @@ QHeaderView::section {
   <widget class="QPushButton" name="pushButton_edit">
    <property name="geometry">
     <rect>
-     <x>920</x>
+     <x>910</x>
      <y>350</y>
-     <width>88</width>
+     <width>101</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	font: 300 bold 9pt &quot;Quicksand Light&quot;;
+	color: black;
+	background-color: rgba(67,188,205,0.3);
+	border:1px solid rgb(67,188,205);
+}
+QPushButton::hover{
+	font: 300 8pt &quot;Quicksand Light&quot;;
+	color: white;
+	background-color: rgb(209, 209, 209);
+	border:1px solid rgb(67,188,205);
+}</string>
    </property>
    <property name="text">
     <string>EDIT</string>
@@ -200,11 +257,25 @@ QHeaderView::section {
   <widget class="QPushButton" name="pushButton_delete">
    <property name="geometry">
     <rect>
-     <x>920</x>
+     <x>910</x>
      <y>380</y>
-     <width>88</width>
+     <width>101</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	font: 300 bold 9pt &quot;Quicksand Light&quot;;
+	color: black;
+	background-color: rgba(67,188,205,0.3);
+	border:1px solid rgb(67,188,205);
+}
+QPushButton::hover{
+	font: 300 8pt &quot;Quicksand Light&quot;;
+	color: white;
+	background-color: rgb(209, 209, 209);
+	border:1px solid rgb(67,188,205);
+}</string>
    </property>
    <property name="text">
     <string>DELETE</string>
@@ -213,11 +284,25 @@ QHeaderView::section {
   <widget class="QPushButton" name="pushButton_enroll">
    <property name="geometry">
     <rect>
-     <x>920</x>
+     <x>910</x>
      <y>320</y>
-     <width>88</width>
+     <width>101</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	font: 300 bold 9pt &quot;Quicksand Light&quot;;
+	color: black;
+	background-color: rgba(67,188,205,0.3);
+	border:1px solid rgb(67,188,205);
+}
+QPushButton::hover{
+	font: 300 8pt &quot;Quicksand Light&quot;;
+	color: white;
+	background-color: rgb(209, 209, 209);
+	border:1px solid rgb(67,188,205);
+}</string>
    </property>
    <property name="text">
     <string>ENROLL</string>
@@ -226,19 +311,17 @@ QHeaderView::section {
   <widget class="QPushButton" name="filterButton">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>30</y>
-     <width>41</width>
-     <height>41</height>
+     <x>680</x>
+     <y>40</y>
+     <width>51</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
-border:1px solid rgb(0, 0, 0);
-border-top-right-radius: 0px;
-border-bottom-right-radius: 0px;
-border-top-left-radius: 0;
-border-bottom-left-radius: 0;</string>
+    <string notr="true">	color:  rgb(255, 255, 255);
+	background-color:rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 8pt &quot;Quicksand Medium&quot;;</string>
    </property>
    <property name="text">
     <string/>
@@ -252,39 +335,37 @@ border-bottom-left-radius: 0;</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>30</y>
-     <width>231</width>
-     <height>41</height>
+     <y>40</y>
+     <width>671</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(255, 255, 255);
-border:1px solid rgb(0, 0, 0);
-border-top-right-radius: 0px;
-border-bottom-right-radius: 0px;
-border-top-left-radius: 5px;
-border-bottom-left-radius: 5px;</string>
+border:1px solid rgb(243,115,33);	
+color:  rgb(243,115,33);
+
+
+</string>
    </property>
   </widget>
   <widget class="QPushButton" name="searchButton">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>30</y>
-     <width>41</width>
-     <height>41</height>
+     <x>730</x>
+     <y>40</y>
+     <width>161</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
-border:1px solid rgb(0, 0, 0);
-border-top-right-radius: 5px;
-border-bottom-right-radius: 5px;
-border-top-left-radius: 0;
-border-bottom-left-radius: 0;</string>
+    <string notr="true">	color:  rgb(0,0,0);
+	background-color:rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+	font: 500 11pt &quot;Quicksand Medium&quot;;</string>
    </property>
    <property name="text">
-    <string>검색</string>
+    <string>Search</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_connect">
@@ -296,6 +377,20 @@ border-bottom-left-radius: 0;</string>
      <height>32</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	font: 300 bold 10pt &quot;Quicksand Light&quot;;
+	color: black;
+	background-color: rgba(243,115,33,0.3);
+	border:1px solid rgb(243,115,33);
+}
+QPushButton::hover{
+	font: 300 8pt &quot;Quicksand Light&quot;;
+	color: white;
+	background-color: rgb(209, 209, 209);
+	border:1px solid rgb(243,115,33);
+}</string>
+   </property>
    <property name="text">
     <string>connect</string>
    </property>
@@ -303,14 +398,21 @@ border-bottom-left-radius: 0;</string>
   <widget class="QLabel" name="label_url">
    <property name="geometry">
     <rect>
-     <x>750</x>
-     <y>50</y>
-     <width>221</width>
+     <x>900</x>
+     <y>250</y>
+     <width>151</width>
      <height>21</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">	color:  rgb(243,115,33);
+	background:none;
+	border:none;
+	font: 500 8pt &quot;Quicksand Medium&quot;;
+	text-align: center; /* 수평 중앙 정렬 */</string>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>IP Address</string>
    </property>
   </widget>
  </widget>
