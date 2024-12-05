@@ -50,7 +50,7 @@ QTabBar::tab {
 /*search 탭*/
 QTabBar::tab:first {
 	background-color:rgba(243,115,33,0.1);
-    background-image: url(:/images/search5.png);
+    background-image: url(:/images/video2.png);
 	color:transparent;
 }
 QTabBar::tab:first:selected {
@@ -66,7 +66,7 @@ QTabBar::tab:first:selected {
 /*streaming 탭*/
 QTabBar::tab:last {
     background-color:rgba(243,115,33,0.1);
-    background-image: url(:/images/video2.png);
+    background-image: url(:/images/search5.png);
 	color:transparent;
 }
 QTabBar::tab:last:selected {

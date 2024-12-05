@@ -3,18 +3,23 @@
 #include <QDebug>
 #include <QPixmap>
 #include <QImage>
+#include <QLabel>
 #include <QLayout>
 
 #include <QTimer>
 #include <QDateTime>
 #include <QMessageBox>
+extern "C" {
+#include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
+}
 
 Streaming::Streaming(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Streaming)
-    , ffmpegProcess(new QProcess(this))
-    , frameTimer(new QTimer(this))
     , timer(new QTimer(this))
+    , frameTimer(new QTimer(this))
+    , ffmpegProcess(new QProcess(this))
     , rtspUrl("") // 초기 URL 비우기
 {
     ui->setupUi(this);
@@ -32,15 +37,8 @@ Streaming::Streaming(QWidget *parent)
     timer->start(1000); //1초마다 실행
     updateDateTime();// 초기 날짜/시간 표시
 
-    // start/stop 버튼 클릭으로 스트리밍 시작/중지
-    connect(ui->startButton, &QPushButton::clicked, this, &Streaming::startFFmpeg);
-    connect(ui->stopButton, &QPushButton::clicked, this, &Streaming::stopFFmpeg);
-
     connect(frameTimer, &QTimer::timeout, this, &Streaming::captureFrame);
     //connect(ffmpegProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(captureFrame()));
-
-    // Set 버튼 클릭으로 RTSP URL 설정
-    connect(ui->setButton, &QPushButton::clicked, this, &Streaming::rtsp_setting);
 
     // AddressInput 내용 변경 시 SetButton 상태 해제
     connect(ui->addressInput, &QLineEdit::textChanged, this, [this]() {
@@ -48,6 +46,7 @@ Streaming::Streaming(QWidget *parent)
     });
     // 초기 UI 상태 설정
     updateUIState(false); // Start 버튼 활성화, Stop 버튼 비활성화
+    buffer=new QByteArray;
 }
 
 Streaming::~Streaming()
@@ -101,6 +100,7 @@ void Streaming::updateDateTime()
 
 /*RTSP스트림을 가져오고, 파이프로 출력*/
 void Streaming::startFFmpeg() {
+    ui->setButton->setChecked(true); // Set 버튼 상태 해제
 
     if (ffmpegProcess->state() == QProcess::Running) {
         qDebug() << "FFmpeg is already running!";
@@ -108,25 +108,24 @@ void Streaming::startFFmpeg() {
     }
 
     if (rtspUrl.isEmpty()) {
-        //ui->messageInput->text().isEmpty()
         QMessageBox::warning(this, "Error", "RTSP URL is not set. Please set the address first.");
         return;
     }
 
     QString ffmpegPath = "/bin/ffmpeg"; // FFmpeg 실행 경로
 
-    /*FFMPEG 실행시 전달되는 옵션*/
+    //FFMPEG 실행시 전달되는 옵션
     QStringList arguments = {
-        "-fflags", "discardcorrupt",        //   손상된 프레임 무시
+        "-protocol_whitelist","file,tcp,udp,rtp,rtsp",
         "-i",rtspUrl, //동적으로 설정된 RTSP URL
         "-vf", "fps=30",                    // 출력 프레임 속도 설정
-        "-s", "680x360",                         // 출력 영상의 해상도 설정
-        "-f", "image2pipe",                 // 이미지전송: 파이프 형식
-        "-vcodec", "mjpeg",                 // MJPEG 형식으로 디코딩
-        "-q:v", "2",    // 품질 설정 (1~31, 낮을수록 품질이 좋음)
-        "-pix_fmt", "yuvj420p",  // 색 공간 최적화
-        "pipe:1"                            // 출력 파이프
+        "-s", "640x480",                         // 출력 영상의 해상도 설정
+        "-f","rawvideo",
+        "-pix_fmt","rgb24",
+        "-loglevel","debug",
+        "-"
     };
+
 
     ffmpegProcess->start(ffmpegPath, arguments);
 
@@ -137,39 +136,65 @@ void Streaming::startFFmpeg() {
     frameTimer->start(33); // 30fps (1000ms /33 = 30ms)
     qDebug() << "FFmpeg started with URL:" << rtspUrl;
 
-    updateUIState(true); // Start 버튼 비활성화, Stop 버튼 활성화
+    ui->startButton->setStyleSheet("background-color:rgba(243,115,33,0.4);  \
+                                    border:1px solid rgb(243,115,33); \
+                                    color: white;\
+                                    font: 500 bold 9pt 'Quicksand Medium'; ");
+    ui->stopButton->setStyleSheet("	color:  rgb(243,115,33);\
+                                  background:none; \
+                                  border:1px solid rgb(243,115,33);\
+                                  font: 500 9pt 'Quicksand Medium';");
+
+    ui->startButton->setEnabled(false);
+    ui->stopButton->setEnabled(true);
 }
 
 void Streaming::captureFrame() {
-    while(ffmpegProcess->canReadLine()){
-        // FFmpeg 프로세스에서 데이터를 읽기
+    //static QByteArray incompleteBuffer;
+    QByteArray incompleteBuffer;
+    while (ffmpegProcess->bytesAvailable() > 0) {
+        // FFmpeg에서 데이터 읽기
         QByteArray frameData = ffmpegProcess->readAllStandardOutput();
         if (frameData.isEmpty()) {
             qDebug() << "No frame data received!";
             return;
         }
+        qDebug() << "frameData Size : " << frameData.size();
+        // 이전에 누적된 데이터와 합치기
+        incompleteBuffer.append(frameData);
 
-        // 프레임데이터를 QPixmap으로 변환
-        QPixmap pixmap;
-        if (!pixmap.loadFromData(frameData, "JPEG")) {
-            qDebug() << "Failed to load frame data!";
-            return;
+        // 한 프레임 크기 계산 (RGB888)
+        const int width = 640;
+        const int height = 480;
+        const int bytesPerPixel = 3;
+        const int frameSize = width * height * bytesPerPixel;
+
+        // 버퍼가 프레임 크기 이상인지 확인
+        while (incompleteBuffer.size() >= frameSize) {
+            QByteArray singleFrameData = incompleteBuffer.left(frameSize);
+            incompleteBuffer.remove(0, frameSize);
+
+            // QImage 생성
+            QImage image(reinterpret_cast<const uchar*>(singleFrameData.data()),
+                         width, height, QImage::Format_RGB888);
+
+            // QLabel에 맞게 크기 조정
+            QPixmap scaledPixmap = QPixmap::fromImage(image).scaled(
+                ui->streamingLabel->size(),
+                Qt::KeepAspectRatioByExpanding,
+                Qt::SmoothTransformation
+            );
+
+            // QLabel에 QPixmap 설정
+            ui->streamingLabel->setPixmap(scaledPixmap);
         }
-
-        // QLabel 크기에 맞게 조정
-        QPixmap scaledPixmap = pixmap.scaled(
-            ui->streamingLabel->size(),
-            Qt::KeepAspectRatio,
-            Qt::SmoothTransformation
-        );
-        // QLabel에 표시
-        ui->streamingLabel->setPixmap(scaledPixmap);
     }
-
-
 }
+
+
 /*FFmpeg을 종료하고 마지막 프레임을 고정*/
 void Streaming::stopFFmpeg() {
+    ui->setButton->setChecked(false); // Set 버튼 상태 해제
     if (ffmpegProcess->state() == QProcess::Running) {
         frameTimer->stop(); // 프레임 캡처 중지
         ffmpegProcess->terminate(); // 프로세스 종료 요청
@@ -180,7 +205,17 @@ void Streaming::stopFFmpeg() {
     } else {
         qDebug() << "FFmpeg is not running.";
     }
-    updateUIState(false); // Start 버튼 활성화, Stop 버튼 비활성화
+
+    ui->startButton->setStyleSheet("color:  rgb(243,115,33);\
+                                   background:none; \
+                                   border:1px solid rgb(243,115,33);\
+                                   font: 500 9pt 'Quicksand Medium'; ");
+    ui->stopButton->setStyleSheet("background-color:rgba(243,115,33,0.4);  \
+                                    border:1px solid rgb(243,115,33); \
+                                    color: white;\
+                                    font: 500 bold 9pt 'Quicksand Medium'; ");
+    ui->startButton->setEnabled(true);
+    ui->stopButton->setEnabled(false);
 }
 
 /*FFmpeg 프로세스의 에러로그를 읽어서 출력*/
@@ -193,7 +228,6 @@ void Streaming::processOutput() {
 
 /*startButton과 stopButton의 활성화 상태를 FFmpeg 프로세스의 실행 상태에 따라 동기화*/
 void Streaming::updateUIState(bool isRunning) {
-    //bool isRunning = (ffmpegProcess->state() == QProcess::Running);
     ui->startButton->setEnabled(!isRunning);
     ui->stopButton->setEnabled(isRunning);
 
@@ -203,8 +237,14 @@ void Streaming::updateUIState(bool isRunning) {
     }
 }
 
+void Streaming::on_setButton_clicked()
+{
+    rtsp_setting();
+}
+
 /*UI에서 입력된 RTSP주소 가져오기*/
 void Streaming::rtsp_setting(){
+
     // QLineEdit에서 IP 주소 가져오기
     QString inputAddress = ui->addressInput->text().trimmed();
     if (inputAddress.isEmpty()) {
@@ -212,17 +252,20 @@ void Streaming::rtsp_setting(){
         QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "Error", "Please enter a valid IP address.", QMessageBox::Ok, this);
         msgBox->setStyleSheet("QLabel { color : black; }"); // 글씨 색상 변경
         msgBox->exec();
-        ui->setButton->setChecked(false); // 잘못된 입력 시 SetButton 상태 해제
         delete msgBox; // 메모리 관리
         return;
     }
 
     // RTSP URL 생성
-    rtspUrl = QString("rtsp://%1:8554/stream1").arg(inputAddress);
+    rtspUrl = QString("rtsp://%1:8554/").arg(inputAddress);
     qDebug() << "RTSP URL set to:" << rtspUrl;
 
     // SetButton 클릭 상태 유지
     ui->setButton->setChecked(true);
+    ui->setButton->setStyleSheet("color: white;\
+                                 background-color:rgba(243,115,33,0.7); \
+                                 border:1px solid rgb(243,115,33);\
+                                 font: 500 9t 'Quicksand Medium'; ");
 
     QMessageBox* msgBox = new QMessageBox(QMessageBox::Information, "Success", "RTSP URL updated successfully.", QMessageBox::Ok, this);
     msgBox->setStyleSheet("QLabel { color : black; }"); // 글씨 색상 변경
@@ -231,11 +274,17 @@ void Streaming::rtsp_setting(){
 
 }
 
-void Streaming::on_setButton_clicked()
+void Streaming::on_startButton_clicked()
 {
-    rtsp_setting();
-
+    startFFmpeg();
 }
+
+void Streaming::on_stopButton_clicked()
+{
+    stopFFmpeg();
+}
+
+
 
 void Streaming::setupAddressInput() {
     ui->addressInput->installEventFilter(this); // 이벤트 필터 등록
@@ -244,9 +293,16 @@ void Streaming::setupAddressInput() {
 bool Streaming::eventFilter(QObject *watched, QEvent *event) {
     if (watched == ui->addressInput) {
         if (event->type() == QEvent::FocusIn) { // 입력 필드에 포커스가 들어올 때
-            ui->addressInput->clear();         // 텍스트 초기화
+            ui->setButton->setChecked(false); // Set 버튼 상태 해제
+            ui->setButton->setStyleSheet("	color:  rgb(243,115,33);\
+                                         background:rgba(243,115,33,0.2);\
+                                         border:1px solid rgb(243,115,33);\
+                                         font: 500 9pt 'Quicksand Medium';");
+
         }
     }
     return QWidget::eventFilter(watched, event); // 기본 동작 유지
 }
+
+
 

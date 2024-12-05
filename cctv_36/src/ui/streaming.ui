@@ -289,13 +289,6 @@ border:1px solid rgb(243,115,33);</string>
 	border:1px solid rgb(243,115,33);
 	font: 500 9pt &quot;Quicksand Medium&quot;;
 }
-QPushButton::selected{
-	color:  rgb(243,115,33);
-	background: rgba(243,115,33,0.3);
-	border:1px solid rgb(243,115,33);
-	font: 500 9pt &quot;Quicksand Medium&quot;;
-
-}
 QPushButton::hover {
 	color:  rgb(255, 255, 255);
 	background:rgb(208, 208, 208);
