@@ -33,6 +33,8 @@ public:
     /* Save Plate Image */
     void save_jpeg(const QByteArray& imageArray);
 
+    QString getDatabasePath() const;
+
 private:
     QSqlDatabase db;
     BasicInfo basicInfo;

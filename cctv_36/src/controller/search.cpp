@@ -36,7 +36,7 @@ Search::Search(QWidget *parent)
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
     //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
-    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 
 }
 
@@ -86,10 +86,10 @@ void Search::setupTable() {
     m_modelBasic->setHeaderData(3, Qt::Horizontal, "PHONE");
 
 
-    ui->resultsTable->setModel(m_modelBasic);
-    ui->resultsTable->resizeColumnsToContents();
+    ui->customerTable->setModel(m_modelBasic);
+    ui->customerTable->resizeColumnsToContents();
     //m_resultsTable->hideColumn(0); // ID 컬럼 숨기기
-    ui->resultsTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
+    ui->customerTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
 
 
     // 열 너비 설정
@@ -347,7 +347,7 @@ void Search::build_QUrl() {
 }
 
 QString Search::get_seletedData() {
-    QModelIndex currentIndex = ui->resultsTable->selectionModel()->currentIndex();
+    QModelIndex currentIndex = ui->customerTable->selectionModel()->currentIndex();
 
     if(!currentIndex.isValid()) {
         qDebug() << "MSG: no selection";
@@ -356,8 +356,8 @@ QString Search::get_seletedData() {
 
     int plateIndex_column = 1;
 
-    QModelIndex plateIndex = ui->resultsTable->model()->index(currentIndex.row(), plateIndex_column);
-    QString selected_plate = ui->resultsTable->model()->data(plateIndex).toString();
+    QModelIndex plateIndex = ui->customerTable->model()->index(currentIndex.row(), plateIndex_column);
+    QString selected_plate = ui->customerTable->model()->data(plateIndex).toString();
 
     qDebug() << "DONE(SE): selected column(plate): " << selected_plate;
     return selected_plate;
@@ -366,7 +366,7 @@ QString Search::get_seletedData() {
 void Search::refreshTable() {
     setupTable();
     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
-    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 }
 
 void Search::clicked_buttonConnect() {

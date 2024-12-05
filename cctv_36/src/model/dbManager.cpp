@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QtSql/QSqlQuery>
 #include <QFile>
+#include <QDir>
+#include <QCoreApplication>
 
 DBManager::DBManager(QObject* parent)
     : QObject(parent)
@@ -20,7 +22,9 @@ DBManager::~DBManager()
 }
 
 bool DBManager::open_database() {
-    db.setDatabaseName("metadata.db");
+
+    db.setDatabaseName(getDatabasePath());
+
     if(!db.open()) {
         qDebug() << "Error(DB): Failed to Open Database: " << db;
         return false;
@@ -195,6 +199,37 @@ void DBManager::save_jpeg(const QByteArray& imageArray) {
     } else {
         qDebug() << "ERROR(DM): Saving JPEG file(plate.jpg) Failed";
     }
+}
+
+QString DBManager::getDatabasePath() const {
+    QString dbName = "metadata.db";
+
+#ifdef Q_OS_MAC
+
+    QDir dir(QCoreApplication::applicationDirPath()); // 현재 실행 파일 위치 (*.app/Contents/MacOS)
+
+    dir.cdUp(); // MacOS -> Contents
+    dir.cdUp(); // Contents -> cctv_36.app
+    dir.cdUp(); // cctv_36.app -> Debug
+    dir.cdUp(); // Debug -> build
+    dir.cdUp(); // build -> cctv_36
+
+    QString dbPath = dir.path() + QDir::separator() + dbName;
+
+// qDebug() << "Project Root:" << dir.path();
+// qDebug() << "Database Path:" << dbPath;
+
+#else // Windows/Linux의 경우
+    QString dbPath = QCoreApplication::applicationDirPath() + QDir::separator() + dbName;
+#endif
+
+    QDir dbDir(QFileInfo(dbPath).path());
+    if (!dbDir.exists()) {
+        dbDir.mkpath(".");
+        qDebug() << "Created directory:" << dbDir.path();
+    }
+
+    return dbPath;
 }
 
 
