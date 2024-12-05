@@ -2,8 +2,6 @@
 #define STREAMING_H
 
 #include <QWidget>
-#include <QAbstractSocket>
-#include <QTcpSocket>
 #include <QSqlQuery>
 #include <QMainWindow>
 #include <QLabel>
@@ -29,12 +27,12 @@ private:
     // 데이터베이스 관련 메서드
     void saveMessageToDatabase(const QString &message);  // 메시지를 데이터베이스에 저장하는 메서드
     bool saveToDatabase(const QString &tableName, const QMap<QString, QVariant> &data);    // 데이터베이스 저장 함수
-    QByteArray incompleteBuffer;
+
+    QByteArray incompleteBuffer; // 12.06 추가 : 중요!
 
 private slots:
     // UI 업데이트
     void updateDateTime();
-    void updateUIState(bool isRunning);
 
     // RTSP 및 FFmpeg 관련
     void setupAddressInput();
@@ -45,10 +43,12 @@ private slots:
     void processOutput();
 
     // RTSP GUI 설정
-    void on_setButton_clicked();
-    void rtsp_setting();
+    void on_setButton_clicked();    //RTSP IP주소 설정
+    void rtsp_setting();            //
     void on_startButton_clicked();
     void on_stopButton_clicked();
+
+    void setButtonStyle(QPushButton* button, bool isActive);
 };
 
 #endif // STREAMING_H
