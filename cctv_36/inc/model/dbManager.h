@@ -1,20 +1,13 @@
 #ifndef DBMANAGER_H
 #define DBMANAGER_H
 
-/** *********************************************************
- *@ brief: 메타데이터 멤버변수 선언
- *@ type : 번호판(license), 동호수(home), 연락처(phone), 입출차시간
- *@ Note :
- *@ Author: KIYUN
- **/
-
 #include "metadata.h"
 #include <QObject>
 #include <QtSql/QSqlDatabase>
 #include <QMap>
 #include <QList>
-#include <QDir>
-#include <QCoreApplication>
+#include <QImage>
+#include <QByteArray>
 
 class DBManager : public QObject {
 public:
@@ -32,32 +25,19 @@ public:
     void delete_basicInfo(const QString& selected_plate);
 
     /* CRUD: TimeInfo */
-    void create_timeInfo(const TimeInfo& timeInfo);
+    void create_timeInfo(const TimeInfo& timeInfo, const QByteArray& imageArray);
     TimeInfo read_timeInfo(const QString& selected_plate);
+    QByteArray read_image(const QString& selected_plate);
     qint64 get_duration(const QDateTime& from, const QDateTime& to);
 
-    QString getDatabasePath() const;
-    //void delete_timeInfo(const QString& plate);
-
-    /* QList<TimeInfo> timeInfoList */
-    //void addNewTimeInfo(const TimeInfo& newTimeInfo);
-
-
-    // void insertExampleTimeData();
-
-    /*
-     * 등록_입차시간
-     * 등록_출차시간
-     * 조회_입차시간/출차시간(int command) ...
-     * 타임스탬프 정렬 -> 시그널-슬롯 연결
-     */
+    /* Save Plate Image */
+    void save_jpeg(const QByteArray& imageArray);
 
 private:
     QSqlDatabase db;
     BasicInfo basicInfo;
     TimeInfo timeInfo;
     QList<TimeInfo> timeInfoList;
-
 };
 
 #endif // DBMANAGER_H

@@ -12,6 +12,7 @@
 #include <QThread>
 #include <QVector>
 
+#include <QString>
 #include <QMutex>
 #include <QRegularExpression>
 #include <QDateTime>
@@ -28,10 +29,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-
 private:
     Ui::MainWindow *ui;
+    QString m_host;
+
+private slots:
 
 };
 #endif // MAINWINDOW_H

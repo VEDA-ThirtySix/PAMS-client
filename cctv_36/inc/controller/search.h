@@ -1,13 +1,14 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
-#include "userManager.h"
 #include "ui_search.h"
+#include "userManager.h"
 
 #include <QObject>
 #include <QWidget>
 #include <QSqlTableModel>
 #include <QDir>
+#include <QUrl>
 
 class Search : public QWidget
 {
@@ -20,12 +21,15 @@ public:
     QString get_seletedData();   //KIYUN_1127
     void refreshTable();
 
+    //서버 연결 설정(metadata)
+    void get_host(const QString& host);
+    void build_QUrl();
+
 
 public slots:
     void performSearch();
     void handleSearchInput(const QString &text);
     //void handleDoubleClick(const QModelIndex &index);
-    //void lineEdit_test();
 
 private:
     Ui::Search *ui;
@@ -34,25 +38,26 @@ private:
     /* KIYUN 1129 */
     QString m_currentSearchType;
     QSqlTableModel* m_modelBasic;
-    QSqlTableModel *m_modelVideo;
     QSqlTableModel* m_modelTime;
     QSqlDatabase m_db;
     QDir projectDir;
     QString imagesPath;
+
+    QString m_host;
+    QUrl m_url;
+
     bool initializePath();
 
     void setupConnections();
-    void setupCustomerTable();
-    void setupVideoTable();
+    void setupTable();
     void setupImage();
     void updatePlaceholder();
     void clearImage();
 
-
-
+    void clicked_buttonConnect();
     void clicked_buttonEnroll();
     void clicked_buttonEdit();
-    void clicked_buttonDelete();
+    //void clicked_buttonDelete();
 
 private slots:
     void showSearchMenu();

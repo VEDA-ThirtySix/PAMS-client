@@ -1,6 +1,7 @@
 #include "dbManager.h"
 #include <QDebug>
 #include <QtSql/QSqlQuery>
+#include <QFile>
 
 DBManager::DBManager(QObject* parent)
     : QObject(parent)
@@ -15,15 +16,11 @@ QSqlDatabase DBManager::getDatabase() const {
 
 DBManager::~DBManager()
 {
-
+    close_database();
 }
 
 bool DBManager::open_database() {
-
-    //db.setDatabaseName("metadata.db");
-    //db.setDatabaseName("/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/build/Qt_6_7_2_for_macOS-Debug/metadata.db"); // for MacOS
-    db.setDatabaseName(getDatabasePath());
-
+    db.setDatabaseName("metadata.db");
     if(!db.open()) {
         qDebug() << "Error(DB): Failed to Open Database: " << db;
         return false;
@@ -33,21 +30,22 @@ bool DBManager::open_database() {
 
     /* 테이블(Basic) 생성 */
     if(!query.exec("CREATE TABLE IF NOT EXISTS Basic ("
-                   "name VARCHAR PRIMARY KEY,"
-                   "plate VARCHAR,"
-                   "home VARCHAR,"
-                   "phone VARCHAR)")) {
+                    "name VARCHAR PRIMARY KEY,"
+                    "plate VARCHAR,"
+                    "home VARCHAR,"
+                    "phone VARCHAR)")) {
         qDebug() << "ERROR(DB): Failed to Open Table: Basic";
     }
 
     /* 테이블(Time) 생성 */
     if(!query.exec("CREATE TABLE IF NOT EXISTS Time ("
-                   "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                   "plate VARCHAR,"
-                   "time DATETIME,"
-                   "type VARCHAR,"
-                   "FOREIGN KEY (plate) REFERENCES Basic(plate)"
-                   "ON DELETE CASCADE)")) {
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    "plate VARCHAR,"
+                    "time DATETIME,"
+                    "type VARCHAR,"
+                    "image BLOB,"
+                    "FOREIGN KEY (plate) REFERENCES Basic(plate)"
+                    "ON DELETE CASCADE)")) {
         qDebug() << "ERROR(DB): Failed to Open table: Time";
     }
 
@@ -129,14 +127,15 @@ void DBManager::delete_basicInfo(const QString& selected_plate) {
 
 
 
-
 /* CRUD: TIME_INFO */
-void DBManager::create_timeInfo(const TimeInfo& timeInfo) {
+void DBManager::create_timeInfo(const TimeInfo& timeInfo, const QByteArray& imageArray) {
     QSqlQuery query(db);
-    query.prepare("INSERT INTO Time (plate, time, type) VALUES (:plate, :time, :type)");
+    query.prepare("INSERT INTO Time (plate, time, type, image) VALUES (:plate, :time, :type, :image)");
     query.bindValue(":plate", timeInfo.get_plate());
     query.bindValue(":time",  timeInfo.get_time());
     query.bindValue(":type",  timeInfo.get_type());
+    query.bindValue(":image",  imageArray);
+
     if(!query.exec()) {
         qDebug() << "ERROR(DM): Failed to Create TimeInfo";
     } else {
@@ -146,9 +145,9 @@ void DBManager::create_timeInfo(const TimeInfo& timeInfo) {
 
 TimeInfo DBManager::read_timeInfo(const QString& selected_plate) {
     QSqlQuery query(db);
-
-    query.prepare("SELECT * FROM Time WHERE plate = :selected_plate");
+    query.prepare("SELECT plate, time, type FROM Time WHERE plate = :selected_plate");
     query.bindValue(":selected_plate", selected_plate);
+
     if(!query.exec() || !query.next()) {
         qDebug() << "Error(DB): Failed to Read TimeInfso";
         return TimeInfo();
@@ -158,6 +157,20 @@ TimeInfo DBManager::read_timeInfo(const QString& selected_plate) {
         timeInfo.set_type(query.value(2).toString());
         qDebug() << "DONE(DM): Read BasicInfo(plate): " << selected_plate;
         return timeInfo;
+    }
+}
+
+QByteArray DBManager::read_image(const QString& selected_plate) {
+    QSqlQuery query(db);
+    query.prepare("SELECT image FROM Time WHERE plate = :selected_plate");
+    query.bindValue(":selected_plate", selected_plate);
+
+    if(!query.exec() || !query.next()) {
+        qDebug() << "Error(DB): Failed to Read TimeInfso";
+        return QByteArray();
+    } else {
+        qDebug() << "DONE(DM): Read BasicInfo(plate): " << selected_plate;
+        return query.value(0).toByteArray();
     }
 }
 
@@ -172,58 +185,18 @@ qint64 DBManager::get_duration(const QDateTime& from, const QDateTime& to) {
      */
 }
 
-QString DBManager::getDatabasePath() const {
-    QString dbName = "metadata.db";
-
-#ifdef Q_OS_MAC
-
-    QDir dir(QCoreApplication::applicationDirPath()); // 현재 실행 파일 위치 (*.app/Contents/MacOS)
-
-    dir.cdUp(); // MacOS -> Contents
-    dir.cdUp(); // Contents -> cctv_36.app
-    dir.cdUp(); // cctv_36.app -> Debug
-    dir.cdUp(); // Debug -> build
-    dir.cdUp(); // build -> cctv_36
-
-    QString dbPath = dir.path() + QDir::separator() + dbName;
-
-    // qDebug() << "Project Root:" << dir.path();
-    // qDebug() << "Database Path:" << dbPath;
-
-#else // Windows/Linux의 경우
-    QString dbPath = QCoreApplication::applicationDirPath() + QDir::separator() + dbName;
-#endif
-
-    QDir dbDir(QFileInfo(dbPath).path());
-    if (!dbDir.exists()) {
-        dbDir.mkpath(".");
-        qDebug() << "Created directory:" << dbDir.path();
+/* Save Plate Image */
+void DBManager::save_jpeg(const QByteArray& imageArray) {
+    QFile file("plate.jpg");
+    if(file.open(QIODevice::WriteOnly)) {
+        file.write(imageArray);
+        file.close();
+        qDebug() << "DONE(DM): Saved JPEG file(plate.jpg) Successfully";
+    } else {
+        qDebug() << "ERROR(DM): Saving JPEG file(plate.jpg) Failed";
     }
-
-    return dbPath;
 }
 
-// void DBManager::insertExampleTimeData() {
-//     QSqlQuery query(db);
-
-//     // 현재 시간을 기준으로 예제 데이터 생성
-//     QDateTime currentTime = QDateTime::currentDateTime();
-//     QDateTime earlierTime = currentTime.addSecs(-3600); // 1시간 전
-
-//     // 첫 번째 예제 데이터: 입차
-//     TimeInfo timeInfo1("12가3456", earlierTime, "입차");
-//     create_timeInfo(timeInfo1);
-
-//     // 두 번째 예제 데이터: 출차
-//     TimeInfo timeInfo2("12가3456", currentTime, "출차");
-//     create_timeInfo(timeInfo2);
-// }
-
-
-/*
-void DBManager::addNewTimeInfo(const TimeInfo& newTimeInfo) {
-    timeInfoList.append(newTimeInfo);
-}*/
 
 /**
     *@ ********************************************************************
