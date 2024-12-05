@@ -46,10 +46,16 @@ private:
     QString m_host;
     QUrl m_url;
 
+    QString currentName;
+    QString currentPlate;
+    QString currentHome;
+    QString currentPhone;
+
     bool initializePath();
 
     void setupConnections();
-    void setupTable();
+    void setupCustomerTable();
+    void setupVideoTable();
     void setupImage();
     void updatePlaceholder();
     void clearImage();

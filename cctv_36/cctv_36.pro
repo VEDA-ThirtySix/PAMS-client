@@ -15,13 +15,14 @@ SOURCES += \
     $$files($$PWD/src/model/*.cpp)       \
     $$files($$PWD/src/view/*.cpp)        \
     $$files($$PWD/src/controller/*.cpp)  \
-    $$files($$PWD/src/network/*.cpp)     \
+    $$files($$PWD/src/network/*.cpp) \
 
 HEADERS += \
     $$files($$PWD/inc/model/*.h)      \
     $$files($$PWD/inc/view/*.h)       \
     $$files($$PWD/inc/controller/*.h) \
     $$files($$PWD/inc/network/*.h)    \
+    inc/view/dialog_videoclip.h
 
 FORMS += \
     $$files($$PWD/src/ui/*.ui) \

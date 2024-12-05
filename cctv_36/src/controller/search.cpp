@@ -27,7 +27,8 @@ Search::Search(QWidget *parent)
     m_currentSearchType = "차량번호"; // 기본 검색 타입
 
     setupConnections();
-    setupTable();
+    setupCustomerTable();
+    setupVideoTable();
     setupImage();
     updatePlaceholder();
     initializePath();
@@ -45,7 +46,7 @@ Search::~Search() {
     //delete mainWindow;
 }
 
-void Search::setupTable() {
+void Search::setupCustomerTable() {
     // DB 초기화
     //userManager->initiallize();
 
@@ -97,6 +98,27 @@ void Search::setupTable() {
     ui->resultsTable->setColumnWidth(2, 150); //HOME
     ui->resultsTable->setColumnWidth(3, 150); //PHONE   */
 }
+
+void Search::setupVideoTable() {
+    m_modelTime = new QSqlTableModel(this, m_db);
+    m_modelTime->setTable("Time");
+    m_modelTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    if(!m_modelTime->select()) {
+        qDebug() << "Time Table Error: " << m_modelTime->lastError().text();
+    }
+
+    // Time 테이블의 컬럼에 맞게 헤더 설정
+    m_modelTime->setHeaderData(0, Qt::Horizontal, "ID");
+    m_modelTime->setHeaderData(1, Qt::Horizontal, "PLATE");
+    m_modelTime->setHeaderData(2, Qt::Horizontal, "TIME");
+    m_modelTime->setHeaderData(3, Qt::Horizontal, "TYPE");
+
+    ui->videoTable->setModel(m_modelTime);
+    ui->videoTable->resizeColumnsToContents();
+    ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
+
 
 void Search::setupImage()
 {
@@ -255,7 +277,7 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
     int row = selected.indexes().first().row();
 
-    // Get data from each column
+    // Get data from each row
     QString name = m_modelBasic->data(m_modelBasic->index(row, 0)).toString();
     QString plate = m_modelBasic->data(m_modelBasic->index(row, 1)).toString();
     QString home = m_modelBasic->data(m_modelBasic->index(row, 2)).toString();
@@ -346,25 +368,9 @@ void Search::build_QUrl() {
     qDebug() << "DEBUG(SW)$ m_url: " << m_url;
 }
 
-QString Search::get_seletedData() {
-    QModelIndex currentIndex = ui->customerTable->selectionModel()->currentIndex();
-
-    if(!currentIndex.isValid()) {
-        qDebug() << "MSG: no selection";
-        return QString();
-    }
-
-    int plateIndex_column = 1;
-
-    QModelIndex plateIndex = ui->customerTable->model()->index(currentIndex.row(), plateIndex_column);
-    QString selected_plate = ui->customerTable->model()->data(plateIndex).toString();
-
-    qDebug() << "DONE(SE): selected column(plate): " << selected_plate;
-    return selected_plate;
-}
-
 void Search::refreshTable() {
-    setupTable();
+    setupCustomerTable();
+    setupVideoTable();
     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 }
@@ -407,8 +413,31 @@ void Search::clicked_buttonEnroll() {
     qDebug() << "SUCCESS(SW): Open Enroll Dialog";
 }
 
+// void Search::clicked_buttonEdit() {
+//     EditDialog *editDialog = new EditDialog(this);
+//     connect(editDialog, &EditDialog::dataModified, this, &Search::refreshTable);
+//     editDialog->setAttribute(Qt::WA_DeleteOnClose);
+//     editDialog->exec();
+// }
+
 void Search::clicked_buttonEdit() {
+    QModelIndex currentIndex = ui->customerTable->selectionModel()->currentIndex();
+
+    if (!currentIndex.isValid()) {
+        QMessageBox::warning(this, "선택 오류", "수정할 항목을 선택해주세요.");
+        return;
+    }
+
+    int row = currentIndex.row();
+    QString name = m_modelBasic->data(m_modelBasic->index(row, 0)).toString();
+    QString plate = m_modelBasic->data(m_modelBasic->index(row, 1)).toString();
+    QString home = m_modelBasic->data(m_modelBasic->index(row, 2)).toString();
+    QString phone = m_modelBasic->data(m_modelBasic->index(row, 3)).toString();
+
     EditDialog *editDialog = new EditDialog(this);
+    //->setUserData(name, plate, home, phone);  // 선택된 행의 데이터를 EditDialog에 표시
+
+    connect(editDialog, &EditDialog::dataModified, this, &Search::refreshTable);
     editDialog->setAttribute(Qt::WA_DeleteOnClose);
     editDialog->exec();
     qDebug() << "SUCCESS(SW): Open Edit Dialog";

@@ -1,0 +1,4 @@
+#ifndef DIALOG_VIDEOCLIP_H
+#define DIALOG_VIDEOCLIP_H
+
+#endif // DIALOG_VIDEOCLIP_H
