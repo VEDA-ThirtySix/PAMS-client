@@ -10,14 +10,13 @@ class EnrollDialog;
 }
 QT_END_NAMESPACE
 
-class EnrollDialog : public QDialog {
+class EnrollDialog : public QDialog
+{
     Q_OBJECT
 
 public:
     explicit EnrollDialog(QWidget *parent = nullptr);
     ~EnrollDialog();
-
-    //void return_mainWindow();
 
 private:
     Ui::EnrollDialog *ui;

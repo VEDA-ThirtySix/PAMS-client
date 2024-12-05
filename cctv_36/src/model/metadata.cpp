@@ -1,13 +1,47 @@
 #include "metadata.h"
 
+ClientInfo::ClientInfo()
+    : m_name(QString()), m_ipAddr(QString()), m_connectTime(QDateTime())
+{ }
+
+ClientInfo::ClientInfo(const QString& name,
+                       const QString& ipAddr,
+                       const QDateTime& connectTime)
+    : m_name(name), m_ipAddr(ipAddr), m_connectTime(connectTime)
+{ }
+
+QString ClientInfo::get_name() const {
+    return m_name;
+}
+QString ClientInfo::get_ipAddr() const {
+    return m_ipAddr;
+}
+QDateTime ClientInfo::get_connectTime() const {
+    return m_connectTime;
+}
+
+void ClientInfo::set_name(const QString& name) {
+    m_name = name;
+}
+void ClientInfo::set_ipAddr(const QString& ipAddr) {
+    m_ipAddr = ipAddr;
+}
+void ClientInfo::set_connectTime(const QDateTime& connectTime) {
+    m_connectTime = connectTime;
+}
+
+/* ====================================================== */
+
 BasicInfo::BasicInfo()
-    : m_name(QString()), m_plate(QString()), m_home(QString()), m_phone(QString()) { }
+    : m_name(QString()), m_plate(QString()), m_home(QString()),
+    m_phone(QString()) {}
 
 BasicInfo::BasicInfo(const QString& name,
                      const QString& plate,
                      const QString& home,
                      const QString& phone)
-    : m_name(name), m_plate(plate), m_home(home), m_phone(phone) { }
+    : m_name(name), m_plate(plate), m_home(home), m_phone(phone)
+{ }
 
 QString BasicInfo::get_name() const {
     return m_name;

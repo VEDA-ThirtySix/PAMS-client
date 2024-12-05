@@ -4,7 +4,7 @@
 UserManager::UserManager(QObject *parent)
     : QObject(parent)
     , dbManager(new DBManager(this))    //dbdebug
-    // dbManager(nullptr)
+// dbManager(nullptr)
 { }
 
 UserManager::~UserManager()
@@ -38,11 +38,6 @@ bool UserManager::editUser(BasicInfo& editted_basicInfo) {
     qDebug() << "DONE(UM): editUser";
     return true;
 }
-
-// DBManager* UserManager::getDBManager() const {
-//     return dbManager;
-// }
-
 /*
 bool UserManager::deleteUser(int type, const QString& value) {
 

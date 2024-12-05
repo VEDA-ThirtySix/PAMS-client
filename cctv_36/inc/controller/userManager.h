@@ -19,7 +19,6 @@ public:
     bool enrollUser(const BasicInfo& basicInfo);
     bool editUser(BasicInfo& basicInfo);
     //bool deleteUser(int type, const QString& value);
-    DBManager* getDBManager() const;
 
 private:
     DBManager* dbManager;

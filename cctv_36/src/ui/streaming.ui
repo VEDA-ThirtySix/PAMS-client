@@ -6,29 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1047</width>
-    <height>554</height>
+    <width>1052</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
-  </property>
-  <widget class="QPushButton" name="pushButton_enroll">
-   <property name="geometry">
-    <rect>
-     <x>940</x>
-     <y>410</y>
-     <width>88</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>ENROLL</string>
-   </property>
-  </widget>
   <widget class="QFrame" name="streamingFrame">
    <property name="geometry">
     <rect>
@@ -251,60 +235,20 @@ QPushButton:hover {
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="addressInput">
+   <widget class="QLabel" name="label_url">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>391</width>
+      <width>440</width>
       <height>21</height>
      </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLineEdit{
-	font: 10pt &quot;Sans Serif&quot;;
-	color:  rgb(243,115,33);
-	background:rgba(243,115,33,0.2);
-	border:1px solid rgb(243,115,33);
-}
-QLineEdit:focus {
-    	border:1px solid rgb(243,115,33);
-    background-color: lightyellow; /* 배경색 변경 */
-}
-</string>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="setButton">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>40</y>
-      <width>50</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton{
-	color:  rgb(243,115,33);
-	background:rgba(243,115,33,0.2);
-	border:1px solid rgb(243,115,33);
-	font: 500 9pt &quot;Quicksand Medium&quot;;
-}
-QPushButton::hover {
-	color:  rgb(255, 255, 255);
-	background:rgb(208, 208, 208);
-	border:none;
-	font: 500 8pt &quot;Quicksand Medium&quot;;
-}</string>
-    </property>
-    <property name="text">
-     <string>Set</string>
     </property>
    </widget>
    <zorder>streamingLabel</zorder>
@@ -314,8 +258,7 @@ QPushButton::hover {
    <zorder>bestshotFrame_2</zorder>
    <zorder>startButton</zorder>
    <zorder>stopButton</zorder>
-   <zorder>addressInput</zorder>
-   <zorder>setButton</zorder>
+   <zorder>label_url</zorder>
   </widget>
  </widget>
  <resources/>

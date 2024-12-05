@@ -1,5 +1,5 @@
-#ifndef DIALOG_EDIT_H
-#define DIALOG_EDIT_H
+#ifndef EDITDIALOG_H
+#define EDITDIALOG_H
 
 #include "userManager.h"
 #include "search.h"
@@ -30,4 +30,4 @@ private slots:
     void clicked_buttonEdit();
 };
 
-#endif // DIALOG_EDIT_H
+#endif // EDITDIALOG_H

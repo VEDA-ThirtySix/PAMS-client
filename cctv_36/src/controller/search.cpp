@@ -2,6 +2,9 @@
 #include "ui_search.h"
 #include "dialog_edit.h"
 #include "dialog_enroll.h"
+#include "tcpManager.h"
+#include "httpManager.h"
+
 #include <QMessageBox>
 #include <QPixmap>
 #include <QtWidgets/qmenu.h>
@@ -11,37 +14,38 @@
 #include <QSqlQuery>
 #include <QCoreApplication>
 
+#define protocol "http"
+#define port 8080
+
 Search::Search(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Search)
     , userManager(new UserManager(this))
 {
     ui->setupUi(this);
+
     m_currentSearchType = "차량번호"; // 기본 검색 타입
 
     setupConnections();
-    setupCustomerTable();
-    setupVideoTable();
-
-    //userManager->getDBManager()->insertExampleTimeData();
-
+    setupTable();
     setupImage();
-    // lineEdit_test();
     updatePlaceholder();
     initializePath();
 
+    connect(ui->pushButton_connect, &QPushButton::clicked, this, &Search::clicked_buttonConnect);
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
     //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
-    connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 
 }
 
 Search::~Search() {
     delete ui;
+    //delete mainWindow;
 }
 
-void Search::setupCustomerTable() {
+void Search::setupTable() {
     // DB 초기화
     //userManager->initiallize();
 
@@ -82,36 +86,16 @@ void Search::setupCustomerTable() {
     m_modelBasic->setHeaderData(3, Qt::Horizontal, "PHONE");
 
 
-    ui->customerTable->setModel(m_modelBasic);
-    ui->customerTable->resizeColumnsToContents();
+    ui->resultsTable->setModel(m_modelBasic);
+    ui->resultsTable->resizeColumnsToContents();
     //m_resultsTable->hideColumn(0); // ID 컬럼 숨기기
-    ui->customerTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
+    ui->resultsTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
 
 
     // 열 너비 설정
     /*
     ui->resultsTable->setColumnWidth(2, 150); //HOME
     ui->resultsTable->setColumnWidth(3, 150); //PHONE   */
-}
-
-void Search::setupVideoTable() {
-    m_modelTime = new QSqlTableModel(this, m_db);
-    m_modelTime->setTable("Time");
-    m_modelTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-    if(!m_modelTime->select()) {
-        qDebug() << "Time Table Error: " << m_modelTime->lastError().text();
-    }
-
-    // Time 테이블의 컬럼에 맞게 헤더 설정
-    m_modelTime->setHeaderData(0, Qt::Horizontal, "ID");
-    m_modelTime->setHeaderData(1, Qt::Horizontal, "PLATE");
-    m_modelTime->setHeaderData(2, Qt::Horizontal, "TIME");
-    m_modelTime->setHeaderData(3, Qt::Horizontal, "TYPE");
-
-    ui->videoTable->setModel(m_modelTime);
-    ui->videoTable->resizeColumnsToContents();
-    ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void Search::setupImage()
@@ -305,6 +289,7 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
 }
 
+
 void Search::showSearchMenu()
 {
     QMenu* menu = new QMenu;
@@ -347,8 +332,22 @@ void Search::showSearchMenu()
 
 
 /* KIYUN_1127 */
+void Search::get_host(const QString& host) {
+    m_host = host;
+}
+
+void Search::build_QUrl() {
+    m_url.setHost(m_host);
+    m_url.setPort(port);
+    m_url.setScheme("http");
+    QString url = m_url.toString();
+
+    ui->label_url->setText(url);
+    qDebug() << "DEBUG(SW)$ m_url: " << m_url;
+}
+
 QString Search::get_seletedData() {
-    QModelIndex currentIndex = ui->customerTable->selectionModel()->currentIndex();
+    QModelIndex currentIndex = ui->resultsTable->selectionModel()->currentIndex();
 
     if(!currentIndex.isValid()) {
         qDebug() << "MSG: no selection";
@@ -357,23 +356,47 @@ QString Search::get_seletedData() {
 
     int plateIndex_column = 1;
 
-    QModelIndex plateIndex = ui->customerTable->model()->index(currentIndex.row(), plateIndex_column);
-    QString selected_plate = ui->customerTable->model()->data(plateIndex).toString();
+    QModelIndex plateIndex = ui->resultsTable->model()->index(currentIndex.row(), plateIndex_column);
+    QString selected_plate = ui->resultsTable->model()->data(plateIndex).toString();
 
     qDebug() << "DONE(SE): selected column(plate): " << selected_plate;
     return selected_plate;
 }
 
 void Search::refreshTable() {
-    setupCustomerTable();
-    setupVideoTable();
+    setupTable();
     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
-    connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->resultsTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 }
 
-// void Search::lineEdit_test() {
-//     ui->lineEdit_test->setText("hi");
-// }
+void Search::clicked_buttonConnect() {
+    TcpManager *tcpManager = new TcpManager(this);
+    QString host = m_host;
+    quint16 _port = static_cast<quint16>(port);
+
+    if(tcpManager->connect_server(host, _port)) {
+        qDebug() << "SUCCESS(SW)$ Successfully Connected(TCP)";
+        qDebug() << "SUCCESS(SW)$ host:" << host;
+        qDebug() << "SUCCESS(SW)$ port:" << port;
+    } else {
+        qDebug() << "FAILURE(SW)$ TCP Connection Failure";
+    }
+
+    HttpManager *httpManager = new HttpManager(this);
+    ClientInfo clientInfo;
+    clientInfo.set_name("ThirtySix");
+    clientInfo.set_ipAddr(httpManager->getLocalIPInSameSubnet(m_url));
+    clientInfo.set_connectTime(QDateTime::currentDateTime());
+    if(httpManager->post_initInfo(m_url, clientInfo)) {
+        qDebug() << "SUCCESS(SW)$ POST Request(INIT) Successful";
+        qDebug() << "m_url:" << m_url;
+        qDebug() << " name :" << clientInfo.get_name();
+        qDebug() << "ipAddr:" << clientInfo.get_ipAddr();
+        qDebug() << " time :" << clientInfo.get_connectTime();
+    } else {
+        qDebug() << "FAILURE(SW)$ POST Request(INIT) Failure";
+    }
+}
 
 void Search::clicked_buttonEnroll() {
     EnrollDialog *enrollDialog = new EnrollDialog(this);
@@ -381,12 +404,17 @@ void Search::clicked_buttonEnroll() {
 
     enrollDialog->setAttribute(Qt::WA_DeleteOnClose);
     enrollDialog->exec();   //Enroll Dialog(Modal)
-    qDebug() << "DONE(MW): Open Enroll Dialog";
+    qDebug() << "SUCCESS(SW): Open Enroll Dialog";
 }
 
 void Search::clicked_buttonEdit() {
     EditDialog *editDialog = new EditDialog(this);
     editDialog->setAttribute(Qt::WA_DeleteOnClose);
     editDialog->exec();
-    qDebug() << "DONE(MW): Open Edit Dialog";
+    qDebug() << "SUCCESS(SW): Open Edit Dialog";
 }
+
+/*
+void Search::clicked_buttonDelete() {
+
+}*/

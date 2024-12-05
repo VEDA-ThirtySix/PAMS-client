@@ -1,4 +1,4 @@
-QT       += core gui network sql#추가
+QT += core gui network sql#추가
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,7 +24,7 @@ HEADERS += \
     $$files($$PWD/inc/network/*.h)    \
 
 FORMS += \
-    $$files($$PWD/src/ui/*.ui)
+    $$files($$PWD/src/ui/*.ui) \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
