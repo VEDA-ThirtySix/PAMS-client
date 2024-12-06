@@ -122,8 +122,7 @@ void HttpManager::handle_response(QByteArray& jsonArray) {
         qDebug() << "DONE(HM): Save TimeInfo to DB";
 
         //Save Plate Image file(.jpeg)
-        dbManager = new DBManager(this);
-        dbManager->save_jpeg(decoded);
+        DBManager::instance().save_jpeg(decoded);
         qDebug() << "DONE(HM): Save Image File(.jpeg)";
         break;
     }

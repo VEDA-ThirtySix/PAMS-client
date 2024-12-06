@@ -11,12 +11,12 @@
 
 class DBManager : public QObject {
 public:
-    explicit DBManager(QObject *parent = nullptr);
-    ~DBManager();
+    static DBManager& instance(); // db 싱글톤 패턴 적용
 
     bool open_database();
-    QSqlDatabase getDatabase() const;
     void close_database();
+
+    QSqlDatabase getDatabase() const;
 
     /* CRUD: BasicInfo */
     void create_basicInfo(const BasicInfo& new_basicInfo);
@@ -36,6 +36,13 @@ public:
     QString getDatabasePath() const;
 
 private:
+    explicit DBManager(QObject *parent = nullptr); // 싱글톤을 위한 private 생성자
+    ~DBManager();
+
+    // 복사 방지
+    DBManager(const DBManager&) = delete;
+    DBManager& operator=(const DBManager&) = delete;
+
     QSqlDatabase db;
     BasicInfo basicInfo;
     TimeInfo timeInfo;

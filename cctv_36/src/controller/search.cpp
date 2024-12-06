@@ -91,6 +91,7 @@ void Search::setupCustomerTable() {
     ui->customerTable->resizeColumnsToContents();
     //m_resultsTable->hideColumn(0); // ID 컬럼 숨기기
     ui->customerTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
+    ui->customerTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
     // 열 너비 설정
@@ -368,11 +369,47 @@ void Search::build_QUrl() {
     qDebug() << "DEBUG(SW)$ m_url: " << m_url;
 }
 
+// void Search::refreshTable() {
+//     setupCustomerTable();
+//     setupVideoTable();
+//     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
+//     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+// }
+
 void Search::refreshTable() {
-    setupCustomerTable();
-    setupVideoTable();
-    // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
-    connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    qDebug() << "Search - refreshTable 시작";
+
+    // 데이터베이스 재연결
+    m_db = userManager->getDatabase();
+    qDebug() << "Search - 데이터베이스 재연결됨";
+
+    // 모델 재설정
+    if(m_modelBasic) {
+        qDebug() << "Search - 기존 모델 삭제";
+        delete m_modelBasic;
+    }
+
+    qDebug() << "Search - 새 모델 생성";
+    m_modelBasic = new QSqlTableModel(this, m_db);
+    m_modelBasic->setTable("Basic");
+    m_modelBasic->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    qDebug() << "Search - 모델 select 시도";
+    if(!m_modelBasic->select()) {
+        qDebug() << "Search - 테이블 새로고침 실패:" << m_modelBasic->lastError().text();
+        return;
+    }
+    qDebug() << "Search - 모델 select 성공";
+
+    // 열 헤더 설정
+    m_modelBasic->setHeaderData(0, Qt::Horizontal, "NAME");
+    m_modelBasic->setHeaderData(1, Qt::Horizontal, "PLATE");
+    m_modelBasic->setHeaderData(2, Qt::Horizontal, "HOME");
+    m_modelBasic->setHeaderData(3, Qt::Horizontal, "PHONE");
+
+    ui->customerTable->setModel(m_modelBasic);
+    ui->customerTable->resizeColumnsToContents();
+    qDebug() << "Search - refreshTable 완료";
 }
 
 void Search::clicked_buttonConnect() {
@@ -413,35 +450,29 @@ void Search::clicked_buttonEnroll() {
     qDebug() << "SUCCESS(SW): Open Enroll Dialog";
 }
 
-// void Search::clicked_buttonEdit() {
-//     EditDialog *editDialog = new EditDialog(this);
-//     connect(editDialog, &EditDialog::dataModified, this, &Search::refreshTable);
-//     editDialog->setAttribute(Qt::WA_DeleteOnClose);
-//     editDialog->exec();
-// }
 
 void Search::clicked_buttonEdit() {
-    QModelIndex currentIndex = ui->customerTable->selectionModel()->currentIndex();
-
-    if (!currentIndex.isValid()) {
-        QMessageBox::warning(this, "선택 오류", "수정할 항목을 선택해주세요.");
+    QString selectedPlate = get_selectedData();
+    if(selectedPlate.isEmpty()) {
+        QMessageBox::warning(this, "수정 오류", "수정할 사용자를 선택해주세요.");
         return;
     }
 
-    int row = currentIndex.row();
-    QString name = m_modelBasic->data(m_modelBasic->index(row, 0)).toString();
-    QString plate = m_modelBasic->data(m_modelBasic->index(row, 1)).toString();
-    QString home = m_modelBasic->data(m_modelBasic->index(row, 2)).toString();
-    QString phone = m_modelBasic->data(m_modelBasic->index(row, 3)).toString();
-
-    EditDialog *editDialog = new EditDialog(this);
-    //->setUserData(name, plate, home, phone);  // 선택된 행의 데이터를 EditDialog에 표시
-
-    connect(editDialog, &EditDialog::dataModified, this, &Search::refreshTable);
+    EditDialog *editDialog = new EditDialog(selectedPlate, this);
     editDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(editDialog, &EditDialog::dataUpdated, this, &Search::refreshTable);
     editDialog->exec();
-    qDebug() << "SUCCESS(SW): Open Edit Dialog";
 }
+
+
+QString Search::get_selectedData() {
+    QModelIndex currentIndex = ui->customerTable->selectionModel()->currentIndex();
+    if(!currentIndex.isValid()) {
+        return QString();
+    }
+    return m_modelBasic->data(m_modelBasic->index(currentIndex.row(), 1)).toString();
+}
+
 
 /*
 void Search::clicked_buttonDelete() {

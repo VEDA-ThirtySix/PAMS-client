@@ -15,7 +15,8 @@ class EditDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit EditDialog(QWidget *parent = nullptr);
+    //explicit EditDialog(QWidget *parent = nullptr);
+    explicit EditDialog(QString plate, QWidget *parent = nullptr);
     ~EditDialog();
 
     //void return_mainWindow();
@@ -23,11 +24,18 @@ public:
 private:
     Ui::EditDialog *ui;
     UserManager *userManager;
+    QString m_selectedPlate;
     Search *search;
 
 private slots:
     void clicked_buttonPrev();
     void clicked_buttonEdit();
+
+signals:
+    void dataUpdated();
+
 };
+
+
 
 #endif // EDITDIALOG_H

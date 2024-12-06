@@ -2,13 +2,21 @@
 #include "ui_edit.h"
 #include "metadata.h"
 #include <QDebug>
+#include <QMessageBox>
 
-EditDialog::EditDialog(QWidget *parent)
+EditDialog::EditDialog(QString plate, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::EditDialog)
     , userManager(new UserManager(this))
+    , m_selectedPlate(plate)
 {
     ui->setupUi(this);
+
+    BasicInfo current_info = userManager->getCurrentInfo(m_selectedPlate);
+
+    ui->lineEdit_plate->setText(m_selectedPlate);
+    ui->lineEdit_plate->setReadOnly(true);
+
     connect(ui->pushButton_prev, &QPushButton::clicked, this, &EditDialog::clicked_buttonPrev);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &EditDialog::clicked_buttonEdit);
 }
@@ -20,28 +28,25 @@ EditDialog::~EditDialog()
 }
 
 void EditDialog::clicked_buttonEdit() {
-    search = new Search(this);
-    QString selected_plate = search->get_seletedData();
-
     QString editted_name = ui->lineEdit_name->text();
-    QString editted_plate = ui->lineEdit_plate->text();
+    QString current_plate = m_selectedPlate;
     QString editted_home = ui->lineEdit_home->text();
     QString editted_phone = ui->lineEdit_phone->text();
 
-    BasicInfo current_info = userManager->getCurrentInfo(selected_plate);
+    // 빈 필드 체크
+    if(editted_name.isEmpty() || current_plate.isEmpty()) {
+        QMessageBox::warning(this, "입력 오류", "이름과 차량번호는 필수 입력사항입니다.");
+        return;
+    }
 
-    if(editted_name.isEmpty()) editted_name = current_info.get_name();
-    if(editted_plate.isEmpty()) editted_plate = current_info.get_plate();
-    if(editted_home.isEmpty()) editted_home = current_info.get_home();
-    if(editted_phone.isEmpty()) editted_phone = current_info.get_phone();
-
-    BasicInfo editted_BasicInfo(editted_name, editted_plate, editted_home, editted_phone);
+    BasicInfo editted_BasicInfo(editted_name, current_plate, editted_home, editted_phone);
 
     if(userManager->editUser(editted_BasicInfo)) {
-        qDebug() << "DONE: Edit Member: " << editted_name;
-        this->accept();
+        emit dataUpdated();
+        this->close();
     } else {
-        qDebug() << "ERROR: Enroll Failed! ";
+        qDebug() << "EditDialog - 오류: 데이터베이스 업데이트 실패";
+        QMessageBox::warning(this, "수정 실패", "데이터베이스 업데이트에 실패했습니다.");
     }
 }
 

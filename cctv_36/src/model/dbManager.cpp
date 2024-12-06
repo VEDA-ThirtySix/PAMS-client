@@ -4,12 +4,20 @@
 #include <QFile>
 #include <QDir>
 #include <QCoreApplication>
+#include <QSqlError>
+
+DBManager& DBManager::instance() { // db 싱글톤 패턴 적용
+    static DBManager instance;
+    return instance;
+}
 
 DBManager::DBManager(QObject* parent)
     : QObject(parent)
     , db(QSqlDatabase::addDatabase("QSQLITE"))
 {
-    open_database();
+    // if (open_database()) {
+    //     qDebug() << "ERROR(DB): Failed to open database";
+    // }
 }
 
 QSqlDatabase DBManager::getDatabase() const {
@@ -18,7 +26,9 @@ QSqlDatabase DBManager::getDatabase() const {
 
 DBManager::~DBManager()
 {
-    close_database();
+    if (db.isOpen()){
+        close_database();
+    }
 }
 
 bool DBManager::open_database() {
@@ -34,8 +44,8 @@ bool DBManager::open_database() {
 
     /* 테이블(Basic) 생성 */
     if(!query.exec("CREATE TABLE IF NOT EXISTS Basic ("
-                    "name VARCHAR PRIMARY KEY,"
-                    "plate VARCHAR,"
+                    "name VARCHAR,"
+                    "plate VARCHAR PRIMARY KEY,"
                     "home VARCHAR,"
                     "phone VARCHAR)")) {
         qDebug() << "ERROR(DB): Failed to Open Table: Basic";
@@ -84,7 +94,7 @@ void DBManager::create_basicInfo(const BasicInfo& basicInfo) {
 BasicInfo DBManager::read_basicInfo(const QString& selected_plate) {
     QSqlQuery query(db);
 
-    query.prepare("SELECT * FROM Basic WHERE plate = :selected_plate");
+    query.prepare("SELECT name, plate, home, phone FROM Basic WHERE plate = :selected_plate");
     query.bindValue(":selected_plate", selected_plate);
     if(!query.exec() || !query.next()) {
         qDebug() << "Error(DB): Failed to Read BasicInfo";
@@ -95,6 +105,12 @@ BasicInfo DBManager::read_basicInfo(const QString& selected_plate) {
         basicInfo.set_home(query.value(2).toString());
         basicInfo.set_phone(query.value(3).toString());
         qDebug() << "DONE(DM): Read BasicInfo(plate): " << selected_plate;
+
+        qDebug() << "DONE(DM): Read BasicInfo - Name:" << basicInfo.get_name()
+                 << "Plate:" << basicInfo.get_plate()
+                 << "Home:" << basicInfo.get_home()
+                 << "Phone:" << basicInfo.get_phone();
+
         return basicInfo;
     }
 }
@@ -103,16 +119,40 @@ BasicInfo DBManager::read_basicInfo(const QString& selected_plate) {
 void DBManager::update_basicInfo(const BasicInfo& editted_basicInfo) {
     QSqlQuery query(db);
 
-    query.prepare("UPDATE Basic SET name = :name, plate = :plate, home = :home, phone = :phone WHERE plate = :plate");
+    // 트랜잭션 시작
+    db.transaction();
+
+    query.prepare("UPDATE Basic SET name = :name, home = :home, phone = :phone WHERE plate = :plate");
     query.bindValue(":name", editted_basicInfo.get_name());
-    query.bindValue(":plate", editted_basicInfo.get_plate());
-    query.bindValue(":home",  editted_basicInfo.get_home());
+    query.bindValue(":home", editted_basicInfo.get_home());
     query.bindValue(":phone", editted_basicInfo.get_phone());
+    query.bindValue(":plate", editted_basicInfo.get_plate());
 
     if(!query.exec()) {
         qDebug() << "ERROR(DB): Failed to Update BasicInfo";
+        qDebug() << "Error details:" << query.lastError().text();
+        qDebug() << "Query was:" << query.lastQuery();
+        qDebug() << "Values -"
+                 << "Name:" << editted_basicInfo.get_name()
+                 << "Plate:" << editted_basicInfo.get_plate()
+                 << "Home:" << editted_basicInfo.get_home()
+                 << "Phone:" << editted_basicInfo.get_phone();
+        db.rollback();  // 실패시 롤백
+        return;
+    }
+
+    if(query.numRowsAffected() == 0) {
+        qDebug() << "ERROR(DB): No rows were updated";
+        db.rollback();
+        return;
+    }
+
+    // 성공적으로 완료되면 커밋
+    if(db.commit()) {
+        qDebug() << "DONE(DM): Update BasicInfo for plate:" << editted_basicInfo.get_plate();
     } else {
-        qDebug() << "DONE(DM): Update BasicInfo(plate): " << editted_basicInfo.get_plate();
+        qDebug() << "ERROR(DB): Failed to commit transaction:" << db.lastError().text();
+        db.rollback();
     }
 }
 

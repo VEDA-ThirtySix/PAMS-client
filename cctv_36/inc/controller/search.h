@@ -18,7 +18,7 @@ public:
     explicit Search(QWidget *parent = nullptr);
     ~Search();
 
-    QString get_seletedData();   //KIYUN_1127
+    QString get_selectedData();   //KIYUN_1127
     void refreshTable();
 
     //서버 연결 설정(metadata)

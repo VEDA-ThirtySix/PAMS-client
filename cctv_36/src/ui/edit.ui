@@ -52,7 +52,7 @@ border:2px solid rgb(243,115,33);</string>
 	font: 500 10pt &quot;Quicksand Medium&quot;;</string>
    </property>
    <property name="placeholderText">
-    <string>type your plate number</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_home">
@@ -166,7 +166,7 @@ QPushButton:hover {
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:26pt; font-weight:700;&quot;&gt;EDIT&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_name">
