@@ -370,50 +370,6 @@ void Search::build_QUrl() {
     qDebug() << "DEBUG(SW)$ m_url: " << m_url;
 }
 
-// void Search::refreshTable() {
-//     setupCustomerTable();
-//     setupVideoTable();
-//     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
-//     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
-// }
-
-void Search::refreshTable() {
-    qDebug() << "Search - refreshTable 시작";
-
-    // 데이터베이스 재연결
-    m_db = userManager->getDatabase();
-    qDebug() << "Search - 데이터베이스 재연결됨";
-
-    // 모델 재설정
-    if(m_modelBasic) {
-        qDebug() << "Search - 기존 모델 삭제";
-        delete m_modelBasic;
-    }
-
-    qDebug() << "Search - 새 모델 생성";
-    m_modelBasic = new QSqlTableModel(this, m_db);
-    m_modelBasic->setTable("Basic");
-    m_modelBasic->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-    qDebug() << "Search - 모델 select 시도";
-    if(!m_modelBasic->select()) {
-        qDebug() << "Search - 테이블 새로고침 실패:" << m_modelBasic->lastError().text();
-        return;
-    }
-    qDebug() << "Search - 모델 select 성공";
-
-    // 열 헤더 설정
-    m_modelBasic->setHeaderData(0, Qt::Horizontal, "NAME");
-    m_modelBasic->setHeaderData(1, Qt::Horizontal, "PLATE");
-    m_modelBasic->setHeaderData(2, Qt::Horizontal, "HOME");
-    m_modelBasic->setHeaderData(3, Qt::Horizontal, "PHONE");
-
-    ui->customerTable->setModel(m_modelBasic);
-    ui->customerTable->resizeColumnsToContents();
-
-    qDebug() << "Search - refreshTable 완료";
-}
-
 void Search::clicked_buttonConnect() {
     TcpManager *tcpManager = new TcpManager(this);
     QString host = m_host;
@@ -497,4 +453,38 @@ void Search::clicked_buttonDelete() {
         }
     }
 
+}
+void Search::refreshTable() {
+    qDebug() << "Search - refreshTable 시작";
+
+    // 데이터베이스 재연결
+    m_db = userManager->getDatabase();
+
+    // 모델 재설정
+    if(m_modelBasic) {
+        delete m_modelBasic;
+    }
+
+    m_modelBasic = new QSqlTableModel(this, m_db);
+    m_modelBasic->setTable("Basic");
+    m_modelBasic->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    if(!m_modelBasic->select()) {
+        qDebug() << "Search - 테이블 새로고침 실패:" << m_modelBasic->lastError().text();
+        return;
+    }
+    qDebug() << "Search - 모델 select 성공";
+
+    // 열 헤더 설정
+    m_modelBasic->setHeaderData(0, Qt::Horizontal, "NAME");
+    m_modelBasic->setHeaderData(1, Qt::Horizontal, "PLATE");
+    m_modelBasic->setHeaderData(2, Qt::Horizontal, "HOME");
+    m_modelBasic->setHeaderData(3, Qt::Horizontal, "PHONE");
+
+    ui->customerTable->setModel(m_modelBasic);
+    ui->customerTable->resizeColumnsToContents();
+
+    connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+
+    qDebug() << "Search - refreshTable 완료";
 }
