@@ -63,7 +63,7 @@ private:
     void clicked_buttonConnect();
     void clicked_buttonEnroll();
     void clicked_buttonEdit();
-    //void clicked_buttonDelete();
+    void clicked_buttonDelete();
 
 private slots:
     void showSearchMenu();

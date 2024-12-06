@@ -18,7 +18,7 @@ public:
     BasicInfo getCurrentInfo(QString& selected_plate) const;
     bool enrollUser(const BasicInfo& basicInfo);
     bool editUser(BasicInfo& editted_basicInfo);
-    //bool deleteUser(int type, const QString& value);
+    bool deleteUser(const QString& plate);
 
 private:
     DBManager* dbManager;

@@ -38,6 +38,7 @@ Search::Search(QWidget *parent)
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
     //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
 
 }
 
@@ -474,7 +475,25 @@ QString Search::get_selectedData() {
 }
 
 
-/*
-void Search::clicked_buttonDelete() {
 
-}*/
+void Search::clicked_buttonDelete() {
+    QString selectedPlate = get_selectedData();
+    if(selectedPlate.isEmpty()) {
+        QMessageBox::warning(this, "삭제 오류", "삭제할 데이터를 선택해주세요.");
+        return;
+    }
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "삭제 확인", "선택한 데이터를 삭제하시겠습니까?", QMessageBox::Yes|QMessageBox::No);
+
+    if(reply == QMessageBox::Yes) {
+        if(userManager->deleteUser(selectedPlate)){
+            refreshTable();
+            clearImage();
+            QMessageBox::information(this, "삭제 완료", "데이터가 성공적으로 삭제되었습니다.");
+        } else {
+            QMessageBox::warning(this, "삭제 실패", "데이터베이스 삭제에 실패했습니다.");
+        }
+    }
+
+}

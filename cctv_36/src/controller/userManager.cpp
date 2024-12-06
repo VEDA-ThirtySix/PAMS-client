@@ -36,8 +36,9 @@ bool UserManager::editUser(BasicInfo& editted_basicInfo) {
     qDebug() << "DONE(UM): editUser";
     return true;
 }
-/*
-bool UserManager::deleteUser(int type, const QString& value) {
 
+bool UserManager::deleteUser(const QString& plate) {
+    DBManager::instance().delete_basicInfo(plate);
+    qDebug() << "DONE(UM): deleteUser";
+    return true;
 }
-*/

@@ -14,8 +14,12 @@ EditDialog::EditDialog(QString plate, QWidget *parent)
 
     BasicInfo current_info = userManager->getCurrentInfo(m_selectedPlate);
 
+    ui->lineEdit_name->setText(current_info.get_name());
     ui->lineEdit_plate->setText(m_selectedPlate);
     ui->lineEdit_plate->setReadOnly(true);
+    ui->lineEdit_home->setText(current_info.get_home());
+    ui->lineEdit_phone->setText(current_info.get_phone());
+
 
     connect(ui->pushButton_prev, &QPushButton::clicked, this, &EditDialog::clicked_buttonPrev);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &EditDialog::clicked_buttonEdit);
