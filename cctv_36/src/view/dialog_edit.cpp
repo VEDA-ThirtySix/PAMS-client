@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
+
 EditDialog::EditDialog(QString plate, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::EditDialog)
@@ -20,6 +21,7 @@ EditDialog::EditDialog(QString plate, QWidget *parent)
     ui->lineEdit_home->setText(current_info.get_home());
     ui->lineEdit_phone->setText(current_info.get_phone());
 
+    setupClearConnections();
 
     connect(ui->pushButton_prev, &QPushButton::clicked, this, &EditDialog::clicked_buttonPrev);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &EditDialog::clicked_buttonEdit);
@@ -57,4 +59,22 @@ void EditDialog::clicked_buttonEdit() {
 void EditDialog::clicked_buttonPrev() {
     this->close();
     qDebug() << "Back to MainWindow ...";
+}
+
+// 각 LineEdit에 대한 클릭 시 초기화
+void EditDialog::setupClearConnections() {
+    ui->lineEdit_name->installEventFilter(this);
+    ui->lineEdit_home->installEventFilter(this);
+    ui->lineEdit_phone->installEventFilter(this);
+}
+
+// 각 입력 필드를 클릭하여 포커스를 받을 때 내용 초기화 이벤트
+bool EditDialog::eventFilter(QObject *obj, QEvent *event) {
+    if (event->type() == QEvent::FocusIn) {
+        QLineEdit* lineEdit = qobject_cast<QLineEdit*>(obj);
+        if (lineEdit && !lineEdit->text().isEmpty()) {
+            lineEdit->clear();
+        }
+    }
+    return QObject::eventFilter(obj, event);
 }

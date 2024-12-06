@@ -410,6 +410,7 @@ void Search::refreshTable() {
 
     ui->customerTable->setModel(m_modelBasic);
     ui->customerTable->resizeColumnsToContents();
+
     qDebug() << "Search - refreshTable 완료";
 }
 

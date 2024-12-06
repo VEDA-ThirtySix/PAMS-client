@@ -26,6 +26,7 @@ private:
     UserManager *userManager;
     QString m_selectedPlate;
     Search *search;
+    void setupClearConnections();
 
 private slots:
     void clicked_buttonPrev();
@@ -33,6 +34,9 @@ private slots:
 
 signals:
     void dataUpdated();
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 };
 
