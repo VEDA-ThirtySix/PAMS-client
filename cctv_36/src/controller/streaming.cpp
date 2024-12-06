@@ -205,7 +205,7 @@ void Streaming::get_host(const QString& host) {
 void Streaming::rtsp_setting(){
 
     // RTSP URL(QString) 생성
-    m_rtspUrl = QString("%1://%2:%3")
+    m_rtspUrl = QString("%1://%2:%3/")
                     .arg(protocol)
                     .arg(m_host)
                     .arg(port);

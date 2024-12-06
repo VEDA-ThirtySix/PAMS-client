@@ -412,7 +412,32 @@ void Search::clicked_buttonEnroll() {
 void Search::clicked_buttonEdit() {
     QString selectedPlate = get_selectedData();
     if(selectedPlate.isEmpty()) {
-        QMessageBox::warning(this, "수정 오류", "수정할 사용자를 선택해주세요.");
+        //QMessageBox::warning(this, "수정 오류", "수정할 사용자를 선택해주세요.");
+        QMessageBox warningBox;
+        warningBox.setWindowTitle("수정 오류");
+        warningBox.setText("수정할 사용자를 선택해주세요.");
+        // 스타일 설정
+        warningBox.setStyleSheet(
+            "QMessageBox { "
+            "    background-color: white; "                     // 전체 배경 흰색
+            "    color: black; "
+            "} "
+            "QLabel { "
+            "    color: black; "                    // 라벨 텍스트 주황색
+            "} "
+            "QPushButton { "
+            "    background-color: rgba(243, 115, 33,0.5); "         // 버튼 배경 주황색
+            "    color: black; "                                // 버튼 텍스트 흰색
+            "    width :100px;"
+            "    border: none; "                                // 버튼 테두리 없음
+            "    padding: 5px; "                                // 버튼 안쪽 여백
+            "} "
+            "QPushButton:hover { "
+            "    background-color:rgba(190,190,190);  "          // 버튼 호버 시 더 밝은 주황색
+            "} "
+        );
+        warningBox.exec();
+
         return;
     }
 
@@ -436,7 +461,30 @@ QString Search::get_selectedData() {
 void Search::clicked_buttonDelete() {
     QString selectedPlate = get_selectedData();
     if(selectedPlate.isEmpty()) {
-        QMessageBox::warning(this, "삭제 오류", "삭제할 데이터를 선택해주세요.");
+        //QMessageBox::warning(this, "삭제 오류", "삭제할 데이터를 선택해주세요.");
+        QMessageBox warningBox;
+        warningBox.setWindowTitle("삭제 오류");
+        warningBox.setText("삭제할 데이터를 선택해주세요.");
+        warningBox.setStyleSheet(
+            "QMessageBox { "
+            "    background-color: white; "                     // 전체 배경 흰색
+            "    color: black;"
+            "} "
+            "QLabel { "
+            "    color: black; "                    // 라벨 텍스트 주황색
+            "} "
+            "QPushButton { "
+            "    background-color: rgba(243, 115, 33,0.5);  "         // 버튼 배경 주황색
+            "    color: black; "                                // 버튼 텍스트 흰색
+            "    width :100px;"
+            "    border: none; "                                // 버튼 테두리 없음
+            "    padding: 5px; "                                // 버튼 안쪽 여백
+            "} "
+            "QPushButton:hover { "
+            "    background-color:rgb(190,190,190);  "          // 버튼 호버 시 더 밝은 주황색
+            "} "
+        );
+        warningBox.exec();
         return;
     }
 
