@@ -10,8 +10,11 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <json-c/json.h>
+<<<<<<< HEAD
 #include <pthread.h>
 #include <sqlite3.h>
+=======
+>>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
 
 #define MAX_CLIENTS 10
 
@@ -86,6 +89,7 @@ typedef struct {
 /* 1. [INIT] INTIALIZE WITH HTTP PROTOCOL */
 int init_server(int port);
 void handle_client(int client_socket);
+<<<<<<< HEAD
 //void parse_header(char* jsonBuffer, struct http_request *request); 
 //int manage_request(char* jsonBuffer, ClientInfo* clientInfo, BasicInfo* basicInfo, TimeInfo* timeInfo);
 
@@ -95,10 +99,25 @@ void parse_clip(char* jsonBuffer, TimeInfo *timeInfo);
 
 /* 2. [USER] HANDLE USER REQUEST[POST] */
 void handle_user();
+=======
+void parse_header(char* jsonBuffer, struct http_request *request);
+int manage_request(char* jsonBuffer, ClientInfo* clientInfo, BasicInfo* basicInfo, TimeInfo* timeInfo);
+
+void parse_init(char* jsonBuffer, ClientInfo* clientInfo);
+void parse_clip(char* jsonBuffer, TimeInfo* timeInfo);
+
+/* 2. [USER] HANDLE USER REQUEST[POST] */
+void handle_user();
+void parse_user(char* jsonBuffer, BasicInfo* basicInfo);
+>>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
 void saveDB_user();
 
 /* 3. [CLIP] HANDLE USER REQUEST[GET] */
 void handle_clip();
+<<<<<<< HEAD
+=======
+void parse_clip(char* jsonBuffer, TimeInfo *timeInfo);
+>>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
 void stream_clip();
 
 /* 4. [PLATE] SEND PLATE DATA */
@@ -111,6 +130,7 @@ void send_plateData(int client_socket, char* json);
 //Qt: decode_base64();
 //Qt: logManager->save_log(timeInfo, imgBuffer);
 
+<<<<<<< HEAD
 void send_http_response(int client_socket, const char* json_response);  //사용중
 void send_response(struct http_response *response, int status_code, const char* content_type, const char* body);
 
@@ -124,4 +144,8 @@ int check_plate_exists(sqlite3 *db, const char* plate);
 //int save_clip_data(sqlite3 *db, TimeInfo *timeInfo);
 
 
+=======
+void send_response(struct http_response *response, int status_code, const char* content_type, const char* body);
+
+>>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
 #endif//SERVER_H

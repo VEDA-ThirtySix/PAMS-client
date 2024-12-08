@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/**",
+                "/usr/local/include/**",
+                "/usr/include/c++/13/**",
+                "/usr/include/x86_64-linux-gnu/**",
+                "/home/kiyun/lib_kiyun/",  //nlohmann_json.hpp
+                "/home/kiyun/lib_kiyun/cpp-httplib-master"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",  // 여기 g++ 경로 추가
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-gcc-x64"  // g++ 사용 시 "gcc" 모드를 설정
+        }
+    ],
+    "version": 4
+}
