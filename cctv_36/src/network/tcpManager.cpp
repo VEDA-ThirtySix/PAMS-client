@@ -1,3 +1,4 @@
+/*
 #include "tcpManager.h"
 #include "metadata.h"
 #include <QDebug>
@@ -10,9 +11,9 @@ TcpManager::TcpManager(QObject *parent)
 {
     qDebug() << "DEBUG(TM): exec constructor";
 
-    connect(tcpSocket, &QTcpSocket::connected, this, &TcpManager::on_connected);
-    connect(tcpSocket, &QTcpSocket::readyRead, this, &TcpManager::on_readyRead);
-    connect(tcpSocket, &QTcpSocket::disconnected, this, &TcpManager::on_disconnected);
+    //connect(tcpSocket, &QTcpSocket::connected, this, &TcpManager::on_connected);
+    //connect(tcpSocket, &QTcpSocket::readyRead, this, &TcpManager::on_readyRead);
+    //connect(tcpSocket, &QTcpSocket::disconnected, this, &TcpManager::on_disconnected);
 }
 
 TcpManager::~TcpManager()
@@ -60,3 +61,4 @@ void TcpManager::on_readyRead() {
 void TcpManager::on_disconnected() {
     qDebug() << "Disconnected from Server";
 }
+*/

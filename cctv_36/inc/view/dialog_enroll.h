@@ -2,7 +2,9 @@
 #define DIALOG_ENROLL_H
 
 #include "userManager.h"
+#include "httpManager.h"
 #include <QDialog>
+#include <QUrl>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -15,12 +17,14 @@ class EnrollDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit EnrollDialog(QWidget *parent = nullptr);
+    explicit EnrollDialog(QUrl url, QWidget *parent = nullptr);
     ~EnrollDialog();
 
 private:
     Ui::EnrollDialog *ui;
     UserManager *userManager;
+    HttpManager *httpManager;
+    QUrl m_url;
 
 private slots:
     void clicked_buttonPrev();

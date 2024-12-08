@@ -1,3 +1,4 @@
+/*
 #ifndef TCPMANAGER_H
 #define TCPMANAGER_H
 
@@ -27,3 +28,4 @@ private slots:
 };
 
 #endif // TCPMANAGER_H
+*/

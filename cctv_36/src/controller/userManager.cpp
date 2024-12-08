@@ -31,7 +31,7 @@ bool UserManager::enrollUser(const BasicInfo& basicInfo) {
     return true;
 }
 
-bool UserManager::editUser(BasicInfo& editted_basicInfo) {
+bool UserManager::editUser(const BasicInfo& editted_basicInfo) {
     DBManager::instance().update_basicInfo(editted_basicInfo);
     qDebug() << "DONE(UM): editUser";
     return true;

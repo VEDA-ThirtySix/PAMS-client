@@ -17,7 +17,7 @@ public:
     QSqlDatabase getDatabase() const;
     BasicInfo getCurrentInfo(QString& selected_plate) const;
     bool enrollUser(const BasicInfo& basicInfo);
-    bool editUser(BasicInfo& editted_basicInfo);
+    bool editUser(const BasicInfo& editted_basicInfo);
     //bool deleteUser(int type, const QString& value);
 
 private:

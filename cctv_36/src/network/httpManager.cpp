@@ -2,6 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkRequest>
+#include <QNetworkReply>
 #include <QNetworkInterface>
 #include <QNetworkAddressEntry>
 #include <QDateTime>
@@ -20,7 +21,7 @@ HttpManager::~HttpManager()
 QUrl HttpManager::set_config(const QString& url, const QString& port) {
     QString fullURL = url;
     if(!url.startsWith("http://") && !url.startsWith("https://")) {
-        fullURL = "httStreamingp://" + url;
+        fullURL = "http://" + url;
     }
     QUrl serverURL = QUrl(fullURL);
 
@@ -46,12 +47,6 @@ bool HttpManager::post_initInfo(const QUrl& url, const ClientInfo& clientInfo) {
         qDebug() << "FAILURE(HM)$ Failed to Allocate memory";
         return false;
     }
-    /*
-    // SSL/TLS 설정 (HTTPS 사용시)
-    QNetworkRequest request(serverURL);
-    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-    config.setProtocol(QSsl::TlsV1_2);
-    request.setSslConfiguration(config); */
 
     if(!url.isValid()) {
         qDebug() << "FAILURE(HM)$ Invalid URL";
@@ -68,8 +63,6 @@ bool HttpManager::post_initInfo(const QUrl& url, const ClientInfo& clientInfo) {
 
     accessManager->post(request, jsonArray);
     qDebug() << "DONE(HM): post_initInfo";
-    qDebug() << "=== JSON(init) ===";
-    qDebug() << jsonArray;
     return true;
 }
 
@@ -80,9 +73,19 @@ void HttpManager::post_userInfo(const QUrl& url, const BasicInfo& basicInfo) {
     QByteArray jsonArray = jsonManager->build_user(basicInfo);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    qDebug() << "DONE(HM): post_userInfo";
 
-    accessManager->post(request, jsonArray);
+    QNetworkReply *reply = accessManager->post(request, jsonArray);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if(reply->error() == QNetworkReply::NoError) {
+            emit requestCompleted();
+            qDebug() << "HttpManager: post userInfo Completed";
+            qDebug() << "[HttpManager][INFO ] Response: >> " << reply->readAll();
+        } else {
+            emit requestFailed();
+            qDebug() << "HttpManager: post userInfo Failed";
+            qDebug() << "[HttpManager][ERROR] Response: " << reply->errorString();
+        }
+    });
 }
 
 void HttpManager::post_clipInfo(const QUrl& url, const TimeInfo& timeInfo) {

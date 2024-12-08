@@ -2,8 +2,10 @@
 #define EDITDIALOG_H
 
 #include "userManager.h"
+#include "httpManager.h"
 #include "search.h"
 #include <QDialog>
+#include <QUrl>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,14 +18,14 @@ class EditDialog : public QDialog {
 
 public:
     //explicit EditDialog(QWidget *parent = nullptr);
-    explicit EditDialog(QString plate, QWidget *parent = nullptr);
+    explicit EditDialog(QUrl url, QString plate, QWidget *parent = nullptr);
     ~EditDialog();
-
-    //void return_mainWindow();
 
 private:
     Ui::EditDialog *ui;
     UserManager *userManager;
+    HttpManager *httpManager;
+    QUrl m_url;
     QString m_selectedPlate;
     Search *search;
 

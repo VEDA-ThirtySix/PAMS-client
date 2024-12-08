@@ -1,6 +1,7 @@
 #include "server.h"
 #include "b64.c/b64.h"  //$ git clone https://github.com/jwerle/b64.c.git
 #include "time.h"
+#include "errno.h"
 
 int init_server(int port) {
     int server_fd;
@@ -9,14 +10,18 @@ int init_server(int port) {
 
     //Create Socket
     if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        perror("socket failed");
+        perror("init_server: socket failed");
         exit(EXIT_FAILURE);
+    } else {
+        printf("init_server: socket created\n");
     }
 
     //Socket Config
     if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
-        perror("setsockopt failed");
+        perror("init_server: setsockopt failed");
         exit(EXIT_FAILURE);
+    } else {
+        printf("init_server: setsockopt success\n");
     }
 
     //init Address struct
@@ -26,92 +31,195 @@ int init_server(int port) {
 
     //Bind Socket
     if(bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
-        perror("bind failed");
+        perror("init_server: bind failed");
         exit(EXIT_FAILURE);
+    } else {
+        printf("init_server: bind success\n");
     }
 
     //Listen
     if(listen(server_fd, MAX_CLIENTS) < 0) {
-        perror("listen failed");
+        perror("init_server: listen failed");
         exit(EXIT_FAILURE);
+    } else {
+        printf("init_server: listen success\n");
     }
 
     return server_fd;
 }
 
-void parse_header(char* jsonBuffer, struct http_request *request) {
-    printf("DEBUG: parse_header\n");
-    printf("=== HTTP Request Start ===\n%s\n=== HTTP Request End ===\n", jsonBuffer);
-    
-    char *line = strtok(jsonBuffer, "\r\n");
-    char *body = NULL;
+void handle_client(int client_socket) {
+    printf("handle_client(O): handle_client started\n");
+    char buffer[4096] = {0};
+    ssize_t bytes_read;
+    size_t total_bytes = 0;
+    char *body_start = NULL;
 
-    //START LINE
-    sscanf(line, "%s %s %s", request->method, request->path, request->version);
-    printf("DEBUG: %s %s %s\n", request->method, request->path, request->version);
-    
-    //HEADER
-    while((line = strtok(NULL, "\r\n")) != NULL) {
-        if(strlen(line) == 0) {
-            body = strtok(NULL, "");
-            break;
-        }
-        if(strncmp(line, "Content-Type: ", 14) == 0) {
-            strcpy(request->content_type, line + 14);
-        }
+    printf("handle_client(O): waiting for data...\n");
+
+    // 먼저 헤더를 읽음
+    while ((bytes_read = read(client_socket, buffer + total_bytes, sizeof(buffer) - total_bytes)) > 0) {
+        total_bytes += bytes_read;
+        body_start = strstr(buffer, "\r\n\r\n");
+        if (body_start) break;  // 헤더의 끝을 찾으면 중단
     }
 
-    // BODY
-    if(body) {
-        strcpy(request->body, body);
-        printf("Body: %s\n", request->body);
+    if (bytes_read <= 0) {
+        printf("handle_client(X): Failed to read header\n");
+        return;
     }
-}
 
-int manage_request(char* jsonBuffer, ClientInfo *clientInfo, BasicInfo* basicInfo, TimeInfo *timeInfo) {
-    printf("DEBUG: manage_request\n");
-    //request Type
+    // Content-Length 확인
+    char *content_length_str = strstr(buffer, "Content-Length:");
+    if (!content_length_str) {
+        printf("handle_client(X): Content-Length not found\n");
+        return;
+    }
+    int content_length = atoi(content_length_str + 16);
+    printf("Content-Length: %d\n", content_length);
+
+    // body 시작 위치 이동
+    body_start += 4;
+    
+    // 현재까지 읽은 body 크기 계산
+    size_t header_size = body_start - buffer;
+    size_t current_body_size = total_bytes - header_size;
+    
+    // body 데이터를 완전히 읽을 때까지 계속 읽기
+    while (current_body_size < content_length) {
+        bytes_read = read(client_socket, 
+                         buffer + total_bytes, 
+                         sizeof(buffer) - total_bytes);
+        if (bytes_read <= 0) {
+            printf("handle_client(X): Failed to read body\n");
+            return;
+        }
+        total_bytes += bytes_read;
+        current_body_size += bytes_read;
+    }
+
+    printf("\n########## DATA RECEIVED ##########\n");
+    printf("Total bytes read: %zu\n", total_bytes);
+
+    // JSON 파싱
     struct json_object *parsed_json;
     struct json_object *requestType_obj;
     struct json_object *reqType_obj;
-
     enum json_tokener_error error;
-    parsed_json = json_tokener_parse_verbose(jsonBuffer, &error);
+
+    parsed_json = json_tokener_parse_verbose(body_start, &error);
     if (!parsed_json) {
         printf("JSON parsing failed: %s\n", json_tokener_error_desc(error));
-        return -1;
+        return;
     }
+    
+    // requestType 처리
+    char reqType[5] = {0};
+    if(json_object_object_get_ex(parsed_json, "requestType", &requestType_obj) &&
+       json_object_object_get_ex(requestType_obj, "reqType", &reqType_obj)) {
+        
+        strcpy(reqType, json_object_get_string(reqType_obj));
+        printf("Received reqType: %s\n", reqType);
 
-    char reqType[5];
-    if(json_object_object_get_ex(parsed_json, "requestType", &requestType_obj)) {
-        if(json_object_object_get_ex(requestType_obj, "reqType", &reqType_obj)) {
-            strcpy(reqType, json_object_get_string(reqType_obj));
-            if(strcmp(reqType, "init") == 0) {
-                printf("manage_request: ");
-                for(int i=0; i<5; i++) printf("%c ", reqType[i]);
-                printf("return: %d\n", 1);
+        ClientInfo clientInfo;
+        BasicInfo basicInfo;
+        TimeInfo timeInfo;
 
-                parse_init(jsonBuffer, clientInfo);
-                return 1;
-            } else if(strcmp(reqType, "user") == 0) {
-                printf("manage_request: ");
-                for(int i=0; i<5; i++) printf("%c ", reqType[i]);
-                printf("return: %d\n", 2);
+        sqlite3 *db = init_database();
+        if(!db) {
+            printf("Failed to initialize database\n");
+            const char* json_response = "{\"status\":\"error\",\"message\":\"Database error\"}";
+            send_http_response(client_socket, json_response);
+            return;
+        }
 
-                parse_user(jsonBuffer, basicInfo);
-                return 2;
-            } else if(strcmp(reqType, "clip") == 0) {
-                printf("manage_request: ");
-                for(int i=0; i<5; i++) printf("%c ", reqType[i]);
-                printf("return: %d\n", 3);
+        if(strcmp(reqType, "init") == 0) {
+            parse_init(body_start, &clientInfo);
+            printf("Processed init request:\n");
+            printf("ClientName  : %s\n", clientInfo.cliName);
+            printf("IP Address  : %s\n", clientInfo.ipAddr);
+            printf("Connect Time: %s\n", clientInfo.connectTime);
 
-                parse_clip(jsonBuffer, timeInfo);
-                return 3;
+            if(save_user_data(db, &clientInfo)) {
+                const char* json_response = "{\"status\":\"init_success\",\"message\":\"Client initialized\"}";
+                send_http_response(client_socket, json_response);
+            } else {
+                const char* json_response = "{\"status\":\"error\",\"message\":\"Failed to save user data\"}";
+                send_http_response(client_socket, json_response);
+            }
+        }   
+        else if(strcmp(reqType, "user") == 0) {
+            parse_user(body_start, &basicInfo);
+            printf("Processed user request:\n");
+            printf("Name : %s\n", basicInfo.name);
+            printf("Plate: %s\n", basicInfo.plate);
+            printf("Home : %s\n", basicInfo.home);
+            printf("Phone: %s\n", basicInfo.phone);
+            
+            // 차량번호로 기존 데이터 확인
+            if(check_plate_exists(db, basicInfo.plate)) {
+                // 기존 데이터가 있으면 수정
+                if(edit_user_data(db, &basicInfo)) {
+                    const char* json_response = "{\"status\":\"success\",\"message\":\"User data updated\"}";
+                    send_http_response(client_socket, json_response);
+                } else {
+                    const char* json_response = "{\"status\":\"error\",\"message\":\"Update failed\"}";
+                    send_http_response(client_socket, json_response);
+                }
+            } else {
+                // 새로운 데이터 저장
+                if(save_user_data(db, &basicInfo)) {
+                    const char* json_response = "{\"status\":\"success\",\"message\":\"User data saved\"}";
+                    send_http_response(client_socket, json_response);
+                } else {
+                    const char* json_response = "{\"status\":\"error\",\"message\":\"Save failed\"}";
+                    send_http_response(client_socket, json_response);
+                }
             }
         } 
+        else if(strcmp(reqType, "clip") == 0) {
+            parse_clip(body_start, &timeInfo);
+            printf("Processed clip request:\n");
+            printf("Plate: %s\n", timeInfo.plate);
+            printf("Time : %s\n", timeInfo.time);
+            printf("Type : %s\n", timeInfo.type);
+            
+            /*
+            if(save_clip_data(db, &timeInfo)) {
+                const char* json_response = "{\"status\":\"clip_success\",\"message\":\"Clip saved\"}";
+                send_http_response(client_socket, json_response);
+            } else {
+                const char* json_response = "{\"status\":\"error\",\"message\":\"Failed to save clip data\"}";
+                send_http_response(client_socket, json_response);
+            }*/
+        }
+        else {
+            printf("Unknown request type: %s\n", reqType);
+            
+            const char* json_response = "{\"status\":\"error\",\"message\":\"Unknown request type\"}";
+            send_http_response(client_socket, json_response);
+        }
+
+        sqlite3_close(db);
     }
-    return -1;
+    
+    json_object_put(parsed_json);
+    printf("handle_client(O): request processed successfully\n");
 }
+
+void send_http_response(int client_socket, const char* json_response) {
+    char response[4096];
+    int content_length = strlen(json_response);
+    snprintf(response, sizeof(response),
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: application/json\r\n"
+        "Content-Length: %d\r\n"
+        "Connection: close\r\n"
+        "\r\n"
+        "%s", content_length, json_response);
+    write(client_socket, response, strlen(response));
+}
+
 
 void parse_init(char* jsonBuffer, ClientInfo *clientInfo) {
     //request Type
@@ -138,9 +246,7 @@ void parse_init(char* jsonBuffer, ClientInfo *clientInfo) {
             strcpy(clientInfo->connectTime, json_object_get_string(connectTime_obj));
         } 
     }
-
-    printf("cliName: %s\n, ipAddr: %s\n, connectTime: %s\n",\
-            clientInfo->cliName, clientInfo->ipAddr, clientInfo->connectTime);
+    
     json_object_put(parsed_json);   //delete parsed_json(memory leak)
 }
 
@@ -174,8 +280,6 @@ void parse_user(char* jsonBuffer, BasicInfo *basicInfo) {
         } 
     }
 
-    printf("name: %s\n, plate: %s\n, home: %s\n, phone: %s\n",  \
-            basicInfo->name, basicInfo->plate, basicInfo->home, basicInfo->phone);
     json_object_put(parsed_json);   //delete parsed_json(memory leak)
 }
 
@@ -205,42 +309,9 @@ void parse_clip(char* jsonBuffer, TimeInfo *timeInfo) {
         } 
     }
 
-    printf("plate: %s\n, time: %s\n, type: %s\n", \
-            timeInfo->plate, timeInfo->time, timeInfo->type);
     json_object_put(parsed_json);   //delete parsed_json(memory leak)
 }
 
-void handle_client(int client_socket) {
-    printf("DEBUG: handle_client\n");
-    char buffer[4096] = {0};
-    struct http_request req;
-
-    ssize_t bytes_read = read(client_socket, buffer, sizeof(buffer));
-    if (bytes_read <= 0) {
-        close(client_socket);
-        return;
-    }
-
-    parse_header(buffer, &req);
-
-    if (strcmp(req.method, "GET") == 0) {
-        // GET 요청 처리
-    } 
-    else if (strcmp(req.method, "POST") == 0) {
-        if (strstr(req.content_type, "application/json") != NULL) {
-            ClientInfo clientInfo;
-            BasicInfo basicInfo;
-            TimeInfo timeInfo;
-            
-            int result = manage_request(req.body, &clientInfo, &basicInfo, &timeInfo);
-            if (result > 0) {
-                printf("Successful request\n");
-            } else {
-                printf("Invalid request\n");
-            }
-        }
-    }
-}
 
 void send_response(struct http_response *response, int status_code,\
                    const char* content_type, const char* body) {
@@ -249,15 +320,6 @@ void send_response(struct http_response *response, int status_code,\
     switch(status_code) {
         case 100:
             strcpy(response->status_message, "Continue");
-            break;
-        case 101:
-            strcpy(response->status_message, "Switching Protocols");
-            break;                                                          
-        case 102:    
-            strcpy(response->status_message, "Processing");                                                                    
-            break;
-        case 103:
-            strcpy(response->status_message, "Early Hints");
             break;
         case 200:
             strcpy(response->status_message, "OK");
@@ -271,21 +333,6 @@ void send_response(struct http_response *response, int status_code,\
         case 204:
             strcpy(response->status_message, "No Content");
             break;
-        case 301:
-            strcpy(response->status_message, "Moved Permanently");
-            break;
-        case 302:
-            strcpy(response->status_message, "Found");
-            break;
-        case 304:
-            strcpy(response->status_message, "Not Modified");
-            break;
-        case 307:
-            strcpy(response->status_message, "Temporary Redirect");
-            break;
-        case 308:
-            strcpy(response->status_message, "Permanent Redirect");
-            break;
         case 400:
             strcpy(response->status_message, "Bad Request");
             break;
@@ -297,39 +344,6 @@ void send_response(struct http_response *response, int status_code,\
             break;      
         case 404:
             strcpy(response->status_message, "Not Found");
-            break;
-        case 500:
-            strcpy(response->status_message, "Internal Server Error");
-            break;
-        case 503:
-            strcpy(response->status_message, "Service Unavailable");
-            break;
-        case 504:
-            strcpy(response->status_message, "Gateway Timeout");
-            break;
-        case 505:
-            strcpy(response->status_message, "HTTP Version Not Supported");
-            break;
-        case 506:
-            strcpy(response->status_message, "Variant Also Negotiates");
-            break;
-        case 507:
-            strcpy(response->status_message, "Insufficient Storage");
-            break;
-        case 508:
-            strcpy(response->status_message, "Loop Detected");
-            break;
-        case 509:
-            strcpy(response->status_message, "Bandwidth Limit Exceeded");
-            break;
-        case 510:
-            strcpy(response->status_message, "Not Extended");
-            break;
-        case 511:
-            strcpy(response->status_message, "Network Authentication Required");
-            break;
-        default:
-            strcpy(response->status_message, "Internal Server Error");
             break;
     }
     
@@ -472,6 +486,7 @@ void send_plateData(int client_socket, char* json) {
     write(client_socket, json, strlen(json));
     printf("send_plateData: json sent\n");
     printf("send_plateData: client_socket: %d\n", client_socket);
+
     free(json);
 }
 

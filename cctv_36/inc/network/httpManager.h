@@ -36,5 +36,8 @@ private:
     LogManager *logManager;
     DBManager *dbManager;
 
+signals:
+    void requestCompleted();  // 요청 완료 시그널
+    void requestFailed();     // 요청 실패 시그널
 };
 #endif // HTTPMANAGER_H

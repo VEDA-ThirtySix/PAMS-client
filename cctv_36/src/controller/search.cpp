@@ -369,12 +369,14 @@ void Search::build_QUrl() {
     qDebug() << "DEBUG(SW)$ m_url: " << m_url;
 }
 
-// void Search::refreshTable() {
+/*
+void Search::refreshTable() {
 //     setupCustomerTable();
 //     setupVideoTable();
 //     // 테이블 모델이 새로 생성되었으므로 selection model 연결을 다시 해줌
 //     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
-// }
+}
+*/
 
 void Search::refreshTable() {
     qDebug() << "Search - refreshTable 시작";
@@ -413,18 +415,6 @@ void Search::refreshTable() {
 }
 
 void Search::clicked_buttonConnect() {
-    TcpManager *tcpManager = new TcpManager(this);
-    QString host = m_host;
-    quint16 _port = static_cast<quint16>(port);
-
-    if(tcpManager->connect_server(host, _port)) {
-        qDebug() << "SUCCESS(SW)$ Successfully Connected(TCP)";
-        qDebug() << "SUCCESS(SW)$ host:" << host;
-        qDebug() << "SUCCESS(SW)$ port:" << port;
-    } else {
-        qDebug() << "FAILURE(SW)$ TCP Connection Failure";
-    }
-
     HttpManager *httpManager = new HttpManager(this);
     ClientInfo clientInfo;
     clientInfo.set_name("ThirtySix");
@@ -439,10 +429,12 @@ void Search::clicked_buttonConnect() {
     } else {
         qDebug() << "FAILURE(SW)$ POST Request(INIT) Failure";
     }
+
 }
 
 void Search::clicked_buttonEnroll() {
-    EnrollDialog *enrollDialog = new EnrollDialog(this);
+    build_QUrl();
+    EnrollDialog *enrollDialog = new EnrollDialog(m_url, this);
     connect(enrollDialog, &EnrollDialog::dataSubmitted, this, &Search::refreshTable);
 
     enrollDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -452,13 +444,15 @@ void Search::clicked_buttonEnroll() {
 
 
 void Search::clicked_buttonEdit() {
+    build_QUrl();
+
     QString selectedPlate = get_selectedData();
     if(selectedPlate.isEmpty()) {
         QMessageBox::warning(this, "수정 오류", "수정할 사용자를 선택해주세요.");
         return;
     }
 
-    EditDialog *editDialog = new EditDialog(selectedPlate, this);
+    EditDialog *editDialog = new EditDialog(m_url, selectedPlate, this);
     editDialog->setAttribute(Qt::WA_DeleteOnClose);
     connect(editDialog, &EditDialog::dataUpdated, this, &Search::refreshTable);
     editDialog->exec();
