@@ -1,10 +1,7 @@
 #include "server.h"
 #include "b64.c/b64.h"  //$ git clone https://github.com/jwerle/b64.c.git
 #include "time.h"
-<<<<<<< HEAD
 #include "errno.h"
-=======
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
 
 int init_server(int port) {
     int server_fd;
@@ -13,28 +10,18 @@ int init_server(int port) {
 
     //Create Socket
     if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-<<<<<<< HEAD
         perror("init_server: socket failed");
         exit(EXIT_FAILURE);
     } else {
         printf("init_server: socket created\n");
-=======
-        perror("socket failed");
-        exit(EXIT_FAILURE);
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
     }
 
     //Socket Config
     if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
-<<<<<<< HEAD
         perror("init_server: setsockopt failed");
         exit(EXIT_FAILURE);
     } else {
         printf("init_server: setsockopt success\n");
-=======
-        perror("setsockopt failed");
-        exit(EXIT_FAILURE);
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
     }
 
     //init Address struct
@@ -44,34 +31,23 @@ int init_server(int port) {
 
     //Bind Socket
     if(bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
-<<<<<<< HEAD
         perror("init_server: bind failed");
         exit(EXIT_FAILURE);
     } else {
         printf("init_server: bind success\n");
-=======
-        perror("bind failed");
-        exit(EXIT_FAILURE);
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
     }
 
     //Listen
     if(listen(server_fd, MAX_CLIENTS) < 0) {
-<<<<<<< HEAD
         perror("init_server: listen failed");
         exit(EXIT_FAILURE);
     } else {
         printf("init_server: listen success\n");
-=======
-        perror("listen failed");
-        exit(EXIT_FAILURE);
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
     }
 
     return server_fd;
 }
 
-<<<<<<< HEAD
 void handle_client(int client_socket) {
     printf("handle_client(O): handle_client started\n");
     char buffer[4096] = {0};
@@ -245,82 +221,6 @@ void send_http_response(int client_socket, const char* json_response) {
 }
 
 
-=======
-void parse_header(char* jsonBuffer, struct http_request *request) {
-    printf("DEBUG: parse_header\n");
-    printf("=== HTTP Request Start ===\n%s\n=== HTTP Request End ===\n", jsonBuffer);
-    
-    char *line = strtok(jsonBuffer, "\r\n");
-    char *body = NULL;
-
-    //START LINE
-    sscanf(line, "%s %s %s", request->method, request->path, request->version);
-    printf("DEBUG: %s %s %s\n", request->method, request->path, request->version);
-    
-    //HEADER
-    while((line = strtok(NULL, "\r\n")) != NULL) {
-        if(strlen(line) == 0) {
-            body = strtok(NULL, "");
-            break;
-        }
-        if(strncmp(line, "Content-Type: ", 14) == 0) {
-            strcpy(request->content_type, line + 14);
-        }
-    }
-
-    // BODY
-    if(body) {
-        strcpy(request->body, body);
-        printf("Body: %s\n", request->body);
-    }
-}
-
-int manage_request(char* jsonBuffer, ClientInfo *clientInfo, BasicInfo* basicInfo, TimeInfo *timeInfo) {
-    printf("DEBUG: manage_request\n");
-    //request Type
-    struct json_object *parsed_json;
-    struct json_object *requestType_obj;
-    struct json_object *reqType_obj;
-
-    enum json_tokener_error error;
-    parsed_json = json_tokener_parse_verbose(jsonBuffer, &error);
-    if (!parsed_json) {
-        printf("JSON parsing failed: %s\n", json_tokener_error_desc(error));
-        return -1;
-    }
-
-    char reqType[5];
-    if(json_object_object_get_ex(parsed_json, "requestType", &requestType_obj)) {
-        if(json_object_object_get_ex(requestType_obj, "reqType", &reqType_obj)) {
-            strcpy(reqType, json_object_get_string(reqType_obj));
-            if(strcmp(reqType, "init") == 0) {
-                printf("manage_request: ");
-                for(int i=0; i<5; i++) printf("%c ", reqType[i]);
-                printf("return: %d\n", 1);
-
-                parse_init(jsonBuffer, clientInfo);
-                return 1;
-            } else if(strcmp(reqType, "user") == 0) {
-                printf("manage_request: ");
-                for(int i=0; i<5; i++) printf("%c ", reqType[i]);
-                printf("return: %d\n", 2);
-
-                parse_user(jsonBuffer, basicInfo);
-                return 2;
-            } else if(strcmp(reqType, "clip") == 0) {
-                printf("manage_request: ");
-                for(int i=0; i<5; i++) printf("%c ", reqType[i]);
-                printf("return: %d\n", 3);
-
-                parse_clip(jsonBuffer, timeInfo);
-                return 3;
-            }
-        } 
-    }
-    return -1;
-}
-
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
 void parse_init(char* jsonBuffer, ClientInfo *clientInfo) {
     //request Type
     struct json_object *parsed_json = json_tokener_parse(jsonBuffer);
@@ -346,13 +246,7 @@ void parse_init(char* jsonBuffer, ClientInfo *clientInfo) {
             strcpy(clientInfo->connectTime, json_object_get_string(connectTime_obj));
         } 
     }
-<<<<<<< HEAD
     
-=======
-
-    printf("cliName: %s\n, ipAddr: %s\n, connectTime: %s\n",\
-            clientInfo->cliName, clientInfo->ipAddr, clientInfo->connectTime);
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
     json_object_put(parsed_json);   //delete parsed_json(memory leak)
 }
 
@@ -386,11 +280,6 @@ void parse_user(char* jsonBuffer, BasicInfo *basicInfo) {
         } 
     }
 
-<<<<<<< HEAD
-=======
-    printf("name: %s\n, plate: %s\n, home: %s\n, phone: %s\n",  \
-            basicInfo->name, basicInfo->plate, basicInfo->home, basicInfo->phone);
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
     json_object_put(parsed_json);   //delete parsed_json(memory leak)
 }
 
@@ -420,48 +309,9 @@ void parse_clip(char* jsonBuffer, TimeInfo *timeInfo) {
         } 
     }
 
-<<<<<<< HEAD
     json_object_put(parsed_json);   //delete parsed_json(memory leak)
 }
 
-=======
-    printf("plate: %s\n, time: %s\n, type: %s\n", \
-            timeInfo->plate, timeInfo->time, timeInfo->type);
-    json_object_put(parsed_json);   //delete parsed_json(memory leak)
-}
-
-void handle_client(int client_socket) {
-    printf("DEBUG: handle_client\n");
-    char buffer[4096] = {0};
-    struct http_request req;
-
-    ssize_t bytes_read = read(client_socket, buffer, sizeof(buffer));
-    if (bytes_read <= 0) {
-        close(client_socket);
-        return;
-    }
-
-    parse_header(buffer, &req);
-
-    if (strcmp(req.method, "GET") == 0) {
-        // GET 요청 처리
-    } 
-    else if (strcmp(req.method, "POST") == 0) {
-        if (strstr(req.content_type, "application/json") != NULL) {
-            ClientInfo clientInfo;
-            BasicInfo basicInfo;
-            TimeInfo timeInfo;
-            
-            int result = manage_request(req.body, &clientInfo, &basicInfo, &timeInfo);
-            if (result > 0) {
-                printf("Successful request\n");
-            } else {
-                printf("Invalid request\n");
-            }
-        }
-    }
-}
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
 
 void send_response(struct http_response *response, int status_code,\
                    const char* content_type, const char* body) {
@@ -471,18 +321,6 @@ void send_response(struct http_response *response, int status_code,\
         case 100:
             strcpy(response->status_message, "Continue");
             break;
-<<<<<<< HEAD
-=======
-        case 101:
-            strcpy(response->status_message, "Switching Protocols");
-            break;                                                          
-        case 102:    
-            strcpy(response->status_message, "Processing");                                                                    
-            break;
-        case 103:
-            strcpy(response->status_message, "Early Hints");
-            break;
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
         case 200:
             strcpy(response->status_message, "OK");
             break;
@@ -495,24 +333,6 @@ void send_response(struct http_response *response, int status_code,\
         case 204:
             strcpy(response->status_message, "No Content");
             break;
-<<<<<<< HEAD
-=======
-        case 301:
-            strcpy(response->status_message, "Moved Permanently");
-            break;
-        case 302:
-            strcpy(response->status_message, "Found");
-            break;
-        case 304:
-            strcpy(response->status_message, "Not Modified");
-            break;
-        case 307:
-            strcpy(response->status_message, "Temporary Redirect");
-            break;
-        case 308:
-            strcpy(response->status_message, "Permanent Redirect");
-            break;
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
         case 400:
             strcpy(response->status_message, "Bad Request");
             break;
@@ -525,42 +345,6 @@ void send_response(struct http_response *response, int status_code,\
         case 404:
             strcpy(response->status_message, "Not Found");
             break;
-<<<<<<< HEAD
-=======
-        case 500:
-            strcpy(response->status_message, "Internal Server Error");
-            break;
-        case 503:
-            strcpy(response->status_message, "Service Unavailable");
-            break;
-        case 504:
-            strcpy(response->status_message, "Gateway Timeout");
-            break;
-        case 505:
-            strcpy(response->status_message, "HTTP Version Not Supported");
-            break;
-        case 506:
-            strcpy(response->status_message, "Variant Also Negotiates");
-            break;
-        case 507:
-            strcpy(response->status_message, "Insufficient Storage");
-            break;
-        case 508:
-            strcpy(response->status_message, "Loop Detected");
-            break;
-        case 509:
-            strcpy(response->status_message, "Bandwidth Limit Exceeded");
-            break;
-        case 510:
-            strcpy(response->status_message, "Not Extended");
-            break;
-        case 511:
-            strcpy(response->status_message, "Network Authentication Required");
-            break;
-        default:
-            strcpy(response->status_message, "Internal Server Error");
-            break;
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
     }
     
     strcpy(response->content_type, content_type);
@@ -702,10 +486,7 @@ void send_plateData(int client_socket, char* json) {
     write(client_socket, json, strlen(json));
     printf("send_plateData: json sent\n");
     printf("send_plateData: client_socket: %d\n", client_socket);
-<<<<<<< HEAD
 
-=======
->>>>>>> 8ee41eb9980699f13714288471cc6f9edb973b87
     free(json);
 }
 
