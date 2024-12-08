@@ -46,7 +46,7 @@ QTabWidget#tabWidget &gt; QTabBar::tab {
 
 QTabWidget#tabWidget &gt; QTabBar::tab:first {
     background-color: rgba(243,115,33,0.1);
-    background-image: url(:/images/search5.png);
+    background-image: url(:/images/video2.png);
     color: transparent;
 }
 
@@ -61,7 +61,7 @@ QTabWidget#tabWidget &gt; QTabBar::tab:first:selected {
 
 QTabWidget#tabWidget &gt; QTabBar::tab:last {
     background-color: rgba(243,115,33,0.1);
-    background-image: url(:/images/video2.png);
+    background-image: url(:/images/search5.png);
     color: transparent;
 }
 

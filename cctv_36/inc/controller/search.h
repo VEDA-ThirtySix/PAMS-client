@@ -65,9 +65,15 @@ private:
     void clicked_buttonEdit();
     void clicked_buttonDelete();
 
+    void setupCalendarWidget();
+
+
 private slots:
     void showSearchMenu();
     void selectCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected);
+    void insertSampleTimeData();
+    void handleCalendarDateChanged(const QDate& date);
+
 };
 
 #endif // SEARCH_H

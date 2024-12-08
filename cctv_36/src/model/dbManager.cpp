@@ -273,13 +273,13 @@ QString DBManager::getDatabasePath() const {
 }
 
 
-/**
-    *@ ********************************************************************
-    *@ Name           : readAll_basicInfo                                       *
-    *@ Description    : Receives input event from camera SDK              *
-    *@ Arguments      : eventIn[IN]: Input event type                     *
-    *@                : pData[IN]  : Data for input event                 *
-    *@ Return Value   :                                              *
-    *@ Notes          :                                                   *
-    *@ Change History :                                                   *
-    *@ ********************************************************************/
+// /**
+//     *@ ********************************************************************
+//     *@ Name           : readAll_basicInfo                                       *
+//     *@ Description    : Receives input event from camera SDK              *
+//     *@ Arguments      : eventIn[IN]: Input event type                     *
+//     *@                : pData[IN]  : Data for input event                 *
+//     *@ Return Value   :                                              *
+//     *@ Notes          :                                                   *
+//     *@ Change History :                                                   *
+//     *@ ********************************************************************/

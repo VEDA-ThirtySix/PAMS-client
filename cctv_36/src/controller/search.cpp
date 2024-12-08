@@ -102,6 +102,9 @@ void Search::setupCustomerTable() {
 }
 
 void Search::setupVideoTable() {
+
+    m_db = DBManager::instance().getDatabase();
+
     m_modelTime = new QSqlTableModel(this, m_db);
     m_modelTime->setTable("Time");
     m_modelTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
@@ -119,6 +122,9 @@ void Search::setupVideoTable() {
     ui->videoTable->setModel(m_modelTime);
     ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    setupCalendarWidget();
+    insertSampleTimeData();
 }
 
 
@@ -535,4 +541,63 @@ void Search::refreshTable() {
     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 
     qDebug() << "Search - refreshTable 완료";
+}
+
+void Search::setupCalendarWidget() {
+    ui->calendarWidget->setGridVisible(true);
+    ui->calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
+    ui->calendarWidget->setHorizontalHeaderFormat(QCalendarWidget::SingleLetterDayNames);
+
+    // 달력 날짜 변경 시그널 연결
+    connect(ui->calendarWidget, &QCalendarWidget::clicked,
+            this, &Search::handleCalendarDateChanged);
+}
+
+void Search::handleCalendarDateChanged(const QDate& date) {
+    // 선택된 날짜를 데이터베이스의 datetime 형식과 맞추기
+    QString startTime = date.toString("yyyy-MM-dd") + "T00:00:00.000";
+    QString endTime = date.toString("yyyy-MM-dd") + "T23:59:59.999";
+
+    // time 컬럼의 값이 선택된 날짜의 시작과 끝 사이에 있는 레코드만 필터링
+    QString filter = QString("time >= '%1' AND time <= '%2'").arg(startTime, endTime);
+
+    m_modelTime->setFilter(filter);
+
+    if (!m_modelTime->select()) {
+        qDebug() << "Failed to filter time data:" << m_modelTime->lastError().text();
+    } else {
+        qDebug() << "Successfully filtered for date:" << date.toString("yyyy-MM-dd");
+        qDebug() << "Filter condition:" << filter;
+        qDebug() << "Found" << m_modelTime->rowCount() << "records";
+    }
+}
+
+void Search::insertSampleTimeData() {
+    // TimeInfo 객체 생성
+    TimeInfo timeInfo1, timeInfo2, timeInfo3;
+
+    // 첫 번째 샘플 데이터
+    timeInfo1.set_plate("123가4567");
+    timeInfo1.set_time(QDateTime::fromString("2024-12-06 09:15:00", "yyyy-MM-dd hh:mm:ss"));
+    timeInfo1.set_type("입차");
+
+    // 두 번째 샘플 데이터
+    timeInfo2.set_plate("456나7890");
+    timeInfo2.set_time(QDateTime::fromString("2024-12-06 10:30:00", "yyyy-MM-dd hh:mm:ss"));
+    timeInfo2.set_type("출차");
+
+    // 세 번째 샘플 데이터
+    timeInfo3.set_plate("789다1234");
+    timeInfo3.set_time(QDateTime::fromString("2024-12-05 14:45:00", "yyyy-MM-dd hh:mm:ss"));
+    timeInfo3.set_type("출차");
+
+    // DBManager를 통해 데이터 삽입
+    DBManager::instance().create_timeInfo(timeInfo1, QByteArray());
+    DBManager::instance().create_timeInfo(timeInfo2, QByteArray());
+    DBManager::instance().create_timeInfo(timeInfo3, QByteArray());
+
+    // 모델 새로고침
+    m_modelTime->select();
+
+    qDebug() << "Sample time data insertion completed";
 }

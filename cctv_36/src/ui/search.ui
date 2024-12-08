@@ -75,7 +75,7 @@ QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
 }</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="customerTab">
     <attribute name="title">
@@ -227,6 +227,16 @@ QHeaderView::section {
 }</string>
      </property>
     </widget>
+    <widget class="QCalendarWidget" name="calendarWidget">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>230</y>
+       <width>216</width>
+       <height>173</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QPushButton" name="pushButton_edit">
@@ -354,9 +364,9 @@ color:  rgb(243,115,33);
   <widget class="QPushButton" name="searchButton">
    <property name="geometry">
     <rect>
-     <x>730</x>
+     <x>780</x>
      <y>40</y>
-     <width>161</width>
+     <width>111</width>
      <height>31</height>
     </rect>
    </property>
@@ -415,6 +425,30 @@ QPushButton::hover{
    </property>
    <property name="text">
     <string>IP Address</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>730</x>
+     <y>40</y>
+     <width>51</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+color:  rgb(255, 255, 255);
+background-color:rgba(243,115,33,0.3);
+border:1px solid rgb(243,115,33);
+font: 500 8pt &quot;Quicksand Medium&quot;;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../../images.qrc">
+     <normaloff>:/images/calendar.png</normaloff>:/images/calendar.png</iconset>
    </property>
   </widget>
  </widget>

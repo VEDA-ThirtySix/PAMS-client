@@ -9,5 +9,6 @@
         <file>video2.png</file>
         <file>start.png</file>
         <file>play.png</file>
+        <file>calendar.png</file>
     </qresource>
 </RCC>
