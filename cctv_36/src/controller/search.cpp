@@ -4,6 +4,7 @@
 #include "dialog_enroll.h"
 #include "tcpManager.h"
 #include "httpManager.h"
+#include "dialog_videoclip.h"
 
 #include <QMessageBox>
 #include <QPixmap>
@@ -122,6 +123,13 @@ void Search::setupVideoTable() {
     ui->videoTable->setModel(m_modelTime);
     ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    connect(ui->videoTable, &QTableView::doubleClicked, this, [this](const QModelIndex &index) { // 나중에 index를 사용하여 해당 날짜별 영상을 재생하도록 수정
+        QString videoPath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/bunny.mp4";
+        VideoClipDialog *dialog = new VideoClipDialog(videoPath, this);
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        dialog->show();
+    });
 
 
     setupCalendarWidget();

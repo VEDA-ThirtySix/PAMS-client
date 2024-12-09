@@ -1,4 +1,4 @@
-QT += core gui network sql#추가
+QT += core gui network sql multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
