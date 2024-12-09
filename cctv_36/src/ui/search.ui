@@ -231,7 +231,7 @@ QHeaderView::section {
      <property name="geometry">
       <rect>
        <x>630</x>
-       <y>230</y>
+       <y>20</y>
        <width>216</width>
        <height>173</height>
       </rect>
@@ -377,7 +377,11 @@ color:  rgb(243,115,33);
 	font: 500 11pt &quot;Quicksand Medium&quot;;</string>
    </property>
    <property name="text">
-    <string>Search</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../../images.qrc">
+     <normaloff>:/images/search.png</normaloff>:/images/search.png</iconset>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_connect">
@@ -427,7 +431,7 @@ QPushButton::hover{
     <string>IP Address</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="calendarButton">
    <property name="geometry">
     <rect>
      <x>730</x>

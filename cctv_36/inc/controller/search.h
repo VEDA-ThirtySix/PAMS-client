@@ -73,6 +73,7 @@ private slots:
     void selectCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected);
     void insertSampleTimeData();
     void handleCalendarDateChanged(const QDate& date);
+    void toggleCalendar();
 
 };
 

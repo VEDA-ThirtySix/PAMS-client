@@ -123,7 +123,9 @@ void Search::setupVideoTable() {
     ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+
     setupCalendarWidget();
+    connect(ui->calendarButton, &QPushButton::clicked, this, &Search::toggleCalendar);
     insertSampleTimeData();
 }
 
@@ -441,7 +443,7 @@ void Search::clicked_buttonEdit() {
             "QPushButton:hover { "
             "    background-color:rgba(190,190,190);  "          // 버튼 호버 시 더 밝은 주황색
             "} "
-        );
+            );
         warningBox.exec();
 
         return;
@@ -489,7 +491,7 @@ void Search::clicked_buttonDelete() {
             "QPushButton:hover { "
             "    background-color:rgb(190,190,190);  "          // 버튼 호버 시 더 밝은 주황색
             "} "
-        );
+            );
         warningBox.exec();
         return;
     }
@@ -548,9 +550,19 @@ void Search::setupCalendarWidget() {
     ui->calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
     ui->calendarWidget->setHorizontalHeaderFormat(QCalendarWidget::SingleLetterDayNames);
 
+    ui->calendarWidget->hide();
+
     // 달력 날짜 변경 시그널 연결
     connect(ui->calendarWidget, &QCalendarWidget::clicked,
             this, &Search::handleCalendarDateChanged);
+}
+
+void Search::toggleCalendar() {
+    if (ui->calendarWidget->isHidden()) {
+        ui->calendarWidget->show();
+    } else {
+        ui->calendarWidget->hide();
+    }
 }
 
 void Search::handleCalendarDateChanged(const QDate& date) {

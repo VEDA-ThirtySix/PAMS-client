@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/images">
         <file>zoom.png</file>
-        <file>search2.png</file>
-        <file>search.png</file>
         <file>list.png</file>
         <file>camera-recorder.png</file>
         <file>search5.png</file>
@@ -10,5 +8,6 @@
         <file>start.png</file>
         <file>play.png</file>
         <file>calendar.png</file>
+        <file>search.png</file>
     </qresource>
 </RCC>
