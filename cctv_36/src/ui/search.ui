@@ -230,11 +230,110 @@ QHeaderView::section {
     <widget class="QCalendarWidget" name="calendarWidget">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>595</x>
        <y>20</y>
-       <width>216</width>
-       <height>173</height>
+       <width>221</width>
+       <height>181</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">/* 캘린더 전체 */
+QCalendarWidget {
+    background-color: rgba(255, 255, 255);
+    color: black;
+    selection-color: rgb(0, 0, 0);
+}
+
+/* 네비게이션 바 */
+QCalendarWidget QWidget#qt_calendar_navigationbar {
+    background-color: rgba(67, 188, 205, 0.3);
+}
+
+/* 네비게이션 버튼 */
+QCalendarWidget QToolButton {
+    width: 20px;
+    height: 20px;
+    color: black;
+    icon-size: 16px, 16px;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+/* 달력 그리드 */
+QCalendarWidget QTableView {
+    background-color: white;
+    selection-background-color: rgba(67, 188, 205, 0.3);
+    selection-color: black;
+}
+
+/* 달력 셀 */
+QCalendarWidget QTableView QTableCornerButton::section {
+    color: black;
+    background-color: white;
+}
+
+/* 요일 헤더 */
+QCalendarWidget QHeaderView {
+    background-color: white;
+}
+
+QCalendarWidget QHeaderView::section {
+    color: black;
+    background-color: rgba(67, 188, 205, 0.1);
+    padding: 3px;
+    border: none;
+}
+
+/* 일반 날짜 */
+QCalendarWidget QAbstractItemView:enabled {
+    color: black;
+    background-color: white;
+    selection-background-color: rgba(67, 188, 205, 0.3);
+    selection-color: black;
+}
+
+/* 비활성화된 날짜 (이전/다음 달) */
+QCalendarWidget QAbstractItemView:disabled {
+    color: rgb(169, 169, 169);
+}</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="plateTitle_3">
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>210</y>
+       <width>351</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
+color:rgb(67,188,205);
+background-color: rgba(67,188,205,0.3);
+border:1px solid rgb(67,188,205);</string>
+     </property>
+     <property name="text">
+      <string>차량번호판</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imageLabel_2">
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>240</y>
+       <width>351</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: white;
+border:1px solid rgb(67,188,205);</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>

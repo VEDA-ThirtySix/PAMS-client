@@ -123,11 +123,44 @@ void Search::setupVideoTable() {
     ui->videoTable->setModel(m_modelTime);
     ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    connect(ui->videoTable, &QTableView::doubleClicked, this, [this](const QModelIndex &index) { // 나중에 index를 사용하여 해당 날짜별 영상을 재생하도록 수정
-        QString videoPath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/bunny.mp4";
-        VideoClipDialog *dialog = new VideoClipDialog(videoPath, this);
+    connect(ui->videoTable, &QTableView::doubleClicked, this, [this](const QModelIndex &index) {
+        if (m_host.isEmpty()) {
+            QMessageBox warningBox;
+            warningBox.setWindowTitle("연결 오류");
+            warningBox.setText("호스트 주소가 설정되지 않았습니다. 먼저 주소를 설정해주세요.");
+            warningBox.setStyleSheet(
+                "QMessageBox { "
+                "    background-color: white; "
+                "    color: black; "
+                "} "
+                "QLabel { "
+                "    color: black; "
+                "} "
+                "QPushButton { "
+                "    background-color: rgba(243, 115, 33,0.5); "
+                "    color: black; "
+                "    width: 100px;"
+                "    border: none; "
+                "    padding: 5px; "
+                "} "
+                "QPushButton:hover { "
+                "    background-color: rgba(190,190,190); "
+                "} "
+                );
+            warningBox.exec();
+            return;
+        }
+
+        // Get the selected timestamp
+        QModelIndex timeIndex = m_modelTime->index(index.row(), 2); // TIME column
+        QString timestamp = m_modelTime->data(timeIndex).toString();
+
+        // Create and show video dialog
+        VideoClipDialog *dialog = new VideoClipDialog(m_host, this);
         dialog->setAttribute(Qt::WA_DeleteOnClose);
+        dialog->setWindowTitle(QString("Video Clip - %1").arg(timestamp));
         dialog->show();
     });
 
@@ -374,6 +407,7 @@ void Search::showSearchMenu()
 /* KIYUN_1127 */
 void Search::get_host(const QString& host) {
     m_host = host;
+    qDebug() << "Host set to:" << m_host;
 }
 
 void Search::build_QUrl() {
@@ -574,7 +608,7 @@ void Search::toggleCalendar() {
 }
 
 void Search::handleCalendarDateChanged(const QDate& date) {
-    // 선택된 날짜를 데이터베이스의 datetime 형식과 맞추기
+
     QString startTime = date.toString("yyyy-MM-dd") + "T00:00:00.000";
     QString endTime = date.toString("yyyy-MM-dd") + "T23:59:59.999";
 

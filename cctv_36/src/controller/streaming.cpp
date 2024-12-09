@@ -210,6 +210,7 @@ void Streaming::rtsp_setting(){
                     .arg(m_host)
                     .arg(port);
 
+
     ui->label_url->setText(m_rtspUrl);
     qDebug() << "QDEBUG(SW)$ RTSP URL:" << m_rtspUrl;
 }

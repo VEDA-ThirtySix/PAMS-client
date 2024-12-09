@@ -2,7 +2,8 @@
 #define DIALOG_VIDEOCLIP_H
 
 #include <QDialog>
-#include <QMediaPlayer>
+#include <QProcess>
+#include <QTimer>
 
 namespace Ui {
 class VideoClipDialog;
@@ -13,24 +14,36 @@ class VideoClipDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit VideoClipDialog(const QString &videoPath, QWidget *parent = nullptr);
+    explicit VideoClipDialog(const QString &host, QWidget *parent = nullptr);
     ~VideoClipDialog();
 
 private slots:
     void handleError();
-    void handlePlaybackStateChanged(QMediaPlayer::PlaybackState state);
+    void captureFrame();
     void playPauseVideo();
     void stopVideo();
     void updatePosition(qint64 position);
-    void updateDuration(qint64 duration);
-    void seek(int position);
+    void reconnectStream();
 
 private:
     void setupConnections();
+    void startFFmpeg();
+    void stopFFmpeg();
+    void showErrorMessage(const QString &message);
     QString formatTime(qint64 milliseconds);
 
     Ui::VideoClipDialog *ui;
-    QMediaPlayer *mediaPlayer;
+    QProcess *ffmpegProcess;
+    QTimer *frameTimer;
+    QString m_rtspUrl;
+    int reconnectAttempts;
+    QByteArray incompleteBuffer;
+    qint64 frameCount = 0;
+
+    static const int MAX_RECONNECT_ATTEMPTS = 3;
+    static const int RECONNECT_INTERVAL = 5000;
+    static constexpr const char* PROTOCOL = "rtsp";
+    static const int CLIP_PORT = 8554;
 };
 
 #endif // DIALOG_VIDEOCLIP_H
