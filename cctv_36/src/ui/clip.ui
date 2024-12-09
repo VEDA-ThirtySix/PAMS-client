@@ -60,19 +60,6 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <widget class="QLabel" name="totalTimeLabel">
        <property name="minimumSize">
         <size>
@@ -114,21 +101,26 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">
-         QPushButton {
-             color: rgb(243,115,33);
-             background: none;
-             border: 1px solid rgb(243,115,33);
-             font: 500 9pt 'Quicksand Medium';
-         }
-         QPushButton:hover {
-             color: white;
-             background-color: rgba(243,115,33,0.7);
-         }
-        </string>
+        <string notr="true">QPushButton {
+    color: rgb(243,115,33);
+    background: none;
+    border: 1px solid rgb(243,115,33);
+    border-radius: 15px;  /* 테두리 둥글게 */
+    font: 500 9pt 'Quicksand Medium';
+    icon-size: 24px;  /* 아이콘 크기 증가 */
+    padding: 5px;  /* 버튼 내부 여백 */
+}
+QPushButton:hover {
+    color: white;
+    background-color: rgba(243,115,33,0.7);
+}</string>
        </property>
        <property name="text">
-        <string>재생</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../images.qrc">
+         <normaloff>:/images/play2.png</normaloff>:/images/play2.png</iconset>
        </property>
       </widget>
      </item>
@@ -141,21 +133,26 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">
-         QPushButton {
-             color: rgb(243,115,33);
-             background: none;
-             border: 1px solid rgb(243,115,33);
-             font: 500 9pt 'Quicksand Medium';
-         }
-         QPushButton:hover {
-             color: white;
-             background-color: rgba(243,115,33,0.7);
-         }
-        </string>
+        <string notr="true">QPushButton {
+    color: rgb(243,115,33);
+    background: none;
+    border: 1px solid rgb(243,115,33);
+    border-radius: 15px;  /* 테두리 둥글게 */
+    font: 500 9pt 'Quicksand Medium';
+    icon-size: 24px;  /* 아이콘 크기 증가 */
+    padding: 5px;  /* 버튼 내부 여백 */
+}
+QPushButton:hover {
+    color: white;
+    background-color: rgba(243,115,33,0.7);
+}</string>
        </property>
        <property name="text">
-        <string>정지</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../images.qrc">
+         <normaloff>:/images/stop2.png</normaloff>:/images/stop2.png</iconset>
        </property>
       </widget>
      </item>
@@ -176,6 +173,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../images.qrc"/>
+ </resources>
  <connections/>
 </ui>

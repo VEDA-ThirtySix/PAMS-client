@@ -68,7 +68,6 @@ void VideoClipDialog::startFFmpeg()
     }
 
     frameTimer->start();
-    ui->playPauseButton->setText("일시정지");
 }
 
 void VideoClipDialog::stopFFmpeg()
@@ -117,10 +116,10 @@ void VideoClipDialog::playPauseVideo()
 {
     if (frameTimer->isActive()) {
         frameTimer->stop();
-        ui->playPauseButton->setText("재생");
+        ui->playPauseButton->setIcon(QIcon(":/images/play2.png"));
     } else {
         frameTimer->start();
-        ui->playPauseButton->setText("일시정지");
+        ui->playPauseButton->setIcon(QIcon(":/images/pause2.png"));
     }
 }
 
@@ -128,7 +127,7 @@ void VideoClipDialog::stopVideo()
 {
     frameTimer->stop();
     frameCount = 0;
-    ui->playPauseButton->setText("재생");
+    ui->playPauseButton->setIcon(QIcon(":/images/play2.png"));
     ui->positionSlider->setValue(0);
     ui->currentTimeLabel->setText("00:00");
     startFFmpeg();
