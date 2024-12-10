@@ -62,5 +62,7 @@ int edit_user_data(sqlite3 *db, BasicInfo *basicInfo);
 //int delete_user_data(sqlite3 *db, BasicInfo *basicInfo);
 int check_plate_exists(sqlite3 *db, const char* plate);
 
+void convertToFilename(const char* timeStr, char* filename);
+int save_client_data(sqlite3 *db, ClientInfo *clientInfo);
 
 #endif//SERVER_H
