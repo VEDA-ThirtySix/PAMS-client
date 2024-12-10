@@ -335,7 +335,7 @@ QHeaderView::section {
       </rect>
      </property>
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <widget class="QLabel" name="imageLabel">
       <property name="geometry">
@@ -644,7 +644,7 @@ font: 14pt &quot;Sans Serif&quot;;</string>
       <string>Select Calender Button</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <zorder>calendarFrame</zorder>
