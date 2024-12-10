@@ -9,11 +9,20 @@
 #include <json-c/json.h>
 #include <sys/time.h>
 #include <time.h>
+#include <dirent.h>
+#include <sys/stat.h>
 #include <sys/inotify.h>
-#include <limits.h>
 #include <errno.h>
 #include "b64.c/b64.h"  //$ git clone https://github.com/jwerle/b64.c.git
 #include "time.h"
+#ifdef __linux__
+#include <linux/limits.h>
+#elif defined(_WIN32)
+#include <windows.h>
+#define PATH_MAX MAX_PATH
+#else
+#include <sys/syslimits.h>
+#endif
 
 typedef struct {
     char plate[32];
@@ -29,7 +38,7 @@ typedef struct {
 } ImagePacket;
 
 /* 4. [PLATE] SEND PLATE DATA */
-
+char* find_latest_file(const char* dir_path);
 unsigned char* get_packet(size_t* out_size);
 TimeInfo* get_timeInfo();
 char* build_json(const TimeInfo* timeInfo, const char* encoded);

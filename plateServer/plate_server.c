@@ -46,14 +46,77 @@ int init_server_plate(int port) {
     return server_fd;
 }
 
+char* find_latest_file(const char* dir_path) {
+    DIR *dir;
+    struct dirent *entry;
+    struct stat file_stat;
+    time_t latest_time = 0;
+    static char latest_file_path[PATH_MAX];
+    char temp_path[PATH_MAX];
+    
+    dir = opendir(dir_path);
+    if (dir == NULL) {
+        printf("Failed to open directory: %s\n", dir_path);
+        return NULL;
+    }
+
+    latest_file_path[0] = '\0';  // 초기화
+
+    while ((entry = readdir(dir)) != NULL) {
+        // jpg 또는 jpeg 파일만 처리
+        if (strstr(entry->d_name, ".jpg") || strstr(entry->d_name, ".jpeg") || strstr(entry->d_name, ".log")) {
+            snprintf(temp_path, PATH_MAX, "%s/%s", dir_path, entry->d_name);
+            
+            if (stat(temp_path, &file_stat) == 0) {
+                if (file_stat.st_mtime > latest_time) {
+                    latest_time = file_stat.st_mtime;
+                    strncpy(latest_file_path, temp_path, PATH_MAX - 1);
+                }
+            }
+            printf("===== NEW FILE FOUND =====\n");
+            printf("name: %s\n", entry->d_name);
+            printf("path: %s\n", temp_path);
+
+        } else if (strstr(entry->d_name, ".log")) {
+             snprintf(temp_path, PATH_MAX, "%s/%s", dir_path, entry->d_name);
+            
+            if (stat(temp_path, &file_stat) == 0) {
+                if (file_stat.st_mtime > latest_time) {
+                    latest_time = file_stat.st_mtime;
+                    strncpy(latest_file_path, temp_path, PATH_MAX - 1);
+                }
+            }
+        }
+    }
+
+    closedir(dir);
+    
+    if (latest_file_path[0] == '\0') {
+        printf("No jpg/jpeg files found in directory\n");
+        return NULL;
+    }
+
+    printf("Latest image file: %s\n", latest_file_path);
+    return latest_file_path;
+}
 
 unsigned char* get_packet(size_t* out_size) {
-    FILE* fp = fopen("./images/image_2.jpg", "rb");
-    if(!fp) {
-        printf("get_packet: fopen failed\n");
+    const char* dir_path = "../rtspServer/ANPR";    //디렉터리 경로
+    char* latest_file = find_latest_file(dir_path);
+    
+    if (!latest_file) {
+        printf("get_packet: No image file found\n");
         *out_size = 0;
         return NULL;
     }
+
+    FILE* fp = fopen(latest_file, "rb");
+    if (!fp) {
+        printf("get_packet: fopen failed for %s\n", latest_file);
+        *out_size = 0;
+        return NULL;
+    }
+
     //get file size
     fseek(fp, 0, SEEK_END);
     size_t file_size = ftell(fp);
@@ -82,10 +145,9 @@ unsigned char* get_packet(size_t* out_size) {
     
     printf("get_packet: file_size: %zu\n", file_size);
     printf("get_packet: read_size: %zu\n", read_size);  //packet_size
-    //printf("get_packet: packet: %s\n", packet);
 
     *out_size = read_size;
-    printf("");
+    //printf("");
 
     return packet;
 }
@@ -218,6 +280,33 @@ void send_plateData(int client_socket, char* json) {
 
 
 TimeInfo* get_timeInfo(void) {
+    const char* dir_path = "../rtspServer/ANPR";    //디렉터리 경로
+    char* latest_file = find_latest_file(dir_path);
+    if (!latest_file) {
+    fprintf(stderr, "No files found in directory: %s\n", dir_path);
+    return NULL;
+    }
+
+    // 최신 파일 열기
+    char log_file_path[256];
+    snprintf(log_file_path, sizeof(log_file_path), "%s.log", latest_file);
+    FILE* fp = fopen(log_file_path, "r");
+    if (!fp) {
+        fprintf(stderr, "Failed to open log file: %s\n", log_file_path);
+        return NULL;
+    }
+
+    // .log 파일에서 차량 번호 읽기
+    char plate_buffer[64];
+    if (!fgets(plate_buffer, sizeof(plate_buffer), fp)) {
+        fprintf(stderr, "Failed to read from log file: %s\n", log_file_path);
+        fclose(fp);
+        return NULL;
+    }
+    fclose(fp);
+
+    // 개행 문자 제거
+    plate_buffer[strcspn(plate_buffer, "\n")] = '\0';
     time_t currentTime = time(NULL);
     struct tm* tm_info = localtime(&currentTime);
     char buffer[26];
@@ -225,9 +314,14 @@ TimeInfo* get_timeInfo(void) {
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
     TimeInfo* timeInfo = malloc(sizeof(TimeInfo));
-    strcpy(timeInfo->plate, "123가4568");
-    strcpy(timeInfo->time, buffer);
+    strcpy(timeInfo->plate, plate_buffer);
+    strcpy(timeInfo->time, latest_file);
     strcpy(timeInfo->type, "entry");
+
+    printf("\n===== METADATA =====\n");
+    printf("plate: %s", timeInfo->plate);
+    printf(" time: %s", timeInfo->time);
+    printf(" type: %s", timeInfo->type);
 
     return timeInfo;
 }
