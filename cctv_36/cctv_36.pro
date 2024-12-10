@@ -22,7 +22,6 @@ HEADERS += \
     $$files($$PWD/inc/view/*.h)       \
     $$files($$PWD/inc/controller/*.h) \
     $$files($$PWD/inc/network/*.h)    \
-    inc/view/dialog_videoclip.h
 
 FORMS += \
     $$files($$PWD/src/ui/*.ui) \

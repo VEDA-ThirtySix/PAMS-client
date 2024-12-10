@@ -2,6 +2,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QDateTime>
+#include <QImage>
 
 JsonManager::JsonManager(QObject* parent)
     : QObject(parent)
@@ -80,6 +81,19 @@ QByteArray JsonManager::build_clip(const TimeInfo& timeInfo) {
     return jsonArray;
 }
 
+QByteArray JsonManager::build_plate() {
+    QJsonObject requestType;
+    requestType["reqType"] = "plate";
+
+    QJsonObject json;
+    json["requestType"] = requestType;
+
+    QJsonDocument jsonDoc(json);
+    QByteArray jsonArray = jsonDoc.toJson();
+
+    return jsonArray;
+}
+
 int JsonManager::parse_status(const QByteArray& jsonArray) {
     QJsonDocument request_doc = QJsonDocument::fromJson(jsonArray);
     QJsonObject request_obj = request_doc.object();
@@ -144,7 +158,7 @@ TimeInfo JsonManager::parse_data(const QByteArray& jsonArray) {
         //DATA(plate)
         if(data_obj.contains("plate") && data_obj["plate"].isString()) {
             plate = data_obj["plate"].toString();
-            qDebug() << "DONE(JM): plate : " << plate;
+            qDebug() << "DONE(JM): plate: " << plate;
         } else {
             qWarning() << "ERROR(JM): parse_data - plate";
         }
@@ -186,18 +200,44 @@ QByteArray JsonManager::decode_base64(const QByteArray& jsonArray) {
     QByteArray encodedArray;
     if(request_obj.contains("image") && request_obj["image"].isObject()) {
         QJsonObject image_obj = request_obj["image"].toObject();
-        //IMAGE(base64)
-        if(image_obj.contains("base64") && image_obj["base64"].isString()) {
-            encodedArray = image_obj["base64"].toString().toUtf8();
-            qDebug() << "DONE(JM): base64 : " << encodedArray;
+        // 서버 JSON 구조에 맞게 "image" 키 사용
+        if(image_obj.contains("image") && image_obj["image"].isString()) {
+            encodedArray = image_obj["image"].toString().toUtf8();
+            qDebug() << "DONE(JM): Found image data";
+
+            // base64 직접 디코딩
+            QByteArray imageArray = QByteArray::fromBase64(encodedArray);
+            if (!imageArray.isEmpty()) {
+                qDebug() << "DONE(JM): Successfully decoded base64 image";
+                return imageArray;
+            } else {
+                qWarning() << "ERROR(JM): Failed to decode base64 data";
+            }
         } else {
-            qWarning() << "ERROR(JM): parse_image - base64";
+            qWarning() << "ERROR(JM): Image data not found in JSON";
         }
+    } else {
+        qWarning() << "ERROR(JM): Invalid image object in JSON";
     }
 
-    QByteArray base64Array = encodedArray;
-    QByteArray base64Data = base64Array.split(',').last();
-    QByteArray imageArray = QByteArray::fromBase64(base64Data);
-
-    return imageArray;
+    return QByteArray();
 }
+
+bool JsonManager::saveImageFromByteArray(const QByteArray& imageData, const QString& filename) {
+    // QByteArray를 QImage로 변환
+    QImage image;
+    if (!image.loadFromData(imageData)) {
+        qWarning() << "ERROR(JM): Failed to convert QByteArray to QImage";
+        return false;
+    }
+
+    // JPG 파일로 저장
+    if (image.save(filename, "JPG", 100)) {  // 100은 품질 설정 (0-100)
+        qDebug() << "DONE(JM): Image saved successfully to" << filename;
+        return true;
+    } else {
+        qWarning() << "ERROR(JM): Failed to save image to" << filename;
+        return false;
+    }
+}
+

@@ -1,29 +1,39 @@
 #ifndef TCPMANAGER_H
 #define TCPMANAGER_H
 
-#include "httpManager.h"
 #include <QObject>
 #include <QString>
 #include <QTcpSocket>
+#include <QByteArray>
 
 class TcpManager : public QObject {
     Q_OBJECT
 
 public:
-    TcpManager(QObject *parent);
+    explicit TcpManager(QObject *parent = nullptr);
     ~TcpManager();
 
-    bool connect_server(const QString& host, quint16 port);
-    void disconnect_server();
+    void connectToServer(const QString& host, quint16 port);
+    bool parse_header();
 
 private:
     QTcpSocket *tcpSocket;
-    HttpManager *httpManager;
+    QString m_serverAddress;
+    quint16 m_serverPort;
+    QByteArray buffer;
+    quint64 contentLength;
+    bool headerParsed;
 
 private slots:
-    void on_connected();
     void on_readyRead();
-    void on_disconnected();
+    //void on_disconnected();
+    void handleError(QAbstractSocket::SocketError socketError);
+    void handleDisconnect();
+    //void reconnectToServer();
+    void setupSocket();
+
+signals:
+    void plateDataReceived(const QByteArray &data);
 };
 
 #endif // TCPMANAGER_H

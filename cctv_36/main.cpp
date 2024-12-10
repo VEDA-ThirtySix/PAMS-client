@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "dbManager.h"
+#include "tcpManager.h"
 #include <QApplication>
 #include <QDebug>
 
@@ -11,7 +12,10 @@ int main(int argc, char *argv[])
         return -1;
     }
     MainWindow w;
-    qDebug() << "hello";
+
+    TcpManager *tcpManager = new TcpManager(nullptr);
+    tcpManager->connectToServer("192.168.0.98", 8088);
+
     w.show();
     return a.exec();
 }

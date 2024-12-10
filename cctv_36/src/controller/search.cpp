@@ -34,7 +34,6 @@ Search::Search(QWidget *parent)
     updatePlaceholder();
     initializePath();
 
-    connect(ui->pushButton_connect, &QPushButton::clicked, this, &Search::clicked_buttonConnect);
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
     //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
@@ -119,11 +118,38 @@ void Search::setupVideoTable() {
     m_modelTime->setHeaderData(1, Qt::Horizontal, "PLATE");
     m_modelTime->setHeaderData(2, Qt::Horizontal, "TIME");
     m_modelTime->setHeaderData(3, Qt::Horizontal, "TYPE");
+    m_modelTime->setHeaderData(4, Qt::Horizontal, "IMAGE");
 
     ui->videoTable->setModel(m_modelTime);
     ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    connect(ui->videoTable->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, [this](const QItemSelection &selected, const QItemSelection &deselected) {
+                Q_UNUSED(deselected);
+
+                if (selected.indexes().isEmpty()) {
+                    ui->imageLabel_2->clear();
+                }
+
+                int row = selected.indexes().first().row();
+                QByteArray imageData = m_modelTime->data(m_modelTime->index(row, 4)).toByteArray();
+
+                if (!imageData.isEmpty()) {
+                    QImage image;
+                    if (image.loadFromData(imageData)) {
+                        QPixmap pixmap = QPixmap::fromImage(image);
+                        ui->imageLabel_2->setPixmap(pixmap);
+                        qDebug() << "DONE: Image loaded successfully";
+                    } else {
+                        ui->imageLabel_2->setText("이미지 로드 실패");
+                        qDebug() << "ERROR: Failed to load image";
+                    }
+                } else {
+                    ui->imageLabel_2->setText("이미지 없음");
+                }
+            });
 
     connect(ui->videoTable, &QTableView::doubleClicked, this, [this](const QModelIndex &index) {
         // if (m_host.isEmpty()) {
@@ -169,7 +195,6 @@ void Search::setupVideoTable() {
 
     setupCalendarWidget();
     connect(ui->calendarButton, &QPushButton::clicked, this, &Search::toggleCalendar);
-    insertSampleTimeData();
 }
 
 
@@ -422,37 +447,9 @@ void Search::build_QUrl() {
     qDebug() << "DEBUG(SW)$ m_url: " << m_url;
 }
 
-void Search::clicked_buttonConnect() {
-    TcpManager *tcpManager = new TcpManager(this);
-    QString host = m_host;
-    quint16 _port = static_cast<quint16>(port);
-
-    if(tcpManager->connect_server(host, _port)) {
-        qDebug() << "SUCCESS(SW)$ Successfully Connected(TCP)";
-        qDebug() << "SUCCESS(SW)$ host:" << host;
-        qDebug() << "SUCCESS(SW)$ port:" << port;
-    } else {
-        qDebug() << "FAILURE(SW)$ TCP Connection Failure";
-    }
-
-    HttpManager *httpManager = new HttpManager(this);
-    ClientInfo clientInfo;
-    clientInfo.set_name("ThirtySix");
-    clientInfo.set_ipAddr(httpManager->getLocalIPInSameSubnet(m_url));
-    clientInfo.set_connectTime(QDateTime::currentDateTime());
-    if(httpManager->post_initInfo(m_url, clientInfo)) {
-        qDebug() << "SUCCESS(SW)$ POST Request(INIT) Successful";
-        qDebug() << "m_url:" << m_url;
-        qDebug() << " name :" << clientInfo.get_name();
-        qDebug() << "ipAddr:" << clientInfo.get_ipAddr();
-        qDebug() << " time :" << clientInfo.get_connectTime();
-    } else {
-        qDebug() << "FAILURE(SW)$ POST Request(INIT) Failure";
-    }
-}
-
 void Search::clicked_buttonEnroll() {
-    EnrollDialog *enrollDialog = new EnrollDialog(this);
+    build_QUrl();
+    EnrollDialog *enrollDialog = new EnrollDialog(m_url, this);
     connect(enrollDialog, &EnrollDialog::dataSubmitted, this, &Search::refreshTable);
 
     enrollDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -493,7 +490,7 @@ void Search::clicked_buttonEdit() {
         return;
     }
 
-    EditDialog *editDialog = new EditDialog(selectedPlate, this);
+    EditDialog *editDialog = new EditDialog(m_url, selectedPlate, this);
     editDialog->setAttribute(Qt::WA_DeleteOnClose);
     connect(editDialog, &EditDialog::dataUpdated, this, &Search::refreshTable);
     editDialog->exec();
@@ -628,32 +625,3 @@ void Search::handleCalendarDateChanged(const QDate& date) {
     }
 }
 
-void Search::insertSampleTimeData() {
-    // TimeInfo 객체 생성
-    TimeInfo timeInfo1, timeInfo2, timeInfo3;
-
-    // 첫 번째 샘플 데이터
-    timeInfo1.set_plate("123가4567");
-    timeInfo1.set_time(QDateTime::fromString("2024-12-06 09:15:00", "yyyy-MM-dd hh:mm:ss"));
-    timeInfo1.set_type("입차");
-
-    // 두 번째 샘플 데이터
-    timeInfo2.set_plate("456나7890");
-    timeInfo2.set_time(QDateTime::fromString("2024-12-06 10:30:00", "yyyy-MM-dd hh:mm:ss"));
-    timeInfo2.set_type("출차");
-
-    // 세 번째 샘플 데이터
-    timeInfo3.set_plate("789다1234");
-    timeInfo3.set_time(QDateTime::fromString("2024-12-05 14:45:00", "yyyy-MM-dd hh:mm:ss"));
-    timeInfo3.set_type("출차");
-
-    // DBManager를 통해 데이터 삽입
-    DBManager::instance().create_timeInfo(timeInfo1, QByteArray());
-    DBManager::instance().create_timeInfo(timeInfo2, QByteArray());
-    DBManager::instance().create_timeInfo(timeInfo3, QByteArray());
-
-    // 모델 새로고침
-    m_modelTime->select();
-
-    qDebug() << "Sample time data insertion completed";
-}

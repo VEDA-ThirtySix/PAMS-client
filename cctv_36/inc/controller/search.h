@@ -60,7 +60,6 @@ private:
     void updatePlaceholder();
     void clearImage();
 
-    void clicked_buttonConnect();
     void clicked_buttonEnroll();
     void clicked_buttonEdit();
     void clicked_buttonDelete();
@@ -71,7 +70,6 @@ private:
 private slots:
     void showSearchMenu();
     void selectCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected);
-    void insertSampleTimeData();
     void handleCalendarDateChanged(const QDate& date);
     void toggleCalendar();
 

@@ -12,7 +12,9 @@ HttpManager::HttpManager(QObject* parent)
     , jsonManager(nullptr)
     , logManager(nullptr)
     , dbManager(nullptr)
-{ }
+{
+
+}
 
 HttpManager::~HttpManager()
 { }
@@ -20,7 +22,7 @@ HttpManager::~HttpManager()
 QUrl HttpManager::set_config(const QString& url, const QString& port) {
     QString fullURL = url;
     if(!url.startsWith("http://") && !url.startsWith("https://")) {
-        fullURL = "httStreamingp://" + url;
+        fullURL = "http://" + url;
     }
     QUrl serverURL = QUrl(fullURL);
 
@@ -38,7 +40,7 @@ QUrl HttpManager::set_config(const QString& url, const QString& port) {
         return serverURL;
     }
 }
-
+/*
 bool HttpManager::post_initInfo(const QUrl& url, const ClientInfo& clientInfo) {
     jsonManager = new JsonManager(this);
     accessManager = new QNetworkAccessManager(this);
@@ -46,18 +48,10 @@ bool HttpManager::post_initInfo(const QUrl& url, const ClientInfo& clientInfo) {
         qDebug() << "FAILURE(HM)$ Failed to Allocate memory";
         return false;
     }
-    /*
-    // SSL/TLS 설정 (HTTPS 사용시)
-    QNetworkRequest request(serverURL);
-    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-    config.setProtocol(QSsl::TlsV1_2);
-    request.setSslConfiguration(config); */
-
     if(!url.isValid()) {
         qDebug() << "FAILURE(HM)$ Invalid URL";
         return false;
     }
-
     QByteArray jsonArray = jsonManager->build_init(clientInfo);
     if(jsonArray.isEmpty()) {
         qDebug() << "FAILURE(HM)$ Failed to build JSON";
@@ -65,13 +59,26 @@ bool HttpManager::post_initInfo(const QUrl& url, const ClientInfo& clientInfo) {
     }
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    //request.setRawHeader("Connection", "keep-alive");
+    request.setRawHeader("Connection", "close");
 
-    accessManager->post(request, jsonArray);
+    // Connect to the finished signal
+    QNetworkReply *reply = accessManager->post(request, jsonArray);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray responseData = reply->readAll();
+            qDebug() << "Response received:" << responseData;
+            // Process the response here
+        } else {
+            qDebug() << "Network error:" << reply->errorString();
+        }
+        reply->deleteLater();
+    });
+
     qDebug() << "DONE(HM): post_initInfo";
-    qDebug() << "=== JSON(init) ===";
-    qDebug() << jsonArray;
     return true;
-}
+}*/
 
 void HttpManager::post_userInfo(const QUrl& url, const BasicInfo& basicInfo) {
     jsonManager = new JsonManager(this);
@@ -80,9 +87,20 @@ void HttpManager::post_userInfo(const QUrl& url, const BasicInfo& basicInfo) {
     QByteArray jsonArray = jsonManager->build_user(basicInfo);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    qDebug() << "DONE(HM): post_userInfo";
+    request.setRawHeader("Connection", "close");
 
-    accessManager->post(request, jsonArray);
+    QNetworkReply *reply = accessManager->post(request, jsonArray);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if(reply->error() == QNetworkReply::NoError) {
+            emit requestCompleted();
+            qDebug() << "HttpManager: post userInfo Completed";
+            qDebug() << "[HttpManager][INFO ] Response: >> " << reply->readAll();
+        } else {
+            emit requestFailed();
+            qDebug() << "HttpManager: post userInfo Failed";
+            qDebug() << "[HttpManager][ERROR] Response: " << reply->errorString();
+        }
+    });
 }
 
 void HttpManager::post_clipInfo(const QUrl& url, const TimeInfo& timeInfo) {
@@ -92,11 +110,54 @@ void HttpManager::post_clipInfo(const QUrl& url, const TimeInfo& timeInfo) {
     QByteArray jsonArray = jsonManager->build_clip(timeInfo);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    qDebug() << "DONE(HM): post_clipInfo";
+    request.setRawHeader("Connection", "close");
 
     accessManager->post(request, jsonArray);
+    qDebug() << "DONE(HM): post_clipInfo";
 }
 
+void HttpManager::post_plateData(const QUrl& url) {
+    m_url = url;
+    jsonManager = new JsonManager(this);
+    accessManager = new QNetworkAccessManager(this);
+
+    QByteArray jsonArray = jsonManager->build_plate();
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Connection", "keep-alive");
+
+    QNetworkReply *reply = accessManager->post(request, jsonArray);
+    qDebug() << "DONE(HM): get_plateData";
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        on_replyFinished(reply);
+    });
+    connect(reply, &QNetworkReply::errorOccurred,
+            this, &HttpManager::handleNetworkError);
+}
+
+void HttpManager::on_replyFinished(QNetworkReply *reply) {
+    if(reply->error() == QNetworkReply::NoError) {
+        QByteArray responseData = reply->readAll();
+        qDebug() << "Received plate data:" << responseData;
+
+        // JSON 파싱하여 상태 확인
+        QJsonDocument doc = QJsonDocument::fromJson(responseData);
+        QJsonObject obj = doc.object();
+
+        // 실제 데이터가 있을 때만 처리
+        if (obj.contains("data")) {
+            // 데이터 처리 로직
+            qDebug() << "########################3";
+            post_plateData(m_url);
+        }
+    }
+    reply->deleteLater();
+}
+
+void HttpManager::handleNetworkError(QNetworkReply::NetworkError error) {
+    qDebug() << "Network Error:" << error;
+}
 
 void HttpManager::handle_response(QByteArray& jsonArray) {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonArray);
