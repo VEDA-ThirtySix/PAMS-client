@@ -27,7 +27,6 @@ private:
 private slots:
     void on_readyRead();
     //void on_disconnected();
-    void handleError(QAbstractSocket::SocketError socketError);
     void handleDisconnect();
     //void reconnectToServer();
     void setupSocket();

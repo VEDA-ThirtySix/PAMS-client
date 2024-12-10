@@ -26,7 +26,6 @@ TcpManager::TcpManager(QObject *parent)
     connect(tcpSocket, &QTcpSocket::disconnected, this, []() {
         qDebug() << "[TcpManager] Socket disconnected";
     });
-    connect(tcpSocket, &QTcpSocket::errorOccurred, this, &TcpManager::handleError);
     connect(tcpSocket, &QTcpSocket::disconnected, this, &TcpManager::handleDisconnect);
 }
 
@@ -118,28 +117,6 @@ void TcpManager::on_readyRead() {
     } else {
         qDebug() << "Waiting for more data. Current:" << buffer.size()
         << "Expected:" << contentLength;
-    }
-}
-
-void TcpManager::handleError(QAbstractSocket::SocketError socketError)
-{
-    qDebug() << "[TcpManager] Socket error:" << tcpSocket->errorString();
-
-    switch (socketError) {
-    case QAbstractSocket::ConnectionRefusedError:
-        qDebug() << "[TcpManager] Connection was refused by the peer";
-        break;
-    case QAbstractSocket::RemoteHostClosedError:
-        qDebug() << "[TcpManager] Remote host closed the connection";
-        break;
-    case QAbstractSocket::HostNotFoundError:
-        qDebug() << "[TcpManager] Host address was not found";
-        break;
-    case QAbstractSocket::SocketTimeoutError:
-        qDebug() << "[TcpManager] Connection timed out";
-        break;
-    default:
-        qDebug() << "[TcpManager] Unknown socket error occurred";
     }
 }
 

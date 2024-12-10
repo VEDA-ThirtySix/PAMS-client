@@ -50,6 +50,9 @@ Search::Search(QWidget *parent)
     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
     connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
 
+    // 열 크기를 동일하게 설정
+    ui->customerTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->videoTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 Search::~Search() {
@@ -133,7 +136,26 @@ void Search::setupVideoTable() {
     auto* proxyModel = new CustomProxyModel(this);
     proxyModel->setSourceModel(m_modelTime);
     ui->videoTable->setModel(proxyModel);
-    ui->videoTable->resizeColumnsToContents();
+    // 컬럼 퍼센트 비율로 설정
+      QVector<int> columnWidths = {5, 20, 45, 15, 15}; // 비율: ID 10%, PLATE 25%, TIME 30%, TYPE 20%, IMAGE 15%
+
+      // 테이블 너비와 실제 컬럼 너비 계산
+      connect(ui->videoTable->horizontalHeader(), &QHeaderView::sectionResized, this, [this, columnWidths]() {
+          int totalWidth = ui->videoTable->viewport()->width();
+          for (int i = 0; i < columnWidths.size(); ++i) {
+              int width = (totalWidth * columnWidths[i]) / 100; // 비율에 따라 계산
+              ui->videoTable->setColumnWidth(i, width);
+          }
+      });
+
+      // 초기 설정
+      int totalWidth = ui->videoTable->viewport()->width();
+      for (int i = 0; i < columnWidths.size(); ++i) {
+          int width = (totalWidth * columnWidths[i]) / 100; // 비율에 따라 계산
+          ui->videoTable->setColumnWidth(i, width);
+      }
+
+    //ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -153,14 +175,20 @@ void Search::setupVideoTable() {
                     QImage image;
                     if (image.loadFromData(imageData)) {
                         QPixmap pixmap = QPixmap::fromImage(image);
-                        ui->imageLabel_2->setPixmap(pixmap);
+                        // QLabel 크기에 맞게 이미지 조정
+                        QSize labelSize = ui->imageLabel_2->size(); // QLabel 크기 가져오기
+                        QPixmap scaledPixmap = pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+                        ui->imageLabel_2->setPixmap(scaledPixmap);
                         qDebug() << "DONE: Image loaded successfully";
                     } else {
                         ui->imageLabel_2->setText("이미지 로드 실패");
+                        ui->imageLabel_2->setStyleSheet("color:rgb(255,0,0);");
                         qDebug() << "ERROR: Failed to load image";
                     }
                 } else {
                     ui->imageLabel_2->setText("이미지 없음");
+                    ui->imageLabel_2->setStyleSheet("color:rgb(67,188,205);");
                 }
             });
 
@@ -228,6 +256,7 @@ void Search::setupVideoTable() {
 
 void Search::setupImage()
 {
+    /*
     ui->imageLabel->setMinimumSize(320, 200);
     ui->imageLabel->setScaledContents(true);
     ui->imageLabel->setAlignment(Qt::AlignCenter);
@@ -237,6 +266,7 @@ void Search::setupImage()
     ui->imageLabel_2->setScaledContents(true);
     ui->imageLabel_2->setAlignment(Qt::AlignCenter);
     ui->imageLabel_2->setText("이미지 없음");
+    */
 }
 
 /*
@@ -416,7 +446,11 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
         ui->imageLabel->setText("이미지 없음");
         qDebug() << "이미지 로드 실패:" << imagePath;
     } else {
-        ui->imageLabel->setPixmap(image);
+        // 이미지 크기 조정
+        QSize labelSize = ui->imageLabel->size(); // QLabel 크기 가져오기
+        QPixmap scaledPixmap = image.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        ui->imageLabel->setPixmap(scaledPixmap);
+
         qDebug() << "이미지 로드 성공:" << imagePath;
     }
 

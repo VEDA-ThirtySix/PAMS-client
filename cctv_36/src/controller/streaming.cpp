@@ -21,15 +21,13 @@ Streaming::Streaming(QWidget *parent)
     , m_rtspUrl("") // 초기 URL 비우기
 {
     ui->setupUi(this);
-
+    ui->label_url->setAlignment(Qt::AlignCenter); //텍스트를 중앙에 배치
     // 타이머로 날짜/시간 업데이트
     connect(timer, &QTimer::timeout, this, &Streaming::updateDateTime);
     timer->start(1000); //1초마다 실행
     updateDateTime();// 초기 날짜/시간 표시
 
     connect(frameTimer, &QTimer::timeout, this, &Streaming::captureFrame);
-    //connect(ffmpegProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(captureFrame()));
-
 
 }
 
@@ -83,7 +81,8 @@ void Streaming::updateDateTime()
 }
 
 
-/*RTSP스트림을 가져오고, 파이프로 출력*/
+
+/*RTSP스트림을 가져온다.*/
 void Streaming::startFFmpeg() {
 
     if (ffmpegProcess->state() == QProcess::Running) {
@@ -139,9 +138,8 @@ void Streaming::captureFrame() {
             qDebug() << "No frame data received!";
             return;
         }
-        //qDebug() << "frameData Size : " << frameData.size();
         // 이전에 누적된 데이터와 합치기
-        incompleteBuffer.append(frameData);
+        incompleteBuffer.append(frameData); // 클래스의 멤버변수
 
         // 한 프레임 크기 계산 (RGB888)
         const int width = 800;
@@ -209,9 +207,8 @@ void Streaming::rtsp_setting(){
                     .arg(protocol)
                     .arg(m_host)
                     .arg(port);
-
-
     ui->label_url->setText(m_rtspUrl);
+    ui->label_url->setStyleSheet("color:rgb(243,115,33);border:1px solid rgb(243,115,33);");
     qDebug() << "QDEBUG(SW)$ RTSP URL:" << m_rtspUrl;
 }
 
@@ -223,7 +220,7 @@ void Streaming::on_stopButton_clicked(){
     stopFFmpeg();
 }
 
-//버튼 true, false에 따른 스타일 지정 함수
+/*START, STOP 버튼 true, false에 따른 스타일 지정 함수*/
 void Streaming::setButtonStyle(QPushButton* button, bool isActive) {
     if (isActive) {
         button->setChecked(true);

@@ -39,7 +39,6 @@ private:
     QUrl m_url;
 
 private slots:
-    void handleNetworkError(QNetworkReply::NetworkError error);
     void on_replyFinished(QNetworkReply *reply);
 
 signals:

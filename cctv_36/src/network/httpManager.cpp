@@ -132,8 +132,6 @@ void HttpManager::post_plateData(const QUrl& url) {
     connect(reply, &QNetworkReply::finished, this, [=]() {
         on_replyFinished(reply);
     });
-    connect(reply, &QNetworkReply::errorOccurred,
-            this, &HttpManager::handleNetworkError);
 }
 
 void HttpManager::on_replyFinished(QNetworkReply *reply) {
@@ -153,10 +151,6 @@ void HttpManager::on_replyFinished(QNetworkReply *reply) {
         }
     }
     reply->deleteLater();
-}
-
-void HttpManager::handleNetworkError(QNetworkReply::NetworkError error) {
-    qDebug() << "Network Error:" << error;
 }
 
 void HttpManager::handle_response(QByteArray& jsonArray) {
