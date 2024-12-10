@@ -32,6 +32,7 @@
     border: none;
 }
 
+
 QTabWidget#tabWidget &gt; QTabBar::tab {
     font: 9pt &quot;Sans Serif&quot;;
     background-color: rgba(243,115,33,0.5);
@@ -48,6 +49,7 @@ QTabWidget#tabWidget &gt; QTabBar::tab:first {
     background-color: rgba(243,115,33,0.1);
     background-image: url(:/images/video2.png);
     color: transparent;
+	margin-left: 10px; /* 첫 번째 탭의 왼쪽 여백 추가 */
 }
 
 QTabWidget#tabWidget &gt; QTabBar::tab:first:selected {
@@ -56,7 +58,6 @@ QTabWidget#tabWidget &gt; QTabBar::tab:first:selected {
     background-image: transparent;
     color: rgb(0, 0, 0);
     font: 500 12pt &quot;Quicksand Medium&quot;;
-    padding: 0px;
 }
 
 QTabWidget#tabWidget &gt; QTabBar::tab:last {
@@ -71,7 +72,6 @@ QTabWidget#tabWidget &gt; QTabBar::tab:last:selected {
     background-image: none;
     color: rgb(0, 0, 0);
     font: 500 12pt &quot;Quicksand Medium&quot;;
-    padding: 0px;
 }
 
 QTabWidget#tabWidget &gt; QTabBar::tab:hover {
@@ -83,7 +83,7 @@ QTabWidget#tabWidget &gt; QTabBar::tab:hover {
 }</string>
     </property>
     <property name="tabPosition">
-     <enum>QTabWidget::TabPosition::North</enum>
+     <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
      <number>-1</number>
@@ -117,7 +117,7 @@ text-align: center; /* 수평 중앙 정렬 */</string>
      <string>LicensePlate Detection CCTV App</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="teamLogo">
@@ -183,9 +183,9 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
    <widget class="QLineEdit" name="lineEdit_host">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>700</x>
       <y>50</y>
-      <width>200</width>
+      <width>221</width>
       <height>25</height>
      </rect>
     </property>
@@ -203,9 +203,9 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
    <widget class="QPushButton" name="pushButton_apply">
     <property name="geometry">
      <rect>
-      <x>921</x>
+      <x>920</x>
       <y>50</y>
-      <width>90</width>
+      <width>111</width>
       <height>25</height>
      </rect>
     </property>
