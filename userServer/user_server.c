@@ -1,6 +1,9 @@
 #include "user_server.h"  
 #include "errno.h"
 #include "sqlite3.h"
+#include "sys/wait.h"
+#include "signal.h"
+
 
 int init_server_user(int port) {
     int server_fd;
@@ -178,20 +181,41 @@ void handle_client(int client_socket) {
             }
         } 
         else if(strcmp(reqType, "clip") == 0) {
+            /* Parse CLIP Request from Client */
             parse_clip(body_start, &timeInfo);
             printf("Processed clip request:\n");
             printf("Plate: %s\n", timeInfo.plate);
             printf("Time : %s\n", timeInfo.time);
             printf("Type : %s\n", timeInfo.type);
-            
-            /*
-            if(save_clip_data(db, &timeInfo)) {
-                const char* json_response = "{\"status\":\"clip_success\",\"message\":\"Clip saved\"}";
+
+            pid_t pid = fork();
+            if(pid < 0) {
+                perror("Failed to fork");
+                const char* json_response = "{\"status\":\"error\",\"message\":\"Fork failed\"}";
                 send_http_response(client_socket, json_response);
+            } else if(pid == 0) {
+                /* Child Process: Execute CLIP Streaming Program */
+                char* filename = (char*)malloc(sizeof(char) * 32);
+                convertToFilename(timeInfo.time, filename);
+                char* program = "../rtspServer/rtspServer";
+                char* args[] = {program, filename, NULL};
+                
+                printf("\n=========== CLIP STREAMING ===========\n");
+                printf("Execute  %s with argument %s\n", program, filename);
+                if(execvp(program, args) < 0) {
+                    perror("Failed to execute rtspH264");
+                    exit(EXIT_FAILURE);
+                }
             } else {
-                const char* json_response = "{\"status\":\"error\",\"message\":\"Failed to save clip data\"}";
+                // 부모 프로세스
+                const char* json_response = "{\"status\":\"success\",\"message\":\"Streaming started\"}";
                 send_http_response(client_socket, json_response);
-            }*/
+                printf("Parent process - Streaming process started with PID: %d\n", pid);
+        
+                // 자식 프로세스가 종료되기를 기다리지 않고 계속 진행
+                // 좀비 프로세스 방지를 위한 SIGCHLD 핸들러 설정
+                signal(SIGCHLD, SIG_IGN);
+            }
         }
         else {
             printf("Unknown request type: %s\n", reqType);
@@ -310,7 +334,24 @@ void parse_clip(char* jsonBuffer, TimeInfo *timeInfo) {
         } 
     }
 
+    printf("\n");
+    printf("parsed_plate: %s\n", timeInfo->plate);
+    printf("parsed_time: %s\n", timeInfo->time);
+    printf("parsed_type: %s\n", timeInfo->type);
+
     json_object_put(parsed_json);   //delete parsed_json(memory leak)
+}
+
+
+void convertToFilename(const char* timeStr, char* filename) {
+    //화 12월 10 12:14:53 2024
+    int year, month, day, hour, min, sec;
+    sscanf(timeStr, "%*s %d월 %d %d:%d:%d %d", 
+           &month, &day, &hour, &min, &sec, &year);
+    sprintf(filename, "../rtspServer/example/%04d%02d%02d%02d%02d%02d.h264", 
+        year, month, day, hour, min, sec);
+    
+    printf("Converted name: %s\n", filename);
 }
 
 

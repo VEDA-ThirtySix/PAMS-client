@@ -44,7 +44,7 @@ private:
     static const int MAX_RECONNECT_ATTEMPTS = 3;
     static const int RECONNECT_INTERVAL = 5000;
     static constexpr const char* PROTOCOL = "rtsp";
-    static const int CLIP_PORT = 8554;
+    static const int CLIP_PORT = 7554;
 };
 
 #endif // DIALOG_VIDEOCLIP_H

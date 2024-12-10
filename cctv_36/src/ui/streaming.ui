@@ -16,10 +16,10 @@
   <widget class="QFrame" name="streamingFrame">
    <property name="geometry">
     <rect>
-     <x>-10</x>
+     <x>0</x>
      <y>0</y>
-     <width>1051</width>
-     <height>581</height>
+     <width>1041</width>
+     <height>561</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -27,15 +27,15 @@
 border:none;</string>
    </property>
    <property name="frameShape">
-    <enum>QFrame::Shape::NoFrame</enum>
+    <enum>QFrame::NoFrame</enum>
    </property>
    <widget class="QLabel" name="streamingLabel">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>100</y>
       <width>671</width>
-      <height>461</height>
+      <height>351</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -48,10 +48,69 @@ border:1px solid rgb(243,115,33);</string>
      <string>Streaming Video</string>
     </property>
    </widget>
+   <widget class="QFrame" name="bestshotFrame">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>40</y>
+      <width>290</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 500 13pt &quot;Quicksand Medium&quot;;
+color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>230</y>
+       <width>211</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
+     </property>
+     <property name="text">
+      <string>Detected Vehicle Image</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>211</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background:none;
+border:1px solid rgb(255, 255, 255);
+font: 300 bold 13pt &quot;Quicksand Light&quot;;
+color:  rgb(243,115,33);
+background:none;</string>
+     </property>
+     <property name="text">
+      <string>Vehicle1</string>
+     </property>
+    </widget>
+   </widget>
    <widget class="QLabel" name="dateTimeLabel">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>10</y>
       <width>671</width>
       <height>31</height>
@@ -71,9 +130,9 @@ text-align: center; /* 수평 중앙 정렬 */</string>
    <widget class="QLabel" name="licensetitleLabel">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>350</y>
-      <width>331</width>
+      <x>720</x>
+      <y>10</y>
+      <width>290</width>
       <height>31</height>
      </rect>
     </property>
@@ -87,10 +146,28 @@ border:1px solid rgb(243,115,33);</string>
      <string>LicensePlate</string>
     </property>
    </widget>
+   <widget class="QFrame" name="bestshotFrame_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>450</y>
+      <width>671</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:  rgb(243,115,33);
+background:none;
+border:1px solid rgb(243,115,33);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
    <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>70</y>
       <width>341</width>
       <height>31</height>
@@ -124,7 +201,7 @@ QPushButton:hover {
    <widget class="QPushButton" name="stopButton">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>370</x>
       <y>70</y>
       <width>331</width>
       <height>31</height>
@@ -152,118 +229,32 @@ QPushButton:hover {
    <widget class="QLabel" name="label_url">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>40</y>
       <width>671</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">	color:  rgb(154, 154, 154);
+     <string notr="true">
+	color:  rgb(243,115,33);
 	background:white;
 	border:1px solid rgb(243,115,33);
 	font: 500 10pt &quot;Quicksand Medium&quot;;
 </string>
     </property>
     <property name="text">
-     <string>RTSP Server IP Address</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
+     <string/>
     </property>
    </widget>
-   <widget class="QFrame" name="licensePlateframe">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>380</y>
-      <width>331</width>
-      <height>181</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color:  rgb(243,115,33);
-background:white;
-border:1px solid rgb(243,115,33);</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QLabel" name="number1">
-       <property name="styleSheet">
-        <string notr="true">background:none;
-border:1px solid rgb(243,115,33);
-font: 300 bold 13pt &quot;Quicksand Light&quot;;
-color:  rgb(243,115,33);</string>
-       </property>
-       <property name="text">
-        <string>Vehicle2</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QFrame" name="stateArea">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>40</y>
-      <width>331</width>
-      <height>301</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color:  rgb(243,115,33);
-background:white;
-border:1px solid rgb(243,115,33);</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>새로운 차량 진입 알림 아이콘, 게이트 여닫기 '아이콘'</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>123가 어어어 김시현 302호 진입</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QLabel" name="VehicleEntry">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>10</y>
-      <width>331</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-font: 500 13pt &quot;Quicksand Medium&quot;;
-background-color: rgba(243,115,33,0.5);
-border:1px solid rgb(243,115,33);</string>
-    </property>
-    <property name="text">
-     <string>Vehicle Entry</string>
-    </property>
-   </widget>
+   <zorder>streamingLabel</zorder>
+   <zorder>dateTimeLabel</zorder>
+   <zorder>licensetitleLabel</zorder>
+   <zorder>bestshotFrame</zorder>
+   <zorder>bestshotFrame_2</zorder>
+   <zorder>startButton</zorder>
+   <zorder>stopButton</zorder>
+   <zorder>label_url</zorder>
   </widget>
  </widget>
  <resources/>

@@ -4,14 +4,14 @@ UNAME_S := $(shell uname -s)
 
 # Linux 환경
 ifeq ($(UNAME_S),Linux)
-	CFLAGS = -Wall -g -I. -I/usr/include/json-c
-	LDFLAGS = -ljson-c -lsqlite3
+    CFLAGS = -Wall -g -I. -I/usr/include/json-c
+    LDFLAGS = -ljson-c -lsqlite3
 endif
 
 # macOS 환경
 ifeq ($(UNAME_S),Darwin)
-	CFLAGS = -I/opt/homebrew/Cellar/json-c/0.18/include
-	LDFLAGS = -L/opt/homebrew/Cellar/json-c/0.18/lib -ljson-c -lsqlite3
+    CFLAGS = -I/opt/homebrew/Cellar/json-c/0.18/include
+    LDFLAGS = -L/opt/homebrew/Cellar/json-c/0.18/lib -ljson-c -lsqlite3
 endif
 
 all: userServer

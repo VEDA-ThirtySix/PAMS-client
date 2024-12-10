@@ -1,0 +1,10 @@
+# 실행 파일 제외
+rtspServer
+
+# 객체 파일 제외
+objs/
+
+# .vscode 디렉토리 제외
+.vscode/
+
+output.h264
