@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QDateTime>
 #include <QImage>
+#include <QDebug>
 
 JsonManager::JsonManager(QObject* parent)
     : QObject(parent)

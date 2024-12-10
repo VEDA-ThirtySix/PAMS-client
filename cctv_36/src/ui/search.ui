@@ -13,331 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTabWidget" name="searchTabWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>80</y>
-     <width>881</width>
-     <height>521</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QTabWidget#searchTabWidget::pane {
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(67,188,205);
-}
-
-QTabWidget#searchTabWidget &gt; QTabBar::tab {
-    font: 9pt &quot;Sans Serif&quot;;
-    background-color: rgba(67,188,205,0.5);
-    color: black;
-    padding: 0px;
-    margin-right: 5px;
-    width: 120px;
-    height: 30px;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-QTabWidget#searchTabWidget &gt; QTabBar::tab:first {
-    background-color: rgba(67,188,205,0.5);
-    color: white;
-}
-
-QTabWidget#searchTabWidget &gt; QTabBar::tab:first:selected {
-    background: none;
-    background-color: rgba(67,188,205,0.8);
-    background-image:none;
-    color: rgb(0, 0, 0);
-    font: 500 12pt &quot;Quicksand Medium&quot;;
-}
-
-QTabWidget#searchTabWidget &gt; QTabBar::tab:last {
-    background-color: rgba(67,188,205,0.5);
-    color: white;
-}
-
-QTabWidget#searchTabWidget &gt; QTabBar::tab:last:selected {
-    background: none;
-    background-color: rgba(67,188,205,0.8);
-    background-image: none;
-    color: rgb(0, 0, 0);
-    font: 500 12pt &quot;Quicksand Medium&quot;;
-}
-
-QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
-    background: none;
-    background-color:rgb(209, 209, 209);
-    background-image: none;
-    color: rgb(255, 255, 255);
-    font: 500 10pt &quot;Quicksand Medium&quot;;
-}</string>
-   </property>
-   <property name="currentIndex">
-    <number>1</number>
-   </property>
-   <widget class="QWidget" name="customerTab">
-    <attribute name="title">
-     <string>Customer</string>
-    </attribute>
-    <widget class="QTableView" name="customerTable">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>491</width>
-       <height>441</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QTableView {
-color:rgb(0, 0, 0);
-background-color: white;
-border:1px solid rgb(67,188,205);
-}
-
-QHeaderView::section {
-    background-color: rgba(202,205,205,0.5);
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    padding: 3px;
-    font-weight: bold;
-    text-align: center;
-	color:rgb(0, 0, 0);
-}</string>
-     </property>
-    </widget>
-    <widget class="QFrame" name="frame">
-     <property name="geometry">
-      <rect>
-       <x>510</x>
-       <y>10</y>
-       <width>361</width>
-       <height>461</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
-     </property>
-     <widget class="QLabel" name="imageLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>351</width>
-        <height>171</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: white;
-border:1px solid rgb(67,188,205);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="textLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>280</y>
-        <width>351</width>
-        <height>161</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: white;
-color:rgb(0, 0, 0);
-border:1px solid rgb(67,188,205);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="plateTitle">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>0</y>
-        <width>351</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
-color:rgb(67,188,205);
-background-color: rgba(67,188,205,0.3);
-border:1px solid rgb(67,188,205);</string>
-      </property>
-      <property name="text">
-       <string>차량번호판</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="plateTitle_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>250</y>
-        <width>351</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
-color: rgb(67,188,205);
-background-color: rgba(67,188,205,0.3);
-border:1px solid rgb(67,188,205);</string>
-      </property>
-      <property name="text">
-       <string>고객정보</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
-      </property>
-     </widget>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="videoTab">
-    <attribute name="title">
-     <string>Video</string>
-    </attribute>
-    <widget class="QTableView" name="videoTable">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>471</width>
-       <height>411</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QTableView {
-    background-color: rgb(255, 255, 255);
-}
-
-QHeaderView::section {
-    background-color: rgba(202,205,205,0.5);
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    padding: 3px;
-    font-weight: bold;
-    text-align: center;
-}</string>
-     </property>
-    </widget>
-    <widget class="QCalendarWidget" name="calendarWidget">
-     <property name="geometry">
-      <rect>
-       <x>595</x>
-       <y>20</y>
-       <width>221</width>
-       <height>181</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">/* 캘린더 전체 */
-QCalendarWidget {
-    background-color: rgba(255, 255, 255);
-    color: black;
-    selection-color: rgb(0, 0, 0);
-}
-
-/* 네비게이션 바 */
-QCalendarWidget QWidget#qt_calendar_navigationbar {
-    background-color: rgba(67, 188, 205, 0.3);
-}
-
-/* 네비게이션 버튼 */
-QCalendarWidget QToolButton {
-    width: 20px;
-    height: 20px;
-    color: black;
-    icon-size: 16px, 16px;
-    background-color: rgba(255, 255, 255, 0);
-}
-
-/* 달력 그리드 */
-QCalendarWidget QTableView {
-    background-color: white;
-    selection-background-color: rgba(67, 188, 205, 0.3);
-    selection-color: black;
-}
-
-/* 달력 셀 */
-QCalendarWidget QTableView QTableCornerButton::section {
-    color: black;
-    background-color: white;
-}
-
-/* 요일 헤더 */
-QCalendarWidget QHeaderView {
-    background-color: white;
-}
-
-QCalendarWidget QHeaderView::section {
-    color: black;
-    background-color: rgba(67, 188, 205, 0.1);
-    padding: 3px;
-    border: none;
-}
-
-/* 일반 날짜 */
-QCalendarWidget QAbstractItemView:enabled {
-    color: black;
-    background-color: white;
-    selection-background-color: rgba(67, 188, 205, 0.3);
-    selection-color: black;
-}
-
-/* 비활성화된 날짜 (이전/다음 달) */
-QCalendarWidget QAbstractItemView:disabled {
-    color: rgb(169, 169, 169);
-}</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="plateTitle_3">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>210</y>
-       <width>351</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
-color:rgb(67,188,205);
-background-color: rgba(67,188,205,0.3);
-border:1px solid rgb(67,188,205);</string>
-     </property>
-     <property name="text">
-      <string>차량번호판</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="imageLabel_2">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>240</y>
-       <width>351</width>
-       <height>171</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: white;
-border:1px solid rgb(67,188,205);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </widget>
-  </widget>
   <widget class="QPushButton" name="pushButton_edit">
    <property name="geometry">
     <rect>
@@ -553,6 +228,432 @@ font: 500 8pt &quot;Quicksand Medium&quot;;</string>
     <iconset resource="../../images.qrc">
      <normaloff>:/images/calendar.png</normaloff>:/images/calendar.png</iconset>
    </property>
+  </widget>
+  <widget class="QTabWidget" name="searchTabWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>80</y>
+     <width>881</width>
+     <height>521</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTabWidget#searchTabWidget::pane {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(67,188,205);
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab {
+    font: 9pt &quot;Sans Serif&quot;;
+    background-color: rgba(67,188,205,0.5);
+    color: black;
+    padding: 0px;
+    margin-right: 5px;
+    width: 120px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:first {
+    background-color: rgba(67,188,205,0.5);
+    color: white;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:first:selected {
+    background: none;
+    background-color: rgba(67,188,205,0.8);
+    background-image:none;
+    color: rgb(0, 0, 0);
+    font: 500 12pt &quot;Quicksand Medium&quot;;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:last {
+    background-color: rgba(67,188,205,0.5);
+    color: white;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:last:selected {
+    background: none;
+    background-color: rgba(67,188,205,0.8);
+    background-image: none;
+    color: rgb(0, 0, 0);
+    font: 500 12pt &quot;Quicksand Medium&quot;;
+}
+
+QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
+    background: none;
+    background-color:rgb(209, 209, 209);
+    background-image: none;
+    color: rgb(255, 255, 255);
+    font: 500 10pt &quot;Quicksand Medium&quot;;
+}</string>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="customerTab">
+    <attribute name="title">
+     <string>Customer</string>
+    </attribute>
+    <widget class="QTableView" name="customerTable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>491</width>
+       <height>441</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTableView {
+    color: rgb(0, 0, 0);
+    background-color: white;
+    border: 1px solid rgb(67, 188, 205);
+}
+
+QHeaderView::section {
+    background-color:rgba(67,188,205,0.5);/* 헤더 배경 색상 */
+    border: 1px solid rgb(67,188,205);
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(0, 0, 0); /* 헤더 텍스트 색상 */
+	font: 9pt &quot;Sans Serif&quot;;
+}
+</string>
+     </property>
+    </widget>
+    <widget class="QFrame" name="frame">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>10</y>
+       <width>361</width>
+       <height>461</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <widget class="QLabel" name="imageLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>351</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: white;
+border:1px solid rgb(67,188,205);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="textLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>280</y>
+        <width>351</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: white;
+color:rgb(0, 0, 0);
+border:1px solid rgb(67,188,205);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="plateTitle">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>351</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
+color:rgb(67,188,205);
+background-color: rgba(67,188,205,0.3);
+border:1px solid rgb(67,188,205);</string>
+      </property>
+      <property name="text">
+       <string>차량번호판</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="plateTitle_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>250</y>
+        <width>351</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
+color: rgb(67,188,205);
+background-color: rgba(67,188,205,0.3);
+border:1px solid rgb(67,188,205);</string>
+      </property>
+      <property name="text">
+       <string>고객정보</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="videoTab">
+    <attribute name="title">
+     <string>Video</string>
+    </attribute>
+    <widget class="QTableView" name="videoTable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>501</width>
+       <height>461</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTableView {
+    color: rgb(0, 0, 0);
+    background-color: white;
+    border: 1px solid rgb(67, 188, 205);
+}
+
+QHeaderView::section {
+    background-color:rgba(67,188,205,0.5);/* 헤더 배경 색상 */
+    border: 1px solid rgb(67,188,205);
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+	font: 9pt &quot;Sans Serif&quot;;
+    color: rgb(0, 0, 0); /* 헤더 텍스트 색상 */
+}
+</string>
+     </property>
+    </widget>
+    <widget class="QCalendarWidget" name="calendarWidget">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>50</y>
+       <width>331</width>
+       <height>212</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">/* 캘린더 전체 */
+QCalendarWidget {
+    background-color: rgba(255, 255, 255);
+    color: black;
+    selection-color: rgb(0, 0, 0);
+	border:1px solid  rgb(67, 188, 205);
+ /* 크기 제한 설정 */
+    min-width: 300px;
+    max-width: 340px; /* 가로 크기 제한 */
+    min-height: 210px;
+    max-height: 220px; /* 세로 크기 제한 */
+}
+
+/* 네비게이션 바 */
+QCalendarWidget QWidget#qt_calendar_navigationbar {
+    background-color: rgba(67, 188, 205, 0.3);
+
+	border: none; /* 불필요한 테두리 제거 */
+    height: 40px; /* 네비게이션 바 높이 */
+    padding: 0 10px; /* 양쪽 여백 추가 */
+}
+
+/* 네비게이션 버튼 
+QCalendarWidget QToolButton {
+    width: 20px;
+    height: 20px;
+    color: black;
+    icon-size: 16px, 16px;
+    background-color: rgba(255, 255, 255, 0);
+}
+*/
+
+/* 이전/다음 버튼 */
+QCalendarWidget QToolButton#qt_calendar_prevmonth, 
+QCalendarWidget QToolButton#qt_calendar_nextmonth {
+    width: 20px; /* 버튼 크기 */
+    height: 20px;
+    color: black; /* 텍스트 색상 */
+    icon-size: 16px, 16px; /* 아이콘 크기 */
+    background-color: transparent; /* 배경 투명 */
+    border: none; /* 테두리 제거 */
+    margin: 0 5px; /* 버튼 사이 간격 추가 */
+}
+
+/* 중앙의 월/년도 버튼 */
+QCalendarWidget QToolButton#qt_calendar_monthbutton,
+QCalendarWidget QToolButton#qt_calendar_yearbutton {
+    color: rgb(81, 100, 166);
+	font: bold 13pt &quot;Sans Serif&quot;;
+    background-color: transparent; /* 배경 투명 */
+    border: none; /* 테두리 제거 */
+    margin: 0 10px; /* 월과 년도 사이 간격 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+/* 월/년도 간 간격 추가를 위한 레이아웃 설정 */
+QCalendarWidget QWidget#qt_calendar_navigationbar QHBoxLayout {
+    spacing: 20px; /* 월과 년도 사이 간격 */
+}
+
+/* 달력 그리드 */
+QCalendarWidget QTableView {
+    background-color: white;
+    selection-background-color: rgba(67, 188, 205, 0.3);
+    selection-color: black;
+}
+
+/* 달력 셀 */
+QCalendarWidget QTableView QTableCornerButton::section {
+    color: black;
+    background-color: white;
+}
+
+/* 요일 헤더 */
+QCalendarWidget QHeaderView {
+    background-color: white;
+}
+
+QCalendarWidget QHeaderView::section {
+    color: black;
+    background-color: rgba(67, 188, 205, 0.1);
+    padding: 1px;
+    border: none;
+}
+
+/* 일반 날짜 */
+QCalendarWidget QAbstractItemView:enabled {
+    color: black;
+    background-color: white;
+    selection-background-color: rgba(67, 188, 205, 0.3);
+    selection-color: black;
+}
+
+/* 비활성화된 날짜 (이전/다음 달) */
+QCalendarWidget QAbstractItemView:disabled {
+    color: rgb(169, 169, 169);
+}
+QCalendarWidget QSpinBox { 
+  	width: 150px; 
+  	font-size:20px; 
+  	color: black;
+  	background-color: rgba(67, 188, 205, 0.2); /*qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #cccccc, stop: 1 #333333); */ 
+  	selection-background-color: rgb(136, 136, 136);
+  	selection-color: rgb(255, 255, 255);
+  }
+/* 스핀박스 드롭다운 스타일 */
+QCalendarWidget QSpinBox QAbstractItemView {
+    font-size: 14px; /* 드롭다운 텍스트 크기 */
+    color: black; /* 드롭다운 텍스트 색상 */
+    background-color: white; /* 드롭다운 배경 색상 */
+    selection-background-color: rgba(67, 188, 205, 0.3); /* 선택된 항목 배경 색상 */
+    selection-color: black; /* 선택된 항목 텍스트 색상 */
+    border: 1px solid rgba(67, 188, 205, 0.6); /* 드롭다운 테두리 */
+}</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="plateTitle_3">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>280</y>
+       <width>351</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
+color:rgb(67,188,205);
+background-color: rgba(67,188,205,0.3);
+border:1px solid rgb(67,188,205);</string>
+     </property>
+     <property name="text">
+      <string>차량번호판</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imageLabel_2">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>310</y>
+       <width>351</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: white;
+border:1px solid rgb(67,188,205);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="plateTitle_4">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>10</y>
+       <width>351</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 300 bold 12pt &quot;Quicksand Light&quot;;
+color:rgb(67,188,205);
+background-color: rgba(67,188,205,0.3);
+border:1px solid rgb(67,188,205);</string>
+     </property>
+     <property name="text">
+      <string>날짜선택</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="calendarFrame">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>40</y>
+       <width>351</width>
+       <height>231</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: white;
+border:1px solid rgb(67,188,205);
+color:rgb(67,188,205);
+font: 14pt &quot;Sans Serif&quot;;</string>
+     </property>
+     <property name="text">
+      <string>Select Calender Button</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <zorder>calendarFrame</zorder>
+    <zorder>videoTable</zorder>
+    <zorder>calendarWidget</zorder>
+    <zorder>plateTitle_3</zorder>
+    <zorder>imageLabel_2</zorder>
+    <zorder>plateTitle_4</zorder>
+   </widget>
   </widget>
  </widget>
  <resources>
