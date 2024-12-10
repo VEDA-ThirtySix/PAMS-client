@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/images">
-        <file>zoom.png</file>
         <file>list.png</file>
         <file>camera-recorder.png</file>
         <file>search5.png</file>

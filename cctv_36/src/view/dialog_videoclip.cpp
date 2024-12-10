@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QLabel>
+#include <QDateTime>
 
 VideoClipDialog::VideoClipDialog(const QString &host, QWidget *parent)
     : QDialog(parent)
@@ -21,12 +22,13 @@ VideoClipDialog::VideoClipDialog(const QString &host, QWidget *parent)
 
     qDebug() << "QDEBUG(SW)$ Clip RTSP URL:" << m_rtspUrl;
 
+    ui->positionSlider->setRange(0, 7000); // 현재 7초짜리 dragon.h264 스트리밍이라 하드코딩
+    ui->positionSlider->setSingleStep(1000); // 1초 단위로 이동
+
     // FFmpeg 프레임 타이머 설정
     frameTimer->setInterval(33); // ~30fps
     connect(frameTimer, &QTimer::timeout, this, &VideoClipDialog::captureFrame);
 
-    // FFmpeg 시작
-    startFFmpeg();
 }
 
 void VideoClipDialog::setupConnections()
@@ -67,6 +69,7 @@ void VideoClipDialog::startFFmpeg()
         return;
     }
 
+    startTime = QDateTime::currentMSecsSinceEpoch();
     frameTimer->start();
 }
 
@@ -107,19 +110,27 @@ void VideoClipDialog::captureFrame()
                 );
 
             ui->ffmpegLabel->setPixmap(scaledPixmap);
-            updatePosition(frameTimer->interval() * frameCount++);
+            // updatePosition(frameTimer->interval() * frameCount++);
+            qint64 currentTime = QDateTime::currentMSecsSinceEpoch() - startTime;
+            if (currentTime <= 7000) {
+                updatePosition(currentTime);
+            }
         }
     }
 }
 
 void VideoClipDialog::playPauseVideo()
 {
+    if (ffmpegProcess->state() != QProcess::Running){
+        startFFmpeg();
+        ui->playPauseButton->setIcon(QIcon(":/images/pause.png"));
+    }
     if (frameTimer->isActive()) {
         frameTimer->stop();
-        ui->playPauseButton->setIcon(QIcon(":/images/play2.png"));
+        ui->playPauseButton->setIcon(QIcon(":/images/play.png"));
     } else {
         frameTimer->start();
-        ui->playPauseButton->setIcon(QIcon(":/images/pause2.png"));
+        ui->playPauseButton->setIcon(QIcon(":/images/pause.png"));
     }
 }
 
@@ -127,7 +138,7 @@ void VideoClipDialog::stopVideo()
 {
     frameTimer->stop();
     frameCount = 0;
-    ui->playPauseButton->setIcon(QIcon(":/images/play2.png"));
+    ui->playPauseButton->setIcon(QIcon(":/images/play.png"));
     ui->positionSlider->setValue(0);
     ui->currentTimeLabel->setText("00:00");
     startFFmpeg();

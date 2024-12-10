@@ -126,32 +126,32 @@ void Search::setupVideoTable() {
     ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     connect(ui->videoTable, &QTableView::doubleClicked, this, [this](const QModelIndex &index) {
-        if (m_host.isEmpty()) {
-            QMessageBox warningBox;
-            warningBox.setWindowTitle("연결 오류");
-            warningBox.setText("호스트 주소가 설정되지 않았습니다. 먼저 주소를 설정해주세요.");
-            warningBox.setStyleSheet(
-                "QMessageBox { "
-                "    background-color: white; "
-                "    color: black; "
-                "} "
-                "QLabel { "
-                "    color: black; "
-                "} "
-                "QPushButton { "
-                "    background-color: rgba(243, 115, 33,0.5); "
-                "    color: black; "
-                "    width: 100px;"
-                "    border: none; "
-                "    padding: 5px; "
-                "} "
-                "QPushButton:hover { "
-                "    background-color: rgba(190,190,190); "
-                "} "
-                );
-            warningBox.exec();
-            return;
-        }
+        // if (m_host.isEmpty()) {
+        //     QMessageBox warningBox;
+        //     warningBox.setWindowTitle("연결 오류");
+        //     warningBox.setText("호스트 주소가 설정되지 않았습니다. 먼저 주소를 설정해주세요.");
+        //     warningBox.setStyleSheet(
+        //         "QMessageBox { "
+        //         "    background-color: white; "
+        //         "    color: black; "
+        //         "} "
+        //         "QLabel { "
+        //         "    color: black; "
+        //         "} "
+        //         "QPushButton { "
+        //         "    background-color: rgba(243, 115, 33,0.5); "
+        //         "    color: black; "
+        //         "    width: 100px;"
+        //         "    border: none; "
+        //         "    padding: 5px; "
+        //         "} "
+        //         "QPushButton:hover { "
+        //         "    background-color: rgba(190,190,190); "
+        //         "} "
+        //         );
+        //     warningBox.exec();
+        //     return;
+        // }
 
         // Get the selected timestamp
         QModelIndex timeIndex = m_modelTime->index(index.row(), 2); // TIME column
@@ -163,6 +163,8 @@ void Search::setupVideoTable() {
         dialog->setWindowTitle(QString("Video Clip - %1").arg(timestamp));
         dialog->show();
     });
+
+
 
 
     setupCalendarWidget();

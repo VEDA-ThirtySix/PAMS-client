@@ -39,6 +39,7 @@ private:
     int reconnectAttempts;
     QByteArray incompleteBuffer;
     qint64 frameCount = 0;
+    qint64 startTime;
 
     static const int MAX_RECONNECT_ATTEMPTS = 3;
     static const int RECONNECT_INTERVAL = 5000;

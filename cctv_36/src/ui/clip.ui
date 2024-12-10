@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>693</height>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,43 +54,20 @@
          <height>0</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">font: 500 bold 13pt &quot;Quicksand Medium&quot;;</string>
+       </property>
        <property name="text">
         <string>00:00</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="totalTimeLabel">
-       <property name="minimumSize">
-        <size>
-         <width>60</width>
-         <height>0</height>
-        </size>
-       </property>
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>00:00</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        <string/>
        </property>
       </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="controlLayout">
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item>
       <widget class="QPushButton" name="playPauseButton">
@@ -104,7 +81,7 @@
         <string notr="true">QPushButton {
     color: rgb(243,115,33);
     background: none;
-    border: 1px solid rgb(243,115,33);
+    border: none;
     border-radius: 15px;  /* 테두리 둥글게 */
     font: 500 9pt 'Quicksand Medium';
     icon-size: 24px;  /* 아이콘 크기 증가 */
@@ -112,7 +89,7 @@
 }
 QPushButton:hover {
     color: white;
-    background-color: rgba(243,115,33,0.7);
+    background-color: rgba(243,115,33,0.5);
 }</string>
        </property>
        <property name="text">
@@ -120,7 +97,7 @@ QPushButton:hover {
        </property>
        <property name="icon">
         <iconset resource="../../images.qrc">
-         <normaloff>:/images/play2.png</normaloff>:/images/play2.png</iconset>
+         <normaloff>:/images/play.png</normaloff>:/images/play.png</iconset>
        </property>
       </widget>
      </item>
@@ -136,7 +113,7 @@ QPushButton:hover {
         <string notr="true">QPushButton {
     color: rgb(243,115,33);
     background: none;
-    border: 1px solid rgb(243,115,33);
+    border: none;
     border-radius: 15px;  /* 테두리 둥글게 */
     font: 500 9pt 'Quicksand Medium';
     icon-size: 24px;  /* 아이콘 크기 증가 */
@@ -144,7 +121,7 @@ QPushButton:hover {
 }
 QPushButton:hover {
     color: white;
-    background-color: rgba(243,115,33,0.7);
+    background-color: rgba(243,115,33,0.5);
 }</string>
        </property>
        <property name="text">
@@ -152,22 +129,35 @@ QPushButton:hover {
        </property>
        <property name="icon">
         <iconset resource="../../images.qrc">
-         <normaloff>:/images/stop2.png</normaloff>:/images/stop2.png</iconset>
+         <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string/>
        </property>
-       <property name="sizeHint" stdset="0">
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="totalTimeLabel">
+       <property name="minimumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>60</width>
+         <height>0</height>
         </size>
        </property>
-      </spacer>
+       <property name="styleSheet">
+        <string notr="true">font: 500 bold 13pt &quot;Quicksand Medium&quot;;</string>
+       </property>
+       <property name="text">
+        <string>00:00</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
