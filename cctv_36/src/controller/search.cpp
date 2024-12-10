@@ -2,8 +2,6 @@
 #include "ui_search.h"
 #include "dialog_edit.h"
 #include "dialog_enroll.h"
-#include "tcpManager.h"
-#include "httpManager.h"
 #include "dialog_videoclip.h"
 
 #include <QMessageBox>
@@ -131,6 +129,7 @@ void Search::setupVideoTable() {
 
                 if (selected.indexes().isEmpty()) {
                     ui->imageLabel_2->clear();
+                    return;  // isEmpty()로 체크한 후 바로 return하도록 해서 빈 indexes에서 first()를 호출하지 않도록 수정
                 }
 
                 int row = selected.indexes().first().row();
@@ -150,6 +149,8 @@ void Search::setupVideoTable() {
                     ui->imageLabel_2->setText("이미지 없음");
                 }
             });
+
+
 
     connect(ui->videoTable, &QTableView::doubleClicked, this, [this](const QModelIndex &index) {
         // if (m_host.isEmpty()) {
