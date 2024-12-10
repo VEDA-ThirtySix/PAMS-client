@@ -475,12 +475,16 @@ qrc_images.cpp: images.qrc \
 		search5.png \
 		stop.png \
 		play.png \
+		bell.png \
 		calendar.png \
+		gate_close.png \
 		play2.png \
+		gate_open.png \
 		list.png \
 		video2.png \
 		search.png \
 		camera-recorder.png \
+		bell_none.png \
 		pause2.png \
 		pause.png \
 		stop2.png

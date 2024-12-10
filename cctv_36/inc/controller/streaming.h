@@ -52,6 +52,8 @@ private slots:
     void on_stopButton_clicked();
 
     void setButtonStyle(QPushButton* button, bool isActive);
+    void carEntryState(bool isActive);
+    void updateGateState(bool state);
 };
 
 #endif // STREAMING_H
