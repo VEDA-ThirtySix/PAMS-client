@@ -9,7 +9,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <json-c/json.h>
-#include <pthread.h>
 #include <sqlite3.h>
 
 #define MAX_CLIENTS 10
@@ -50,8 +49,8 @@ void handle_client(int client_socket);
 void parse_init(char* jsonBuffer, ClientInfo* clientInfo);
 void parse_user(char* jsonBuffer, BasicInfo* basicInfo);
 void parse_clip(char* jsonBuffer, TimeInfo *timeInfo);
+void convertToFilename(const char* timeStr, char* filename);
 
-void handle_clip();
 
 void send_http_response(int client_socket, const char* json_response);  //사용중
 
@@ -62,7 +61,5 @@ int edit_user_data(sqlite3 *db, BasicInfo *basicInfo);
 //int delete_user_data(sqlite3 *db, BasicInfo *basicInfo);
 int check_plate_exists(sqlite3 *db, const char* plate);
 
-void convertToFilename(const char* timeStr, char* filename);
-int save_client_data(sqlite3 *db, ClientInfo *clientInfo);
 
 #endif//SERVER_H
