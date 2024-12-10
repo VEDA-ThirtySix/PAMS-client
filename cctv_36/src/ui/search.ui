@@ -209,8 +209,8 @@ border:1px solid rgb(67,188,205);</string>
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>531</width>
-       <height>471</height>
+       <width>851</width>
+       <height>411</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -300,9 +300,9 @@ QCalendarWidget QAbstractItemView:disabled {
     <widget class="QLabel" name="plateTitle_3">
      <property name="geometry">
       <rect>
-       <x>550</x>
-       <y>230</y>
-       <width>321</width>
+       <x>490</x>
+       <y>210</y>
+       <width>351</width>
        <height>31</height>
       </rect>
      </property>
@@ -322,9 +322,9 @@ border:1px solid rgb(67,188,205);</string>
     <widget class="QLabel" name="imageLabel_2">
      <property name="geometry">
       <rect>
-       <x>550</x>
-       <y>260</y>
-       <width>321</width>
+       <x>490</x>
+       <y>240</y>
+       <width>351</width>
        <height>171</height>
       </rect>
      </property>

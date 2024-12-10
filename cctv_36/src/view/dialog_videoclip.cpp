@@ -70,6 +70,7 @@ void VideoClipDialog::startFFmpeg()
     }
 
     startTime = QDateTime::currentMSecsSinceEpoch();
+    frameTimer->start();
 }
 
 void VideoClipDialog::stopFFmpeg()
@@ -120,14 +121,10 @@ void VideoClipDialog::captureFrame()
 
 void VideoClipDialog::playPauseVideo()
 {
-    // FFmpeg이 실행중이 아니면 시작
-    if (ffmpegProcess->state() != QProcess::Running) {
+    if (ffmpegProcess->state() != QProcess::Running){
         startFFmpeg();
-        frameTimer->start();
         ui->playPauseButton->setIcon(QIcon(":/images/pause.png"));
-        return;
     }
-
     if (frameTimer->isActive()) {
         frameTimer->stop();
         ui->playPauseButton->setIcon(QIcon(":/images/play.png"));

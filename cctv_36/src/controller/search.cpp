@@ -2,6 +2,8 @@
 #include "ui_search.h"
 #include "dialog_edit.h"
 #include "dialog_enroll.h"
+#include "tcpManager.h"
+#include "httpManager.h"
 #include "dialog_videoclip.h"
 
 #include <QMessageBox>
@@ -11,23 +13,10 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
-// #include <QCoreApplication>
-#include <QIdentityProxyModel>
+#include <QCoreApplication>
 
 #define protocol "http"
 #define port 8080
-
-class CustomProxyModel : public QIdentityProxyModel {
-public:
-    using QIdentityProxyModel::QIdentityProxyModel;
-
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override {
-        if (index.column() == 4 && role == Qt::DisplayRole) {
-            return QString("plate%1.png").arg(index.row() + 1);
-        }
-        return QIdentityProxyModel::data(index, role);
-    }
-};
 
 Search::Search(QWidget *parent)
     : QWidget(parent)
@@ -131,11 +120,7 @@ void Search::setupVideoTable() {
     m_modelTime->setHeaderData(3, Qt::Horizontal, "TYPE");
     m_modelTime->setHeaderData(4, Qt::Horizontal, "IMAGE");
 
-    auto* proxyModel = new CustomProxyModel(this);
-    proxyModel->setSourceModel(m_modelTime);
-
-    ui->videoTable->setModel(proxyModel);
-    //ui->videoTable->setModel(m_modelTime);
+    ui->videoTable->setModel(m_modelTime);
     ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -146,7 +131,7 @@ void Search::setupVideoTable() {
 
                 if (selected.indexes().isEmpty()) {
                     ui->imageLabel_2->clear();
-                    return;  // isEmpty()로 체크한 후 바로 return하도록 해서 빈 indexes에서 first()를 호출하지 않도록 수정
+                    return;
                 }
 
                 int row = selected.indexes().first().row();
@@ -166,8 +151,6 @@ void Search::setupVideoTable() {
                     ui->imageLabel_2->setText("이미지 없음");
                 }
             });
-
-
 
     connect(ui->videoTable, &QTableView::doubleClicked, this, [this](const QModelIndex &index) {
         // if (m_host.isEmpty()) {
@@ -197,11 +180,26 @@ void Search::setupVideoTable() {
         //     return;
         // }
 
-        // Get the selected timestamp
-        QModelIndex timeIndex = m_modelTime->index(index.row(), 2); // TIME column
-        QString timestamp = m_modelTime->data(timeIndex).toString();
+        // Post Clip Request to User Server
+        QModelIndex plateIndex = m_modelTime->index(index.row(), 1);    // PLATE column
+        QModelIndex timeIndex = m_modelTime->index(index.row(), 2);     // TIME column
+        QModelIndex typeIndex = m_modelTime->index(index.row(), 3);     // TYPE column
+        QString plateValue = m_modelTime->data(plateIndex).toString();
+        QDateTime timeValue = m_modelTime->data(timeIndex).toDateTime();
+        QString typeValue = m_modelTime->data(typeIndex).toString();
+
+        qDebug() << "VideoTable$ plate: " << plateValue;
+        qDebug() << "VideoTable$ time : " << timeValue;
+        qDebug() << "VideoTable$ type : " << typeValue;
+        qDebug() << "VideoTable$ m_url: " << m_url;
+
+        build_QUrl();
+        TimeInfo timeInfo(plateValue, timeValue, typeValue);
+        HttpManager *httpManager = new HttpManager(this);
+        httpManager->post_clipInfo(m_url, timeInfo);
 
         // Create and show video dialog
+        QString timestamp = timeValue.toString();
         VideoClipDialog *dialog = new VideoClipDialog(m_host, this);
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         dialog->setWindowTitle(QString("Video Clip - %1").arg(timestamp));
@@ -222,11 +220,6 @@ void Search::setupImage()
     ui->imageLabel->setScaledContents(true);
     ui->imageLabel->setAlignment(Qt::AlignCenter);
     ui->imageLabel->setText("이미지 없음");
-
-    ui->imageLabel_2->setMinimumSize(320, 200);
-    ui->imageLabel_2->setScaledContents(true);
-    ui->imageLabel_2->setAlignment(Qt::AlignCenter);
-    ui->imageLabel_2->setText("이미지 없음");
 }
 
 /*
@@ -467,7 +460,7 @@ void Search::build_QUrl() {
     QString url = m_url.toString();
 
     ui->label_url->setText(url);
-    qDebug() << "DEBUG(SW)$ m_url: " << m_url;
+    qDebug() << "build_QUrl$ m_url: " << m_url;
 }
 
 void Search::clicked_buttonEnroll() {

@@ -1,5 +1,4 @@
 #include "plate_server.h"
-#include "errno.h"
 #define MAX_CLIENTS 10
 
 int init_server_plate(int port) {
@@ -47,6 +46,7 @@ int init_server_plate(int port) {
     return server_fd;
 }
 
+
 unsigned char* get_packet(size_t* out_size) {
     FILE* fp = fopen("./images/image_2.jpg", "rb");
     if(!fp) {
@@ -89,35 +89,6 @@ unsigned char* get_packet(size_t* out_size) {
 
     return packet;
 }
-
-/* char* encode_base64(void) {
-    printf("\n########## encode_base64 ##########\n");
-    size_t packet_size = 0;
-    unsigned char* packet = get_packet(&packet_size);
-    
-    //
-    size_t encode_size = (packet_size * 4 + 2) / 3;
-    if(!packet || encode_size == 0) {
-        printf("encode_base64: get_packet failed\n");
-        return NULL;
-    }
-    printf("encode_base64: packet_size: %zu\n", packet_size);
-    printf("encode_base64: encode_size: %zu\n", encode_size);
-
-    char* encoded = (char*)malloc(encode_size + 1);
-    encoded = b64_encode(packet, packet_size);
-    
-    if(!encoded) {
-        printf("encode_base64: b64_encode Failed\n");
-        free(packet);
-        return NULL;
-    } else {
-        printf("encode_base64: Encoding Successful\n");
-    }
-
-    free(packet);
-    return encoded;
-} */
 
 char* encode_base64(void) {
     printf("\n########## encode_base64 ##########\n");

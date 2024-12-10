@@ -1,4 +1,3 @@
-
 #ifndef SERVER_H
 #define SERVER_H
 
@@ -14,19 +13,6 @@
 #include <sqlite3.h>
 
 #define MAX_CLIENTS 10
-
-// 구조체 정의
-/* === HTTP Request Start ===
-GET / HTTP/1.1
-Host: 192.168.3.11:8080
-Content-Type: application/json
-Connection: Keep-Alive
-Accept-Encoding: gzip, deflate
-Accept-Language: ko-KR,en,*
-User-Agent: Mozilla/5.0
-
-
-=== HTTP Request End === */
 
 struct http_response {
     char version[16];
