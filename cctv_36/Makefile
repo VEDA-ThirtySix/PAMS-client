@@ -286,6 +286,7 @@ DIST          = ../../../Qt/6.7.2/macos/mkspecs/features/spec_pre.prf \
 		../../../Qt/6.7.2/macos/mkspecs/features/qt_config.prf \
 		../../../Qt/6.7.2/macos/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/6.7.2/macos/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/6.7.2/macos/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/6.7.2/macos/mkspecs/features/mac/sdk.prf \
 		../../../Qt/6.7.2/macos/mkspecs/features/toolchain.prf \
@@ -327,8 +328,7 @@ DIST          = ../../../Qt/6.7.2/macos/mkspecs/features/spec_pre.prf \
 		inc/controller/streaming.h \
 		inc/controller/userManager.h \
 		inc/network/httpManager.h \
-		inc/network/tcpManager.h \
-		inc/view/dialog_videoclip.h main.cpp \
+		inc/network/tcpManager.h main.cpp \
 		src/model/dbManager.cpp \
 		src/model/metadata.cpp \
 		src/view/dialog_edit.cpp \
@@ -350,7 +350,7 @@ TARGET        = cctv_36.app/Contents/MacOS/cctv_36
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 15.1
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Library/Developer/CommandLineTools
-EXPORT__QMAKE_STASH_ = 
+EXPORT__QMAKE_STASH_ = /Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/.qmake.stash
 EXPORT_VALID_ARCHS = x86_64 arm64
 EXPORT_DEFAULT_ARCHS = arm64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -549,6 +549,7 @@ Makefile: cctv_36.pro ../../../Qt/6.7.2/macos/mkspecs/macx-clang/qmake.conf ../.
 		../../../Qt/6.7.2/macos/mkspecs/features/qt_config.prf \
 		../../../Qt/6.7.2/macos/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/6.7.2/macos/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/6.7.2/macos/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/6.7.2/macos/mkspecs/features/mac/sdk.prf \
 		../../../Qt/6.7.2/macos/mkspecs/features/toolchain.prf \
@@ -770,6 +771,7 @@ Makefile: cctv_36.pro ../../../Qt/6.7.2/macos/mkspecs/macx-clang/qmake.conf ../.
 ../../../Qt/6.7.2/macos/mkspecs/features/qt_config.prf:
 ../../../Qt/6.7.2/macos/mkspecs/macx-clang/qmake.conf:
 ../../../Qt/6.7.2/macos/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/6.7.2/macos/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/6.7.2/macos/mkspecs/features/mac/sdk.prf:
 ../../../Qt/6.7.2/macos/mkspecs/features/toolchain.prf:
@@ -832,7 +834,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents images.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents inc/model/dbManager.h inc/model/metadata.h inc/view/dialog_edit.h inc/view/dialog_enroll.h inc/view/dialog_videoclip.h inc/view/mainwindow.h inc/view/network_dialog.h inc/controller/jsonManager.h inc/controller/logManager.h inc/controller/search.h inc/controller/streaming.h inc/controller/userManager.h inc/network/httpManager.h inc/network/tcpManager.h inc/view/dialog_videoclip.h $(DISTDIR)/
+	$(COPY_FILE) --parents inc/model/dbManager.h inc/model/metadata.h inc/view/dialog_edit.h inc/view/dialog_enroll.h inc/view/dialog_videoclip.h inc/view/mainwindow.h inc/view/network_dialog.h inc/controller/jsonManager.h inc/controller/logManager.h inc/controller/search.h inc/controller/streaming.h inc/controller/userManager.h inc/network/httpManager.h inc/network/tcpManager.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp src/model/dbManager.cpp src/model/metadata.cpp src/view/dialog_edit.cpp src/view/dialog_enroll.cpp src/view/dialog_videoclip.cpp src/view/mainwindow.cpp src/controller/jsonManager.cpp src/controller/logManager.cpp src/controller/search.cpp src/controller/streaming.cpp src/controller/userManager.cpp src/network/httpManager.cpp src/network/tcpManager.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents src/ui/clip.ui src/ui/edit.ui src/ui/enroll.ui src/ui/mainwindow.ui src/ui/search.ui src/ui/streaming.ui $(DISTDIR)/
 
@@ -844,6 +846,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r cctv_36.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -879,9 +882,9 @@ qrc_images.cpp: images.qrc \
 		play.png
 	/Users/taewonkim/Qt/6.7.2/macos/libexec/rcc -name images --no-zstd images.qrc -o qrc_images.cpp
 
-compiler_moc_header_make_all: moc_dialog_edit.cpp moc_dialog_enroll.cpp moc_dialog_videoclip.cpp moc_mainwindow.cpp moc_jsonManager.cpp moc_logManager.cpp moc_search.cpp moc_streaming.cpp moc_userManager.cpp moc_httpManager.cpp moc_tcpManager.cpp moc_dialog_videoclip.cpp
+compiler_moc_header_make_all: moc_dialog_edit.cpp moc_dialog_enroll.cpp moc_dialog_videoclip.cpp moc_mainwindow.cpp moc_jsonManager.cpp moc_logManager.cpp moc_search.cpp moc_streaming.cpp moc_userManager.cpp moc_httpManager.cpp moc_tcpManager.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_dialog_edit.cpp moc_dialog_enroll.cpp moc_dialog_videoclip.cpp moc_mainwindow.cpp moc_jsonManager.cpp moc_logManager.cpp moc_search.cpp moc_streaming.cpp moc_userManager.cpp moc_httpManager.cpp moc_tcpManager.cpp moc_dialog_videoclip.cpp
+	-$(DEL_FILE) moc_dialog_edit.cpp moc_dialog_enroll.cpp moc_dialog_videoclip.cpp moc_mainwindow.cpp moc_jsonManager.cpp moc_logManager.cpp moc_search.cpp moc_streaming.cpp moc_userManager.cpp moc_httpManager.cpp moc_tcpManager.cpp
 moc_dialog_edit.cpp: inc/view/dialog_edit.h \
 		inc/controller/userManager.h \
 		inc/model/metadata.h \
@@ -900,6 +903,15 @@ moc_dialog_edit.cpp: inc/view/dialog_edit.h \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QByteArray \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qbytearray.h \
+		inc/network/httpManager.h \
+		inc/controller/jsonManager.h \
+		inc/controller/logManager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkReply \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkreply.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		inc/controller/search.h \
 		ui_search.h \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QWidget \
@@ -908,8 +920,6 @@ moc_dialog_edit.cpp: inc/view/dialog_edit.h \
 		../../../Qt/6.7.2/macos/lib/QtSql.framework/Headers/qsqltablemodel.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QDir \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qdir.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../Qt/6.7.2/macos/libexec/moc
@@ -933,6 +943,15 @@ moc_dialog_enroll.cpp: inc/view/dialog_enroll.h \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QByteArray \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qbytearray.h \
+		inc/network/httpManager.h \
+		inc/controller/jsonManager.h \
+		inc/controller/logManager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkReply \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkreply.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../Qt/6.7.2/macos/libexec/moc
@@ -1099,49 +1118,24 @@ moc_httpManager.cpp: inc/network/httpManager.h \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
 		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
 		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkReply \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkreply.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		../../../Qt/6.7.2/macos/libexec/moc
 	/Users/taewonkim/Qt/6.7.2/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=16 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/taewonkim/Qt/6.7.2/macos/mkspecs/macx-clang -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36 -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/model -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/view -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/controller -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/network -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtMultimediaWidgets.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtMultimedia.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtWidgets.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtGui.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtNetwork.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtSql.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtCore.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/16/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/taewonkim/Qt/6.7.2/macos/lib inc/network/httpManager.h -o moc_httpManager.cpp
 
 moc_tcpManager.cpp: inc/network/tcpManager.h \
-		inc/network/httpManager.h \
-		inc/model/metadata.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QString \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qstring.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QDateTime \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qdatetime.h \
-		inc/controller/jsonManager.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QObject \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qobject.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QByteArray \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qbytearray.h \
-		inc/controller/logManager.h \
-		inc/model/dbManager.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QMap \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qmap.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QList \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qlist.h \
-		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/QImage \
-		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
-		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
-		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QString \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qstring.h \
 		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QTcpSocket \
 		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QByteArray \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qbytearray.h \
 		../../../Qt/6.7.2/macos/libexec/moc
 	/Users/taewonkim/Qt/6.7.2/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=16 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/taewonkim/Qt/6.7.2/macos/mkspecs/macx-clang -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36 -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/model -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/view -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/controller -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/network -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtMultimediaWidgets.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtMultimedia.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtWidgets.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtGui.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtNetwork.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtSql.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtCore.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/16/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/taewonkim/Qt/6.7.2/macos/lib inc/network/tcpManager.h -o moc_tcpManager.cpp
-
-moc_dialog_videoclip.cpp: inc/view/dialog_videoclip.h \
-		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QDialog \
-		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/qdialog.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QProcess \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qprocess.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QTimer \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qtimer.h \
-		../../../Qt/6.7.2/macos/libexec/moc
-	/Users/taewonkim/Qt/6.7.2/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=16 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/taewonkim/Qt/6.7.2/macos/mkspecs/macx-clang -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36 -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/model -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/view -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/controller -I/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/inc/network -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtMultimediaWidgets.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtMultimedia.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtWidgets.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtGui.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtNetwork.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtSql.framework/Headers -I/Users/taewonkim/Qt/6.7.2/macos/lib/QtCore.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/16/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/taewonkim/Qt/6.7.2/macos/lib inc/view/dialog_videoclip.h -o moc_dialog_videoclip.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1223,6 +1217,7 @@ main.o: main.cpp inc/view/mainwindow.h \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QByteArray \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qbytearray.h \
+		inc/network/tcpManager.h \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QApplication \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
@@ -1280,6 +1275,15 @@ dialog_edit.o: src/view/dialog_edit.cpp inc/view/dialog_edit.h \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QByteArray \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qbytearray.h \
+		inc/network/httpManager.h \
+		inc/controller/jsonManager.h \
+		inc/controller/logManager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkReply \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkreply.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		inc/controller/search.h \
 		ui_search.h \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QWidget \
@@ -1288,8 +1292,6 @@ dialog_edit.o: src/view/dialog_edit.cpp inc/view/dialog_edit.h \
 		../../../Qt/6.7.2/macos/lib/QtSql.framework/Headers/qsqltablemodel.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QDir \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qdir.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/qdialog.h \
 		ui_edit.h \
@@ -1317,6 +1319,15 @@ dialog_enroll.o: src/view/dialog_enroll.cpp inc/view/dialog_enroll.h \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QByteArray \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qbytearray.h \
+		inc/network/httpManager.h \
+		inc/controller/jsonManager.h \
+		inc/controller/logManager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkReply \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkreply.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/qdialog.h \
 		ui_enroll.h \
@@ -1428,7 +1439,9 @@ jsonManager.o: src/controller/jsonManager.cpp inc/controller/jsonManager.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QJsonObject \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qjsonobject.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QJsonDocument \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qjsondocument.h
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qjsondocument.h \
+		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/QImage \
+		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o jsonManager.o src/controller/jsonManager.cpp
 
 logManager.o: src/controller/logManager.cpp inc/controller/logManager.h \
@@ -1480,17 +1493,16 @@ search.o: src/controller/search.cpp inc/controller/search.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		inc/view/dialog_edit.h \
-		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QDialog \
-		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/qdialog.h \
-		inc/view/dialog_enroll.h \
-		inc/network/tcpManager.h \
 		inc/network/httpManager.h \
 		inc/controller/jsonManager.h \
 		inc/controller/logManager.h \
 		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
 		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
-		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QTcpSocket \
-		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkReply \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkreply.h \
+		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt/6.7.2/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		inc/view/dialog_enroll.h \
 		inc/view/dialog_videoclip.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QProcess \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qprocess.h \
@@ -1584,6 +1596,8 @@ httpManager.o: src/network/httpManager.cpp inc/network/httpManager.h \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
 		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
 		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkReply \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkreply.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QJsonDocument \
@@ -1598,17 +1612,18 @@ httpManager.o: src/network/httpManager.cpp inc/network/httpManager.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o httpManager.o src/network/httpManager.cpp
 
 tcpManager.o: src/network/tcpManager.cpp inc/network/tcpManager.h \
-		inc/network/httpManager.h \
-		inc/model/metadata.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QString \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qstring.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QDateTime \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qdatetime.h \
-		inc/controller/jsonManager.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QObject \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qobject.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QString \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QTcpSocket \
+		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QByteArray \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qbytearray.h \
+		inc/controller/jsonManager.h \
+		inc/model/metadata.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QDateTime \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qdatetime.h \
 		inc/controller/logManager.h \
 		inc/model/dbManager.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QMap \
@@ -1617,14 +1632,16 @@ tcpManager.o: src/network/tcpManager.cpp inc/network/tcpManager.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qlist.h \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/QImage \
 		../../../Qt/6.7.2/macos/lib/QtGui.framework/Headers/qimage.h \
-		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
-		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QUrl \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qurl.h \
-		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/QTcpSocket \
-		../../../Qt/6.7.2/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h \
 		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QDebug \
-		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qdebug.h
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qdebug.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QJsonObject \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qjsonobject.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QJsonDocument \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qjsondocument.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QTimer \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qtimer.h \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../../Qt/6.7.2/macos/lib/QtCore.framework/Headers/qregularexpression.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tcpManager.o src/network/tcpManager.cpp
 
 qrc_images.o: qrc_images.cpp 

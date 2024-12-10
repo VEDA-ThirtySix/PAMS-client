@@ -11,10 +11,23 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QCoreApplication>
+// #include <QCoreApplication>
+#include <QIdentityProxyModel>
 
 #define protocol "http"
 #define port 8080
+
+class CustomProxyModel : public QIdentityProxyModel {
+public:
+    using QIdentityProxyModel::QIdentityProxyModel;
+
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override {
+        if (index.column() == 4 && role == Qt::DisplayRole) {
+            return QString("plate%1.png").arg(index.row() + 1);
+        }
+        return QIdentityProxyModel::data(index, role);
+    }
+};
 
 Search::Search(QWidget *parent)
     : QWidget(parent)
@@ -118,7 +131,11 @@ void Search::setupVideoTable() {
     m_modelTime->setHeaderData(3, Qt::Horizontal, "TYPE");
     m_modelTime->setHeaderData(4, Qt::Horizontal, "IMAGE");
 
-    ui->videoTable->setModel(m_modelTime);
+    auto* proxyModel = new CustomProxyModel(this);
+    proxyModel->setSourceModel(m_modelTime);
+
+    ui->videoTable->setModel(proxyModel);
+    //ui->videoTable->setModel(m_modelTime);
     ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -205,6 +222,11 @@ void Search::setupImage()
     ui->imageLabel->setScaledContents(true);
     ui->imageLabel->setAlignment(Qt::AlignCenter);
     ui->imageLabel->setText("이미지 없음");
+
+    ui->imageLabel_2->setMinimumSize(320, 200);
+    ui->imageLabel_2->setScaledContents(true);
+    ui->imageLabel_2->setAlignment(Qt::AlignCenter);
+    ui->imageLabel_2->setText("이미지 없음");
 }
 
 /*

@@ -27,7 +27,7 @@
 border:none;</string>
    </property>
    <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
+    <enum>QFrame::Shape::NoFrame</enum>
    </property>
    <widget class="QLabel" name="streamingLabel">
     <property name="geometry">
@@ -169,7 +169,7 @@ QPushButton:hover {
      <string>RTSP Server IP Address</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QFrame" name="licensePlateframe">
@@ -187,10 +187,10 @@ background:white;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Shape::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Shadow::Raised</enum>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -223,10 +223,10 @@ background:white;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Shape::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Shadow::Raised</enum>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>

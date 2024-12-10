@@ -83,7 +83,7 @@ QTabWidget#tabWidget &gt; QTabBar::tab:hover {
 }</string>
     </property>
     <property name="tabPosition">
-     <enum>QTabWidget::North</enum>
+     <enum>QTabWidget::TabPosition::North</enum>
     </property>
     <property name="currentIndex">
      <number>-1</number>
@@ -117,7 +117,7 @@ text-align: center; /* 수평 중앙 정렬 */</string>
      <string>LicensePlate Detection CCTV App</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="teamLogo">
