@@ -190,6 +190,7 @@ void Search::setupVideoTable() {
                         QPixmap scaledPixmap = pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
                         ui->imageLabel_2->setPixmap(scaledPixmap);
+                        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
                         qDebug() << "DONE: Image loaded successfully";
                     } else {
                         ui->imageLabel_2->setText("이미지 로드 실패");
@@ -436,7 +437,6 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
     // Format the customer information
     QString customerInfo = QString(
-                               "[ 고객 정보 ]\n\n"
                                "이름: %1\n"
                                "차량번호: %2\n"
                                "주소: %3\n"
@@ -460,6 +460,7 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
         QSize labelSize = ui->imageLabel->size(); // QLabel 크기 가져오기
         QPixmap scaledPixmap = image.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         ui->imageLabel->setPixmap(scaledPixmap);
+        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
 
         qDebug() << "이미지 로드 성공:" << imagePath;
     }
