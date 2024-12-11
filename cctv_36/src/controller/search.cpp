@@ -331,7 +331,7 @@ void Search::performSearch()
 
 void Search::updatePlaceholder()
 {
-    ui->searchInput->setPlaceholderText(QString("%1을(를) 입력하세요").arg(m_currentSearchType));
+    ui->searchInput->setPlaceholderText(QString("%1을(를) 입력하세요. (e.g. 123가 1234)").arg(m_currentSearchType));
 }
 
 void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected)
