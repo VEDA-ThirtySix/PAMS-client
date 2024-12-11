@@ -219,13 +219,13 @@ void Streaming::rtsp_setting(){
 
 void Streaming::on_startButton_clicked(){
     startFFmpeg();
-    ui->car_on->raise(); // Test용
+    carEntryState(true);
     updateGateState(true);
 }
 
 void Streaming::on_stopButton_clicked(){
     stopFFmpeg();
-    ui->car_off->raise(); // Test용
+    carEntryState(false);
     updateGateState(false);
 }
 
@@ -246,13 +246,20 @@ void Streaming::setButtonStyle(QPushButton* button, bool isActive) {
     }
 }
 
-void Streaming::carEntryState(bool isActive){
-    if (isActive) {
-        ui->car_on->raise(); // 차량 진입 상태: car_on 라벨을 전면으로 표시
-    } else {
-        ui->car_off->raise(); // 차량 미진입 상태: car_off 라벨을 전면으로 표시
-    }
+/*차 진입시 -> 조명 아이콘 on off*/
+void Streaming::carEntryState(bool state){
+    QString trueImagePath = ":/images/bell.png"; // true 상태의 이미지
+    QString falseImagePath = ":/images/bell_none.png"; // false 상태의 이미지
+    // 상태에 따라 이미지 로드
+    QPixmap pixmap = state ? QPixmap(trueImagePath) : QPixmap(falseImagePath);
+    // QLabel 크기를 가져오기
+    QSize labelSize = ui->alarm_state->size();
+    // QLabel에 이미지를 설정 (픽셀 정보는 유지)
+    ui->alarm_state->setPixmap(pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::FastTransformation));
+    ui->alarm_state->setScaledContents(false); // QLabel의 스케일 조정 비활성화
 }
+
+/*차 등록/미등록 구별시 -> 차단기 아이콘 open close*/
 void Streaming::updateGateState(bool state) {
     // 이미지 경로
     QString trueImagePath = ":/images/gate_open.png"; // true 상태의 이미지
