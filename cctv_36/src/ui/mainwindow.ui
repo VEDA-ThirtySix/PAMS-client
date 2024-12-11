@@ -48,7 +48,6 @@ QTabWidget#tabWidget &gt; QTabBar::tab:first {
     background-color: rgba(243,115,33,0.1);
     background-image: url(:/images/video2.png);
     color: transparent;
-	margin-left:10px;
 }
 
 QTabWidget#tabWidget &gt; QTabBar::tab:first:selected {

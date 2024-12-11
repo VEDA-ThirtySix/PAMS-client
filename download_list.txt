@@ -1,0 +1,12 @@
+sudo apt install libjson-c-dev          //json-c(plate_server.h)
+sudo apt install libssl-dev             //OpenSSL(plate_server.h)
+sudo apt install inotify-tools          //inotify-tools(plate_server.h)
+sudo apt install sqlite3 libsqlite3-dev //sqlite3(user_server.h)
+============= Qt ============
+sudo apt-get install qtbase5-dev                            //Qt devKit, library
+sudo apt-get install qtcreator                              //Qt Creator
+sudo apt-get install build-essential                        //C++ compiler, build tool
+sudo apt-get install libqt5network5 libqt5networkauth5-dev  //Network
+sudo apt-get install libqt5sql5 libqt5sql5-sqlite           //Database
+sudo apt-get install libfontconfig1 mesa-common-dev         //font, File Dialog, MessageBox...
+

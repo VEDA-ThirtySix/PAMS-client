@@ -273,6 +273,26 @@ QString DBManager::getDatabasePath() const {
 }
 
 
+bool DBManager::find_plate(const QString& plate) {
+    QSqlQuery query;
+
+    query.prepare("SELECT EXISTS ("
+                  "SELECT 1 FROM Time WHERE plate = :plate"
+                  ")");
+    query.bindValue(":plate", plate);
+
+    if (!query.exec()) {
+        qDebug() << "Error(DB): Query execution failed:" << query.lastError().text();
+        return false;
+    }
+
+    if (query.next()) {
+        return query.value(0).toBool();
+    }
+
+    return false;
+}
+
 // /**
 //     *@ ********************************************************************
 //     *@ Name           : readAll_basicInfo                                       *

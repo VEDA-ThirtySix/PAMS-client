@@ -101,7 +101,8 @@ char* find_latest_file(const char* dir_path) {
 }
 
 unsigned char* get_packet(size_t* out_size) {
-    const char* dir_path = "../rtspServer/ANPR";    //디렉터리 경로
+    //const char* dir_path = "../rtspServer/ANPR";    //디렉터리 경로
+    const char* dir_path = "./images";
     char* latest_file = find_latest_file(dir_path);
     
     if (!latest_file) {
@@ -279,7 +280,7 @@ void send_plateData(int client_socket, char* json) {
 }
 
 
-TimeInfo* get_timeInfo(void) {
+/* TimeInfo* get_timeInfo(void) {
     const char* dir_path = "../rtspServer/ANPR";    //디렉터리 경로
     char* latest_file = find_latest_file(dir_path);
     if (!latest_file) {
@@ -322,6 +323,21 @@ TimeInfo* get_timeInfo(void) {
     printf("plate: %s", timeInfo->plate);
     printf(" time: %s", timeInfo->time);
     printf(" type: %s", timeInfo->type);
+
+    return timeInfo;
+} */
+
+TimeInfo* get_timeInfo(void) {
+    time_t currentTime = time(NULL);
+    struct tm* tm_info = localtime(&currentTime);
+    char buffer[26];
+
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
+
+    TimeInfo* timeInfo = malloc(sizeof(TimeInfo));
+    strcpy(timeInfo->plate, "123가4562");
+    strcpy(timeInfo->time, buffer);
+    strcpy(timeInfo->type, "entry");
 
     return timeInfo;
 }

@@ -1,5 +1,10 @@
 #include "streaming.h"
 #include "ui_streaming.h"
+#include "metadata.h"
+#include "tcpManager.h"
+#include "jsonManager.h"
+#include "userManager.h"
+#include "dbManager.h"
 #include <QDebug>
 #include <QPixmap>
 #include <QImage>
@@ -28,7 +33,8 @@ Streaming::Streaming(QWidget *parent)
     updateDateTime();// 초기 날짜/시간 표시
 
     connect(frameTimer, &QTimer::timeout, this, &Streaming::captureFrame);
-}
+    TcpManager& tcpManager = TcpManager::instance();
+    connect(&tcpManager, &TcpManager::plateDataReceived, this, &Streaming::on_plateDataReceived);}
 
 Streaming::~Streaming()
 {
@@ -213,14 +219,10 @@ void Streaming::rtsp_setting(){
 
 void Streaming::on_startButton_clicked(){
     startFFmpeg();
-    ui->car_on->raise(); // Test용
-    updateGateState(true);
 }
 
 void Streaming::on_stopButton_clicked(){
     stopFFmpeg();
-    ui->car_off->raise(); // Test용
-    updateGateState(false);
 }
 
 /*START, STOP 버튼 true, false에 따른 스타일 지정 함수*/
@@ -240,28 +242,51 @@ void Streaming::setButtonStyle(QPushButton* button, bool isActive) {
     }
 }
 
-/*차량 진입 상태에 따른 UI 라벨 아이콘 변경*/
-void Streaming::carEntryState(bool isActive){
-    if (isActive) {
-            ui->car_on->raise(); // 차량 진입 상태: car_on 라벨을 전면으로 표시
-        } else {
-            ui->car_off->raise(); // 차량 미진입 상태: car_off 라벨을 전면으로 표시
-        }
+void Streaming::on_plateDataReceived(const QByteArray& buffer) {
+    qDebug() << "on_plateDataReceived";
+    m_receivedBuffer = buffer;
+    update_InfoLabel();
 }
 
 
-void Streaming::updateGateState(bool state) {
-    // 이미지 경로
-    QString trueImagePath = ":/images/gate_open.png"; // true 상태의 이미지
-    QString falseImagePath = ":/images/gate_close.png"; // false 상태의 이미지
-    // 상태에 따라 이미지 로드
-    QPixmap pixmap = state ? QPixmap(trueImagePath) : QPixmap(falseImagePath);
+void Streaming::update_InfoLabel() {
+    qDebug() << "update_InfoLabel";
+    TimeInfo timeInfo;
+    JsonManager *jsonManager = new JsonManager(this);
+    timeInfo = jsonManager->parse_data(m_receivedBuffer);
+    QString received_plate = timeInfo.get_plate();
+    qDebug() << "received_plate: " << received_plate;
 
-    // QLabel 크기를 가져오기
-    QSize labelSize = ui->gate_state->size();
+    BasicInfo basicInfo;
+    UserManager *userManager = new UserManager(this);
+    basicInfo = userManager->getCurrentInfo(received_plate);
 
-    // QLabel에 이미지를 설정 (픽셀 정보는 유지)
-    ui->gate_state->setPixmap(pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::FastTransformation));
-    ui->gate_state->setScaledContents(false); // QLabel의 스케일 조정 비활성화
+    QString name = basicInfo.get_name();
+    QString plate = basicInfo.get_plate();
+    QString home = basicInfo.get_home();
+    QString phone = basicInfo.get_phone();
+    qDebug() << "name : " << name;
+    qDebug() << "plate: " << plate;
+
+    DBManager& dbManager = DBManager::instance();
+    bool isCustomer = dbManager.find_plate(plate);
+
+    QString customerInfo;
+    if(isCustomer) {
+        qDebug() << "Customer Found!";
+        customerInfo = QString(
+           "[ 입주민 정보 ]\n\n"
+           "  이름 : %1\n"
+           "차량번호: %2\n"
+           "  주소 : %3\n"
+           "전화번호: %4"
+           ).arg(name, plate, home, phone);
+    } else {
+        qDebug() << "Who are you?";
+        customerInfo = "미등록 차량입니다";
+    }
+
+    ui->label->setText(customerInfo);
 }
+
 
