@@ -15,7 +15,8 @@
 #include <QSqlQuery>
 #include <QIdentityProxyModel>
 
-#include <QTabBar> // 탭바 위치 조절하려고 넣음.
+#include <QStringList>
+#include <QTextStream>
 
 #define protocol "http"
 #define port 8080
@@ -385,12 +386,13 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
 
     // Format the customer information
+
     QString customerInfo = QString(
         "-----------------------------\n"
-        "   NAME           : %1\n"
+        "   NAME : %1\n"
         "   LICENSE NUMBER : %2\n"
-        "   ADDRESS        : %3\n"
-        "   PHONE NUMBER   : %4\n"
+        "   ADDRESS : %3\n"
+        "   PHONE NUMBER : %4\n"
         "-----------------------------"
     ).arg(name, plate, home, phone);
 
