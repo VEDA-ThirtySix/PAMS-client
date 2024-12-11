@@ -15,9 +15,6 @@
 #include <QSqlQuery>
 #include <QIdentityProxyModel>
 
-#include <QStringList>
-#include <QTextStream>
-
 #define protocol "http"
 #define port 8080
 
@@ -56,9 +53,6 @@ Search::Search(QWidget *parent)
     // 열 크기를 동일하게 설정
     ui->customerTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->videoTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    QTabBar* tabBar = ui->searchTabWidget->tabBar();
-    tabBar->setStyleSheet("alignment: center;"); // 스타일시트 추가 (선택적)
 
     TcpManager& tcpManager = TcpManager::instance();
     connect(&tcpManager, &TcpManager::plateDataReceived, this, &Search::on_plateDataReceived);
