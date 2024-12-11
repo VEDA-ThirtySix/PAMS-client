@@ -186,6 +186,7 @@ void VideoClipDialog::handleError()
 }
 
 void VideoClipDialog::setupSlider() {
+    ui->totalTimeLabel->setText("00:15");
     const int CLIP_DURATION = 15000;
     ui->positionSlider->setRange(0, CLIP_DURATION);
     ui->positionSlider->setSingleStep(100);
