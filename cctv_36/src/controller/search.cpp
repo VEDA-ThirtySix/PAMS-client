@@ -605,7 +605,40 @@ void Search::refreshTable_time() {
     ui->videoTable->setModel(proxyModel);
     ui->videoTable->resizeColumnsToContents();
 
-    connect(ui->videoTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    //connect(ui->videoTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->videoTable->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, [this](const QItemSelection &selected, const QItemSelection &deselected) {
+                Q_UNUSED(deselected);
+
+                if (selected.indexes().isEmpty()) {
+                    ui->imageLabel_2->clear();
+                    return;
+                }
+
+                int row = selected.indexes().first().row();
+                QByteArray imageData = m_modelTime->data(m_modelTime->index(row, 4)).toByteArray();
+
+                if (!imageData.isEmpty()) {
+                    QImage image;
+                    if (image.loadFromData(imageData)) {
+                        QPixmap pixmap = QPixmap::fromImage(image);
+                        // QLabel 크기에 맞게 이미지 조정
+                        QSize labelSize = ui->imageLabel_2->size(); // QLabel 크기 가져오기
+                        QPixmap scaledPixmap = pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+                        ui->imageLabel_2->setPixmap(scaledPixmap);
+                        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
+                        qDebug() << "DONE: Image loaded successfully";
+                    } else {
+                        ui->imageLabel_2->setText("이미지 로드 실패");
+                        ui->imageLabel_2->setStyleSheet("color:rgb(255,0,0);");
+                        qDebug() << "ERROR: Failed to load image";
+                    }
+                } else {
+                    ui->imageLabel_2->setText("이미지 없음");
+                    ui->imageLabel_2->setStyleSheet("color:rgb(67,188,205);");
+                }
+            });
 
     qDebug() << "Search - refreshTable_time 완료";
 }
