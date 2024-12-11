@@ -4,6 +4,7 @@
 #include "dialog_enroll.h"
 #include "httpManager.h"
 #include "dialog_videoclip.h"
+#include "tcpManager.h"
 
 #include <QMessageBox>
 #include <QPixmap>
@@ -57,6 +58,10 @@ Search::Search(QWidget *parent)
 
     QTabBar* tabBar = ui->searchTabWidget->tabBar();
     tabBar->setStyleSheet("alignment: center;"); // 스타일시트 추가 (선택적)
+
+    TcpManager& tcpManager = TcpManager::instance();
+    connect(&tcpManager, &TcpManager::plateDataReceived, this, &Search::on_plateDataReceived);
+
 }
 
 Search::~Search() {
@@ -251,9 +256,6 @@ void Search::setupVideoTable() {
         dialog->show();
     });
 
-
-
-
     setupCalendarWidget();
     connect(ui->calendarButton, &QPushButton::clicked, this, &Search::toggleCalendar);
 }
@@ -416,7 +418,6 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
 }
 
-
 void Search::showSearchMenu()
 {
     QMenu* menu = new QMenu;
@@ -456,9 +457,6 @@ void Search::showSearchMenu()
     menu->exec(ui->filterButton->mapToGlobal(QPoint(0, ui->filterButton->height())));
 }
 
-
-
-/* KIYUN_1127 */
 void Search::get_host(const QString& host) {
     m_host = host;
     qDebug() << "Host set to:" << m_host;
@@ -476,13 +474,12 @@ void Search::build_QUrl() {
 void Search::clicked_buttonEnroll() {
     build_QUrl();
     EnrollDialog *enrollDialog = new EnrollDialog(m_url, this);
-    connect(enrollDialog, &EnrollDialog::dataSubmitted, this, &Search::refreshTable);
+    connect(enrollDialog, &EnrollDialog::dataSubmitted, this, &Search::refreshTable_basic);
 
     enrollDialog->setAttribute(Qt::WA_DeleteOnClose);
     enrollDialog->exec();   //Enroll Dialog(Modal)
     qDebug() << "SUCCESS(SW): Open Enroll Dialog";
 }
-
 
 void Search::clicked_buttonEdit() {
     QString selectedPlate = get_selectedData();
@@ -518,10 +515,9 @@ void Search::clicked_buttonEdit() {
 
     EditDialog *editDialog = new EditDialog(m_url, selectedPlate, this);
     editDialog->setAttribute(Qt::WA_DeleteOnClose);
-    connect(editDialog, &EditDialog::dataUpdated, this, &Search::refreshTable);
+    connect(editDialog, &EditDialog::dataUpdated, this, &Search::refreshTable_basic);
     editDialog->exec();
 }
-
 
 QString Search::get_selectedData() {
     QModelIndex currentIndex = ui->customerTable->selectionModel()->currentIndex();
@@ -530,8 +526,6 @@ QString Search::get_selectedData() {
     }
     return m_modelBasic->data(m_modelBasic->index(currentIndex.row(), 1)).toString();
 }
-
-
 
 void Search::clicked_buttonDelete() {
     QString selectedPlate = get_selectedData();
@@ -568,7 +562,7 @@ void Search::clicked_buttonDelete() {
 
     if(reply == QMessageBox::Yes) {
         if(userManager->deleteUser(selectedPlate)){
-            refreshTable();
+            refreshTable_basic();
             clearImage();
             QMessageBox::information(this, "삭제 완료", "데이터가 성공적으로 삭제되었습니다.");
         } else {
@@ -577,8 +571,9 @@ void Search::clicked_buttonDelete() {
     }
 
 }
-void Search::refreshTable() {
-    qDebug() << "Search - refreshTable 시작";
+
+void Search::refreshTable_basic() {
+    qDebug() << "Search - refreshTable_basic 시작";
 
     // 데이터베이스 재연결
     m_db = userManager->getDatabase();
@@ -609,7 +604,78 @@ void Search::refreshTable() {
 
     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
 
-    qDebug() << "Search - refreshTable 완료";
+    qDebug() << "Search - refreshTable_basic 완료";
+}
+
+void Search::refreshTable_time() {
+    qDebug() << "Search - refreshTable_time 시작";
+
+    // 데이터베이스 재연결
+    m_db = userManager->getDatabase();
+
+    // 모델 재설정
+    if(m_modelTime) {
+        delete m_modelTime;
+    }
+
+    m_modelTime = new QSqlTableModel(this, m_db);
+    m_modelTime->setTable("Time");
+    m_modelTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    if(!m_modelTime->select()) {
+        qDebug() << "Search - 테이블 새로고침 실패:" << m_modelTime->lastError().text();
+        return;
+    }
+    qDebug() << "Search - 모델 select 성공";
+
+    // 열 헤더 설정
+    m_modelTime->setHeaderData(0, Qt::Horizontal, "ID");
+    m_modelTime->setHeaderData(1, Qt::Horizontal, "PLATE");
+    m_modelTime->setHeaderData(2, Qt::Horizontal, "TIME");
+    m_modelTime->setHeaderData(3, Qt::Horizontal, "TYPE");
+    m_modelTime->setHeaderData(4, Qt::Horizontal, "IMAGE");
+
+    auto* proxyModel = new CustomProxyModel(this);
+    proxyModel->setSourceModel(m_modelTime);
+    ui->videoTable->setModel(proxyModel);
+    ui->videoTable->resizeColumnsToContents();
+
+    //connect(ui->videoTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
+    connect(ui->videoTable->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, [this](const QItemSelection &selected, const QItemSelection &deselected) {
+                Q_UNUSED(deselected);
+
+                if (selected.indexes().isEmpty()) {
+                    ui->imageLabel_2->clear();
+                    return;
+                }
+
+                int row = selected.indexes().first().row();
+                QByteArray imageData = m_modelTime->data(m_modelTime->index(row, 4)).toByteArray();
+
+                if (!imageData.isEmpty()) {
+                    QImage image;
+                    if (image.loadFromData(imageData)) {
+                        QPixmap pixmap = QPixmap::fromImage(image);
+                        // QLabel 크기에 맞게 이미지 조정
+                        QSize labelSize = ui->imageLabel_2->size(); // QLabel 크기 가져오기
+                        QPixmap scaledPixmap = pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+                        ui->imageLabel_2->setPixmap(scaledPixmap);
+                        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
+                        qDebug() << "DONE: Image loaded successfully";
+                    } else {
+                        ui->imageLabel_2->setText("이미지 로드 실패");
+                        ui->imageLabel_2->setStyleSheet("color:rgb(255,0,0);");
+                        qDebug() << "ERROR: Failed to load image";
+                    }
+                } else {
+                    ui->imageLabel_2->setText("이미지 없음");
+                    ui->imageLabel_2->setStyleSheet("color:rgb(67,188,205);");
+                }
+            });
+
+    qDebug() << "Search - refreshTable_time 완료";
 }
 
 void Search::setupCalendarWidget() {
@@ -651,3 +717,8 @@ void Search::handleCalendarDateChanged(const QDate& date) {
     }
 }
 
+void Search::on_plateDataReceived(const QByteArray& buffer) {
+    qDebug() << "Search:: on_plateDataReceived";
+    QByteArray _buffer = buffer;
+    refreshTable_time();
+}

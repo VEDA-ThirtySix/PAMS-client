@@ -96,8 +96,6 @@ void TcpManager::on_readyRead() {
         TimeInfo timeInfo = jsonManager->parse_data(buffer);
         QString plate = timeInfo.get_plate();
 
-        emit plateDataReceived(buffer); // Emit signal
-
         QByteArray parsed_base64 = jsonManager->decode_base64(buffer);
 
         if (jsonManager->saveImageFromByteArray(parsed_base64, plate)) {
@@ -110,6 +108,9 @@ void TcpManager::on_readyRead() {
         logManager->save_dataImage(timeInfo, parsed_base64);
 
         qDebug() << "PLATE: TimeInfo + BLOB done";
+
+        qDebug() << "emit plateDataReceived";
+        emit plateDataReceived(buffer); // Emit signal
 
         buffer.clear();
         contentLength = -1;

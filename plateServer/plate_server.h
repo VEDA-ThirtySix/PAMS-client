@@ -11,7 +11,7 @@
 #include <time.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <sys/inotify.h>
+//#include <sys/inotify.h>
 #include <errno.h>
 #include "b64.c/b64.h"  //$ git clone https://github.com/jwerle/b64.c.git
 #ifdef __linux__
@@ -37,11 +37,10 @@ typedef struct {
 } ImagePacket;
 
 /* 4. [PLATE] SEND PLATE DATA */
+int init_server_plate(int port);
 char* find_latest_file(const char* dir_path);
 unsigned char* get_packet(size_t* out_size);
-TimeInfo* get_timeInfo();
 char* build_json(const TimeInfo* timeInfo, const char* encoded);
 char* encode_base64(void); //packet -> base64
 void send_plateData(int client_socket, char* json);
 TimeInfo* get_timeInfo(void);
-int init_server_plate(int port);

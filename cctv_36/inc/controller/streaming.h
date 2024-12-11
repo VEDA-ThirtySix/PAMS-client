@@ -39,6 +39,7 @@ private:
     //bool saveToDatabase(const QString &tableName, const QMap<QString, QVariant> &data);    // 데이터베이스 저장 함수
 
     QByteArray incompleteBuffer; // 12.06 추가 : 중요!
+
 private slots:
     // UI 업데이트
     void updateDateTime();

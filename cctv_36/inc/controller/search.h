@@ -18,13 +18,13 @@ public:
     explicit Search(QWidget *parent = nullptr);
     ~Search();
 
-    QString get_selectedData();   //KIYUN_1127
-    void refreshTable();
+    QString get_selectedData();
+    void refreshTable_basic();
+    void refreshTable_time();
 
     //서버 연결 설정(metadata)
     void get_host(const QString& host);
     void build_QUrl();
-
 
 public slots:
     void performSearch();
@@ -35,7 +35,6 @@ private:
     Ui::Search *ui;
     UserManager *userManager;
 
-    /* KIYUN 1129 */
     QString m_currentSearchType;
     QSqlTableModel* m_modelBasic;
     QSqlTableModel* m_modelTime;
@@ -56,7 +55,6 @@ private:
     void setupConnections();
     void setupCustomerTable();
     void setupVideoTable();
-    void setupImage();
     void updatePlaceholder();
     void clearImage();
 
@@ -72,7 +70,7 @@ private slots:
     void selectCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected);
     void handleCalendarDateChanged(const QDate& date);
     void toggleCalendar();
-
+    void on_plateDataReceived(const QByteArray& buffer);
 };
 
 #endif // SEARCH_H

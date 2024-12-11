@@ -21,7 +21,7 @@ int init_server_plate(int port) {
     } else {
         printf("init_server: setsockopt success\n");
     }
-
+    
     //init Address struct
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
@@ -335,7 +335,7 @@ TimeInfo* get_timeInfo(void) {
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
     TimeInfo* timeInfo = malloc(sizeof(TimeInfo));
-    strcpy(timeInfo->plate, "123가4562");
+    strcpy(timeInfo->plate, "123가4568");
     strcpy(timeInfo->time, buffer);
     strcpy(timeInfo->type, "entry");
 

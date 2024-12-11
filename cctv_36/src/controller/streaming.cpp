@@ -85,8 +85,6 @@ void Streaming::updateDateTime()
     ui->dateTimeLabel->setText(dateTimeStr);
 }
 
-
-
 /*RTSP스트림을 가져온다.*/
 void Streaming::startFFmpeg() {
 
@@ -199,7 +197,6 @@ void Streaming::processOutput() {
         }
 }
 
-
 /*UI에서 입력된 RTSP주소 가져오기*/
 void Streaming::get_host(const QString& host) {
     m_host = host;
@@ -259,7 +256,6 @@ void Streaming::carEntryState(bool state){
     ui->alarm_state->setScaledContents(false); // QLabel의 스케일 조정 비활성화
 }
 
-/*차 등록/미등록 구별시 -> 차단기 아이콘 open close*/
 void Streaming::updateGateState(bool state) {
     // 이미지 경로
     QString trueImagePath = ":/images/gate_open.png"; // true 상태의 이미지
@@ -274,13 +270,13 @@ void Streaming::updateGateState(bool state) {
 }
 
 void Streaming::on_plateDataReceived(const QByteArray& buffer) {
-    qDebug() << "on_plateDataReceived";
+    qDebug() << "Streaming::on_plateDataReceived";
     m_receivedBuffer = buffer;
     update_InfoLabel();
 }
 
 void Streaming::update_InfoLabel() {
-    qDebug() << "update_InfoLabel";
+    qDebug() << "Streaming::update_InfoLabel";
     TimeInfo timeInfo;
     JsonManager *jsonManager = new JsonManager(this);
     timeInfo = jsonManager->parse_data(m_receivedBuffer);
