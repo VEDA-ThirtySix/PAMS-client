@@ -27,7 +27,7 @@
 border:none;</string>
    </property>
    <property name="frameShape">
-    <enum>QFrame::Shape::NoFrame</enum>
+    <enum>QFrame::NoFrame</enum>
    </property>
    <widget class="QLabel" name="streamingLabel">
     <property name="geometry">
@@ -168,9 +168,6 @@ QPushButton:hover {
     <property name="text">
      <string>RTSP Server IP Address</string>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
    </widget>
    <widget class="QFrame" name="licensePlateframe">
     <property name="geometry">
@@ -187,10 +184,7 @@ background:white;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -223,10 +217,7 @@ background:white;
 border:1px solid rgb(243,115,33);</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
@@ -237,56 +228,10 @@ border:1px solid rgb(243,115,33);</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QLabel" name="car_on">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>51</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background:white;
-border:none;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="../../images.qrc">:/images/bell.png</pixmap>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="car_off">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>51</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background:white;
-border:none;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="../../images.qrc">:/images/bell_none.png</pixmap>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="gate_state">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>160</x>
           <y>10</y>
           <width>131</width>
           <height>111</height>
@@ -303,15 +248,35 @@ border:1px dashed rgbrgb(162, 162, 162);</string>
          <bool>true</bool>
         </property>
        </widget>
-       <zorder>car_off</zorder>
-       <zorder>car_on</zorder>
-       <zorder>gate_state</zorder>
+       <widget class="QLabel" name="alarm_state">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>131</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background:white;
+border:1px dashed rgbrgb(162, 162, 162);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;Sans Serif&quot;;</string>
+       </property>
        <property name="text">
-        <string>123가 어어어 김시현 302호 진입</string>
+        <string>Customer Information</string>
        </property>
       </widget>
      </item>
@@ -338,8 +303,6 @@ border:1px solid rgb(243,115,33);</string>
    </widget>
   </widget>
  </widget>
- <resources>
-  <include location="../../images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
