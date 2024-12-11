@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pushButton_edit">
    <property name="geometry">
     <rect>
-     <x>910</x>
-     <y>350</y>
+     <x>900</x>
+     <y>310</y>
      <width>101</width>
      <height>25</height>
     </rect>
@@ -26,7 +26,7 @@
     <string notr="true">QPushButton{
         font: 300 bold 9pt &quot;Quicksand Light&quot;;
         color: black;
-        background-color: rgba(67,188,205,0.7);
+        background-color: rgba(67,188,205,0.5);
         border:1px solid rgb(67,188,205);
 }
 QPushButton::hover{
@@ -43,8 +43,8 @@ QPushButton::hover{
   <widget class="QPushButton" name="pushButton_delete">
    <property name="geometry">
     <rect>
-     <x>910</x>
-     <y>380</y>
+     <x>900</x>
+     <y>350</y>
      <width>101</width>
      <height>25</height>
     </rect>
@@ -53,7 +53,7 @@ QPushButton::hover{
     <string notr="true">QPushButton{
         font: 300 bold 9pt &quot;Quicksand Light&quot;;
         color: black;
-        background-color: rgba(67,188,205,0.3);
+        background-color: rgba(67,188,205,0.1);
         border:1px solid rgb(67,188,205);
 }
 QPushButton::hover{
@@ -70,8 +70,8 @@ QPushButton::hover{
   <widget class="QPushButton" name="pushButton_enroll">
    <property name="geometry">
     <rect>
-     <x>910</x>
-     <y>320</y>
+     <x>900</x>
+     <y>270</y>
      <width>101</width>
      <height>25</height>
     </rect>
@@ -100,7 +100,7 @@ QPushButton::hover{
      <x>10</x>
      <y>20</y>
      <width>881</width>
-     <height>581</height>
+     <height>521</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -110,7 +110,7 @@ QPushButton::hover{
 }
 
 QTabWidget#searchTabWidget &gt; QTabBar::tab {
-    font: 9pt &quot;Sans Serif&quot;;
+    font: 10pt &quot;Sans Serif&quot;;
     background-color: rgba(67,188,205,0.5);
     color: black;
     padding: 0px;
@@ -124,9 +124,9 @@ QTabWidget#searchTabWidget &gt; QTabBar::tab {
 QTabWidget#searchTabWidget &gt; QTabBar::tab:first {
     background-color: rgba(67,188,205,0.5);
     color: white;
-	margin-left: 320px;	
+	/*margin-left: 320px;	*/
 	border-top-right-radius: 10px; /* Apply border radius to top-left corner */
-border-top-left-radius: 10px; /* Apply border radius to top-left corner */
+	border-top-left-radius: 10px; /* Apply border radius to top-left corner */
 }
 
 QTabWidget#searchTabWidget &gt; QTabBar::tab:first:selected {
@@ -161,7 +161,7 @@ QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
 }</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="customerTab">
     <attribute name="title">
@@ -218,7 +218,8 @@ QHeaderView::section {
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: white;
-border:1px solid rgb(67,188,205);</string>
+border:1px solid rgb(67,188,205);
+color: rgb(67,188,205);</string>
       </property>
       <property name="text">
        <string/>
@@ -235,7 +236,7 @@ border:1px solid rgb(67,188,205);</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: white;
-color:rgb(0, 0, 0);
+color:rgb(67,188,205);
 border:1px solid rgb(67,188,205);
 font: 12pt &quot;Sans Serif&quot;;</string>
       </property>
@@ -315,8 +316,8 @@ border:1px solid rgb(67,188,205);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">color:  rgb(255, 255, 255);
-font: 500 8pt &quot;Quicksand Medium&quot;;
+      <string notr="true">color:  rgb(67,188,205);
+font: 500 bold 8pt &quot;Quicksand Medium&quot;;
 background-color: white;
 border:1px solid rgb(67,188,205);</string>
      </property>
@@ -347,9 +348,9 @@ border:1px solid rgb(67,188,205);</string>
     <widget class="QLabel" name="plateTitle_5">
      <property name="geometry">
       <rect>
-       <x>510</x>
+       <x>600</x>
        <y>10</y>
-       <width>361</width>
+       <width>171</width>
        <height>31</height>
       </rect>
      </property>
@@ -360,7 +361,7 @@ background-color: none;
 border:none;</string>
      </property>
      <property name="text">
-      <string>We are 삼십육계 Team!!!</string>
+      <string> -- Customer info tab --</string>
      </property>
     </widget>
    </widget>
@@ -502,23 +503,6 @@ QCalendarWidget QAbstractItemView:enabled {
 /* 비활성화된 날짜 (이전/다음 달) */
 QCalendarWidget QAbstractItemView:disabled {
     color: rgb(169, 169, 169);
-}
-QCalendarWidget QSpinBox {
-        width: 150px;
-        font-size:20px;
-        color: black;
-        background-color: rgba(67, 188, 205, 0.2); /*qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #cccccc, stop: 1 #333333); */
-        selection-background-color: rgb(136, 136, 136);
-        selection-color: rgb(255, 255, 255);
-  }
-/* 스핀박스 드롭다운 스타일 */
-QCalendarWidget QSpinBox QAbstractItemView {
-    font-size: 14px; /* 드롭다운 텍스트 크기 */
-    color: black; /* 드롭다운 텍스트 색상 */
-    background-color: white; /* 드롭다운 배경 색상 */
-    selection-background-color: rgba(67, 188, 205, 0.3); /* 선택된 항목 배경 색상 */
-    selection-color: black; /* 선택된 항목 텍스트 색상 */
-    border: 1px solid rgba(67, 188, 205, 0.6); /* 드롭다운 테두리 */
 }</string>
      </property>
     </widget>
@@ -563,7 +547,7 @@ border:1px solid rgb(67,188,205);</string>
       <rect>
        <x>520</x>
        <y>10</y>
-       <width>351</width>
+       <width>301</width>
        <height>31</height>
       </rect>
      </property>
@@ -593,7 +577,7 @@ color:rgb(67,188,205);
 font: 14pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="text">
-      <string>                   Select Calender Button</string>
+      <string>Select Calender Button</string>
      </property>
     </widget>
     <widget class="QPushButton" name="calendarButton">
@@ -606,9 +590,8 @@ font: 14pt &quot;Sans Serif&quot;;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">
-color:  rgb(255, 255, 255);
-background-color:rgba(67,188,205,0.6);
+      <string notr="true">color:  rgb(255, 255, 255);
+background-color:rgba(67,188,205,0.5);
 border-left:1px solid rgb(67,188,205);
 font: 500 8pt &quot;Quicksand Medium&quot;;</string>
      </property>
