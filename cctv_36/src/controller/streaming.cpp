@@ -264,7 +264,8 @@ void Streaming::updateGateState(bool state) {
     // QLabel에 이미지를 설정 (픽셀 정보는 유지)
     ui->gate_state->setPixmap(pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::FastTransformation));
     ui->gate_state->setScaledContents(false); // QLabel의 스케일 조정 비활성화
-    
+}
+
 void Streaming::on_plateDataReceived(const QByteArray& buffer) {
     qDebug() << "on_plateDataReceived";
     m_receivedBuffer = buffer;
