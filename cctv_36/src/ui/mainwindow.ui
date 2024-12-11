@@ -186,7 +186,7 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
     <property name="geometry">
      <rect>
       <x>710</x>
-      <y>50</y>
+      <y>60</y>
       <width>221</width>
       <height>25</height>
      </rect>
@@ -206,16 +206,16 @@ font: bold 9pt &quot;UnDotum&quot;;</string>
     <property name="geometry">
      <rect>
       <x>930</x>
-      <y>50</y>
+      <y>60</y>
       <width>111</width>
       <height>25</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(255, 255, 255);
-background-color:rgb(250,170,100);
+background-color:rgba(243,115,33,0.5);
 border:1px solid rgb(243,115,33);
-font: 500 10pt &quot;Quicksand Medium&quot;;</string>
+font: 500 bold 10pt &quot;Quicksand Medium&quot;;</string>
     </property>
     <property name="text">
      <string>APPLY</string>

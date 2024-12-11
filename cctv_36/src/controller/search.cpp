@@ -15,8 +15,6 @@
 #include <QSqlQuery>
 #include <QIdentityProxyModel>
 
-#include <QTabBar> // 탭바 위치 조절하려고 넣음.
-
 #define protocol "http"
 #define port 8080
 
@@ -55,9 +53,6 @@ Search::Search(QWidget *parent)
     // 열 크기를 동일하게 설정
     ui->customerTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->videoTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    QTabBar* tabBar = ui->searchTabWidget->tabBar();
-    tabBar->setStyleSheet("alignment: center;"); // 스타일시트 추가 (선택적)
 
     TcpManager& tcpManager = TcpManager::instance();
     connect(&tcpManager, &TcpManager::plateDataReceived, this, &Search::on_plateDataReceived);
@@ -385,12 +380,13 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
 
     // Format the customer information
+
     QString customerInfo = QString(
         "-----------------------------\n"
-        "   NAME           : %1\n"
+        "   NAME : %1\n"
         "   LICENSE NUMBER : %2\n"
-        "   ADDRESS        : %3\n"
-        "   PHONE NUMBER   : %4\n"
+        "   ADDRESS : %3\n"
+        "   PHONE NUMBER : %4\n"
         "-----------------------------"
     ).arg(name, plate, home, phone);
 
