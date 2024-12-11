@@ -10,6 +10,7 @@
 #include <QProcess>
 #include <QTimer>
 #include <QUrl>
+#include <QByteArray>
 
 class Streaming : public QWidget
 {
@@ -31,6 +32,7 @@ private:
     QTimer *frameTimer;
     QString m_host;
     QString m_rtspUrl;  // RTSP 서버 주소
+    QByteArray m_receivedBuffer;
 
     // 데이터베이스 관련 메서드
     //void saveMessageToDatabase(const QString &message);  // 메시지를 데이터베이스에 저장하는 메서드
@@ -55,6 +57,9 @@ private slots:
     void updateGateState(bool state);
 
     void setButtonStyle(QPushButton* button, bool isActive);
+
+    void on_plateDataReceived(const QByteArray& buffer);
+    void update_InfoLabel();
 };
 
 #endif // STREAMING_H

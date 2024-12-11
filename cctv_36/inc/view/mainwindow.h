@@ -29,6 +29,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void send_initData();
+    QString getWiFiIPAddress();
+
 private:
     Ui::MainWindow *ui;
     QString m_host;

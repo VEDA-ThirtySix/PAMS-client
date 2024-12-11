@@ -29,6 +29,7 @@ public:
     TimeInfo read_timeInfo(const QString& selected_plate);
     QByteArray read_image(const QString& selected_plate);
     qint64 get_duration(const QDateTime& from, const QDateTime& to);
+    bool find_plate(const QString& plate);
 
     /* Save Plate Image */
     void save_jpeg(const QByteArray& imageArray);

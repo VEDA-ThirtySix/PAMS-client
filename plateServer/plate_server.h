@@ -14,7 +14,6 @@
 #include <sys/inotify.h>
 #include <errno.h>
 #include "b64.c/b64.h"  //$ git clone https://github.com/jwerle/b64.c.git
-#include "time.h"
 #ifdef __linux__
 #include <linux/limits.h>
 #elif defined(_WIN32)

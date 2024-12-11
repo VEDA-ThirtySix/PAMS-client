@@ -1,5 +1,10 @@
 #include "streaming.h"
 #include "ui_streaming.h"
+#include "metadata.h"
+#include "tcpManager.h"
+#include "jsonManager.h"
+#include "userManager.h"
+#include "dbManager.h"
 #include <QDebug>
 #include <QPixmap>
 #include <QImage>
@@ -28,8 +33,8 @@ Streaming::Streaming(QWidget *parent)
     updateDateTime();// 초기 날짜/시간 표시
 
     connect(frameTimer, &QTimer::timeout, this, &Streaming::captureFrame);
-
-}
+    TcpManager& tcpManager = TcpManager::instance();
+    connect(&tcpManager, &TcpManager::plateDataReceived, this, &Streaming::on_plateDataReceived);}
 
 Streaming::~Streaming()
 {
@@ -259,6 +264,51 @@ void Streaming::updateGateState(bool state) {
     // QLabel에 이미지를 설정 (픽셀 정보는 유지)
     ui->gate_state->setPixmap(pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::FastTransformation));
     ui->gate_state->setScaledContents(false); // QLabel의 스케일 조정 비활성화
+    
+void Streaming::on_plateDataReceived(const QByteArray& buffer) {
+    qDebug() << "on_plateDataReceived";
+    m_receivedBuffer = buffer;
+    update_InfoLabel();
+}
+
+void Streaming::update_InfoLabel() {
+    qDebug() << "update_InfoLabel";
+    TimeInfo timeInfo;
+    JsonManager *jsonManager = new JsonManager(this);
+    timeInfo = jsonManager->parse_data(m_receivedBuffer);
+    QString received_plate = timeInfo.get_plate();
+    qDebug() << "received_plate: " << received_plate;
+
+    BasicInfo basicInfo;
+    UserManager *userManager = new UserManager(this);
+    basicInfo = userManager->getCurrentInfo(received_plate);
+
+    QString name = basicInfo.get_name();
+    QString plate = basicInfo.get_plate();
+    QString home = basicInfo.get_home();
+    QString phone = basicInfo.get_phone();
+    qDebug() << "name : " << name;
+    qDebug() << "plate: " << plate;
+
+    DBManager& dbManager = DBManager::instance();
+    bool isCustomer = dbManager.find_plate(plate);
+
+    QString customerInfo;
+    if(isCustomer) {
+        qDebug() << "Customer Found!";
+        customerInfo = QString(
+           "[ 입주민 정보 ]\n\n"
+           "  이름 : %1\n"
+           "차량번호: %2\n"
+           "  주소 : %3\n"
+           "전화번호: %4"
+           ).arg(name, plate, home, phone);
+    } else {
+        qDebug() << "Who are you?";
+        customerInfo = "미등록 차량입니다";
+    }
+
+    ui->label->setText(customerInfo);
 }
 
 
