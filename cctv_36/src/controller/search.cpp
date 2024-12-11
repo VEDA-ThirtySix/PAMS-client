@@ -14,9 +14,19 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QIdentityProxyModel>
+#include <QStyledItemDelegate>
 
 #define protocol "http"
 #define port 8080
+
+// 모든 셀의 텍스트를 가운데 정렬하기 위한 delegate 설정
+class CenterAlignDelegate : public QStyledItemDelegate {
+public:
+    void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const override {
+        QStyledItemDelegate::initStyleOption(option, index);
+        option->displayAlignment = Qt::AlignCenter;
+    }
+};
 
 class CustomProxyModel : public QIdentityProxyModel {
 public:
@@ -52,7 +62,6 @@ Search::Search(QWidget *parent)
 
     // 열 크기를 동일하게 설정
     ui->customerTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->videoTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     TcpManager& tcpManager = TcpManager::instance();
     connect(&tcpManager, &TcpManager::plateDataReceived, this, &Search::on_plateDataReceived);
@@ -110,12 +119,6 @@ void Search::setupCustomerTable() {
     //m_resultsTable->hideColumn(0); // ID 컬럼 숨기기
     ui->customerTable->setEditTriggers(QAbstractItemView::NoEditTriggers); // 컬럼 수정 불가
     ui->customerTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-
-    // 열 너비 설정
-    /*
-    ui->resultsTable->setColumnWidth(2, 150); //HOME
-    ui->resultsTable->setColumnWidth(3, 150); //PHONE   */
 }
 
 void Search::setupVideoTable() {
@@ -140,20 +143,19 @@ void Search::setupVideoTable() {
     auto* proxyModel = new CustomProxyModel(this);
     proxyModel->setSourceModel(m_modelTime);
     ui->videoTable->setModel(proxyModel);
-    // 컬럼 퍼센트 비율로 설정
-      QVector<int> columnWidths = {5, 20, 45, 15, 15}; // 비율: ID 10%, PLATE 25%, TIME 30%, TYPE 20%, IMAGE 15%
 
-      // 테이블 너비와 실제 컬럼 너비 계산
-      connect(ui->videoTable->horizontalHeader(), &QHeaderView::sectionResized, this, [this, columnWidths]() {
-          int totalWidth = ui->videoTable->viewport()->width();
-          for (int i = 0; i < columnWidths.size(); ++i) {
-              int width = (totalWidth * columnWidths[i]) / 100; // 비율에 따라 계산
-              ui->videoTable->setColumnWidth(i, width);
-          }
-      });
+    // 각 컬럼별로 다른 ResizeMode 설정
+    ui->videoTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);  // ID
+    ui->videoTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);       // PLATE
+    ui->videoTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);  // TIME
+    ui->videoTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);  // TYPE
+    ui->videoTable->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Interactive);       // IMAGE
 
+    // ui->videoTable->setColumnWidth(1, 120);
+    // ui->videoTable->setColumnWidth(4, 100);
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->videoTable->setItemDelegate(new CenterAlignDelegate());
 
     connect(ui->videoTable->selectionModel(), &QItemSelectionModel::selectionChanged,
             this, [this](const QItemSelection &selected, const QItemSelection &deselected) {
