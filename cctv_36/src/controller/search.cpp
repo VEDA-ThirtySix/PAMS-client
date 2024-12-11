@@ -14,6 +14,8 @@
 #include <QSqlQuery>
 #include <QIdentityProxyModel>
 
+#include <QTabBar> // 탭바 위치 조절하려고 넣음.
+
 #define protocol "http"
 #define port 8080
 
@@ -52,6 +54,9 @@ Search::Search(QWidget *parent)
     // 열 크기를 동일하게 설정
     ui->customerTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->videoTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    QTabBar* tabBar = ui->searchTabWidget->tabBar();
+    tabBar->setStyleSheet("alignment: center;"); // 스타일시트 추가 (선택적)
 }
 
 Search::~Search() {
@@ -327,11 +332,27 @@ void Search::performSearch()
     }
     m_modelBasic->select();
 }
-
 void Search::updatePlaceholder()
 {
-    ui->searchInput->setPlaceholderText(QString("%1을(를) 입력하세요. (e.g. 123가 1234)").arg(m_currentSearchType));
+    QString exampleText;
+
+    // m_currentSearchType에 따라 e.g. 메시지 변경
+    if (m_currentSearchType == "이름") {
+        exampleText = "홍베다";
+    } else if (m_currentSearchType == "차량번호") {
+        exampleText = "123가 3456";
+    } else if (m_currentSearchType == "시간") {
+        exampleText = "2024-12-11 14:30";
+    } else {
+        exampleText = "예시 텍스트";
+    }
+
+    // Placeholder 텍스트 업데이트
+    ui->searchInput->setPlaceholderText(
+        QString("%1을(를) 입력하세요. (e.g. %2)").arg(m_currentSearchType, exampleText)
+    );
 }
+
 
 void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelection &deselected)
 {
@@ -339,6 +360,7 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
     if (selected.indexes().isEmpty()) {
         ui->textLabel->setText("고객 정보");
+        ui->textLabel->setAlignment(Qt::AlignCenter);
         return;
     }
 
@@ -350,13 +372,25 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
     QString home = m_modelBasic->data(m_modelBasic->index(row, 2)).toString();
     QString phone = m_modelBasic->data(m_modelBasic->index(row, 3)).toString();
 
+/*
     // Format the customer information
     QString customerInfo = QString(
-                               "이름: %1\n"
-                               "차량번호: %2\n"
-                               "주소: %3\n"
-                               "전화번호: %4"
-                               ).arg(name, plate, home, phone);
+                               "NAME: %1\n"
+                               "LiCENSE NUMBER %2\n"
+                               "ADDRESS: %3\n"
+                               "PHONE NUMBER: %4"
+                               ).arg(name, plate, home, phone);*/
+
+
+    // Format the customer information
+    QString customerInfo = QString(
+        "-----------------------------\n"
+        "   NAME           : %1\n"
+        "   LICENSE NUMBER : %2\n"
+        "   ADDRESS        : %3\n"
+        "   PHONE NUMBER   : %4\n"
+        "-----------------------------"
+    ).arg(name, plate, home, phone);
 
     ui->textLabel->setText(customerInfo);
 
@@ -375,7 +409,7 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
         QSize labelSize = ui->imageLabel->size(); // QLabel 크기 가져오기
         QPixmap scaledPixmap = image.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         ui->imageLabel->setPixmap(scaledPixmap);
-        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
+        ui->imageLabel->setAlignment(Qt::AlignCenter);
 
         qDebug() << "이미지 로드 성공:" << imagePath;
     }
@@ -467,7 +501,7 @@ void Search::clicked_buttonEdit() {
             "    color: black; "                    // 라벨 텍스트 주황색
             "} "
             "QPushButton { "
-            "    background-color: rgba(243, 115, 33,0.5); "         // 버튼 배경 주황색
+            "    background-color: rgba(67,188,205,0.5); "         // 버튼 배경 주황색
             "    color: black; "                                // 버튼 텍스트 흰색
             "    width :100px;"
             "    border: none; "                                // 버튼 테두리 없음
@@ -515,7 +549,7 @@ void Search::clicked_buttonDelete() {
             "    color: black; "                    // 라벨 텍스트 주황색
             "} "
             "QPushButton { "
-            "    background-color: rgba(243, 115, 33,0.5);  "         // 버튼 배경 주황색
+            "    background-color: rgba(67,188,205,0.5);  "         // 버튼 배경 주황색
             "    color: black; "                                // 버튼 텍스트 흰색
             "    width :100px;"
             "    border: none; "                                // 버튼 테두리 없음
