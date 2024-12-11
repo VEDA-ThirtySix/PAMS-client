@@ -13,4 +13,10 @@
         <file>pause2.png</file>
         <file>play2.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>bell.png</file>
+        <file>bell_none.png</file>
+        <file>gate_open.png</file>
+        <file>gate_close.png</file>
+    </qresource>
 </RCC>

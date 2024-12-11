@@ -50,7 +50,6 @@ Search::Search(QWidget *parent)
     setupConnections();
     setupCustomerTable();
     setupVideoTable();
-    setupImage();
     updatePlaceholder();
     initializePath();
 
@@ -190,6 +189,7 @@ void Search::setupVideoTable() {
                         QPixmap scaledPixmap = pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
                         ui->imageLabel_2->setPixmap(scaledPixmap);
+                        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
                         qDebug() << "DONE: Image loaded successfully";
                     } else {
                         ui->imageLabel_2->setText("이미지 로드 실패");
@@ -263,49 +263,6 @@ void Search::setupVideoTable() {
     connect(ui->calendarButton, &QPushButton::clicked, this, &Search::toggleCalendar);
 }
 
-
-void Search::setupImage()
-{
-    /*
-    ui->imageLabel->setMinimumSize(320, 200);
-    ui->imageLabel->setScaledContents(true);
-    ui->imageLabel->setAlignment(Qt::AlignCenter);
-    ui->imageLabel->setText("이미지 없음");
-
-    ui->imageLabel_2->setMinimumSize(320, 200);
-    ui->imageLabel_2->setScaledContents(true);
-    ui->imageLabel_2->setAlignment(Qt::AlignCenter);
-    ui->imageLabel_2->setText("이미지 없음");
-    */
-}
-
-/*
-    m_db.transaction();
-    for (const auto &example : examples) {
-        // 주차 시간 계산
-        qint64 seconds = example.entranceTime.secsTo(example.exitTime);
-        int hours = seconds / 3600;
-        int minutes = (seconds % 3600) / 60;
-        int secs = seconds % 60;
-        QString parkingDuration = QString("%1:%2:%3")
-                                      .arg(hours, 2, 10, QLatin1Char('0'))
-                                      .arg(minutes, 2, 10, QLatin1Char('0'))
-                                      .arg(secs, 2, 10, QLatin1Char('0'));
-
-        query.bindValue(0, example.name);
-        query.bindValue(1, example.plateNumber);
-        query.bindValue(2, example.entranceTime.toString("yyyy-MM-dd hh:mm:ss"));
-        query.bindValue(3, example.exitTime.toString("yyyy-MM-dd hh:mm:ss"));
-        query.bindValue(4, parkingDuration);
-        query.exec();
-    }
-    m_db.commit();
-    // 모델 새로고침
-    m_model->select();
-*/
-
-
-
 void Search::setupConnections()
 {
     // 검색 버튼 클릭 시 검색 수행
@@ -316,9 +273,6 @@ void Search::setupConnections()
 
     // 텍스트 변경 시 실시간 검색
     connect(ui->searchInput, &QLineEdit::textChanged, this, &Search::handleSearchInput);
-
-    // 테이블 뷰에 있는 컬럼 더블 클릭시 이벤트 연결
-    // connect(ui->resultsTable, &QTableView::doubleClicked, this, &Search::handleDoubleClick);
 
     // 검색어 필터링
     connect(ui->filterButton, &QPushButton::clicked, this, &Search::showSearchMenu);
@@ -350,34 +304,6 @@ bool Search::initializePath() {
         return false;
     }
 }
-
-// void Search::handleDoubleClick(const QModelIndex &index) {
-//     // qDebug() << "클릭된 컬럼 번호:" << index.column();
-
-//     // QString basePath = "/home/kiyun/vFinal/rasp_project/cctv_36_ky/images";
-//     // QString basePath = "/Users/taewonkim/GitHub/RaspberryPi-5-RTSP-Client/cctv_36/images"; // for taewon MacOS
-
-//     // QString imagePath = QString("%1/image_%2.jpg")
-//     //                         .arg(basePath)
-//     //                         .arg(index.row() + 1);
-
-//     QString imagePath = QDir(imagesPath).filePath(
-//         QString("image_%1.jpg").arg(index.row() + 1)
-//         );
-
-//     /* 이미지와 데이터를 Qt에서 연결 -> 이미지를 db자체에서 연결(비트맵?이진화?) */
-//     QPixmap image(imagePath);
-//     if (image.isNull()) {
-//         ui->imageLabel->setText("이미지 없음");
-//         qDebug() << "이미지 로드 실패:" << imagePath;
-//     } else {
-//         ui->imageLabel->setPixmap(image);
-//         qDebug() << "이미지 로드 성공:" << imagePath;
-//     }
-
-//     ui->resultsTable->selectRow(index.row());
-
-// }
 
 void Search::clearImage()
 {
@@ -436,7 +362,6 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
     // Format the customer information
     QString customerInfo = QString(
-                               "[ 고객 정보 ]\n\n"
                                "이름: %1\n"
                                "차량번호: %2\n"
                                "주소: %3\n"
@@ -460,6 +385,7 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
         QSize labelSize = ui->imageLabel->size(); // QLabel 크기 가져오기
         QPixmap scaledPixmap = image.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         ui->imageLabel->setPixmap(scaledPixmap);
+        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
 
         qDebug() << "이미지 로드 성공:" << imagePath;
     }
@@ -520,7 +446,6 @@ void Search::build_QUrl() {
     m_url.setScheme("http");
     QString url = m_url.toString();
 
-    ui->label_url->setText(url);
     qDebug() << "build_QUrl$ m_url: " << m_url;
 }
 

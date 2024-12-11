@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
         streaming->get_host(host);
         streaming->rtsp_setting();
         search->get_host(host);
-        search->build_QUrl();
+        // search->build_QUrl();
     });
 }
 

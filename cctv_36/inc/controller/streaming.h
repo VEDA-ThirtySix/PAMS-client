@@ -51,6 +51,9 @@ private slots:
     void on_startButton_clicked();
     void on_stopButton_clicked();
 
+    void carEntryState(bool isActive);
+    void updateGateState(bool state);
+
     void setButtonStyle(QPushButton* button, bool isActive);
 };
 
