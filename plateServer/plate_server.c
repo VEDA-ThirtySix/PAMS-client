@@ -21,7 +21,7 @@ int init_server_plate(int port) {
     } else {
         printf("init_server: setsockopt success\n");
     }
-
+    
     //init Address struct
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;

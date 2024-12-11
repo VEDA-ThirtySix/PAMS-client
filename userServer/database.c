@@ -1,14 +1,5 @@
 #include "database.h"
 
-/**
- * @brief   데이터베이스를 초기화하고 연결을 설정하는 함수
- * @details SQLite 데이터베이스 파일을 열고, 필요하면 `users` 테이블을 생성합니다.
- *
- * @return  sqlite3* 데이터베이스 연결 객체 포인터. 실패 시 NULL 반환
- *
- * @author 
- * @date 
- */
 sqlite3* init_database() {
     sqlite3 *db;
     int rc = sqlite3_open("parking.db", &db);
@@ -39,17 +30,6 @@ sqlite3* init_database() {
     return db;
 }
 
-/**
- * @brief   사용자 데이터를 데이터베이스에 저장하는 함수
- * @details `users` 테이블에 새로운 사용자의 정보를 추가합니다.
- *
- * @param[in] db        SQLite 데이터베이스 연결 객체
- * @param[in] basicInfo 저장할 사용자 정보 (이름, 차량 번호판, 주소, 전화번호)
- * @return  int 1: 성공, 0: 데이터 삽입 실패
- *
- * @author 
- * @date 
- */
 int save_user_data(sqlite3 *db, BasicInfo *basicInfo) {
     const char *sql = "INSERT INTO users (name, plate, home, phone) VALUES (?, ?, ?, ?);";
     sqlite3_stmt *stmt;
@@ -76,17 +56,6 @@ int save_user_data(sqlite3 *db, BasicInfo *basicInfo) {
     return 1;
 }
 
-/**
- * @brief   사용자 데이터를 수정하는 함수
- * @details `users` 테이블에서 차량 번호판(plate)을 기준으로 사용자의 이름, 주소 및 전화번호를 업데이트합니다.
- *
- * @param[in] db        SQLite 데이터베이스 연결 객체
- * @param[in] basicInfo 수정할 사용자 정보 (이름, 차량 번호판, 주소, 전화번호)
- * @return  int 1: 성공, 0: 일치하는 번호판 없음 또는 업데이트 실패
- *
- * @author 
- * @date 
- */
 int edit_user_data(sqlite3 *db, BasicInfo *basicInfo) {
     const char *sql = "UPDATE users SET name = ?, home = ?, phone = ? WHERE plate = ?;";
     sqlite3_stmt *stmt;

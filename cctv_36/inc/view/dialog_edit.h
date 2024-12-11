@@ -38,6 +38,4 @@ signals:
 
 };
 
-
-
 #endif // EDITDIALOG_H

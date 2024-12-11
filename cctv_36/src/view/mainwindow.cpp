@@ -46,6 +46,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 void MainWindow::send_initData() {
     QString name = "cctv_36";
     QString ipAddr = getWiFiIPAddress();
