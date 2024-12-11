@@ -31,6 +31,7 @@ private:
     void stopFFmpeg();
     void showErrorMessage(const QString &message);
     QString formatTime(qint64 milliseconds);
+    void setupSlider();
 
     Ui::VideoClipDialog *ui;
     QProcess *ffmpegProcess;

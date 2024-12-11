@@ -152,14 +152,6 @@ void Search::setupVideoTable() {
           }
       });
 
-      // 초기 설정
-      int totalWidth = ui->videoTable->viewport()->width();
-      for (int i = 0; i < columnWidths.size(); ++i) {
-          int width = (totalWidth * columnWidths[i]) / 100; // 비율에 따라 계산
-          ui->videoTable->setColumnWidth(i, width);
-      }
-
-    //ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 

@@ -15,15 +15,13 @@ VideoClipDialog::VideoClipDialog(const QString &host, QWidget *parent)
 {
     ui->setupUi(this);
     setupConnections();
+    setupSlider();
 
     // RTSP URL 설정
     m_rtspUrl = QString("%1://%2:%3/")
                     .arg(PROTOCOL, host, QString::number(CLIP_PORT));
 
     qDebug() << "QDEBUG(SW)$ Clip RTSP URL:" << m_rtspUrl;
-
-    ui->positionSlider->setRange(0, 7000); // 현재 7초짜리 dragon.h264 스트리밍이라 하드코딩
-    ui->positionSlider->setSingleStep(1000); // 1초 단위로 이동
 
     // FFmpeg 프레임 타이머 설정
     frameTimer->setInterval(33); // ~30fps
@@ -111,7 +109,11 @@ void VideoClipDialog::captureFrame()
             ui->ffmpegLabel->setPixmap(scaledPixmap);
             // updatePosition(frameTimer->interval() * frameCount++);
             qint64 currentTime = QDateTime::currentMSecsSinceEpoch() - startTime;
-            if (currentTime <= 7000) {
+            if (currentTime >= 15000) {
+                // 15초 도달시 처음부터 다시 시작
+                stopVideo();
+                playPauseVideo();
+            } else {
                 updatePosition(currentTime);
             }
         }
@@ -144,7 +146,7 @@ void VideoClipDialog::stopVideo()
     ui->playPauseButton->setIcon(QIcon(":/images/play.png"));
     ui->positionSlider->setValue(0);
     ui->currentTimeLabel->setText("00:00");
-    startFFmpeg();
+    stopFFmpeg();
 }
 
 void VideoClipDialog::updatePosition(qint64 position)
@@ -181,6 +183,17 @@ void VideoClipDialog::handleError()
     } else {
         showErrorMessage(tr("Stream connection failed: %1\nMax reconnection attempts exceeded.").arg(errorString));
     }
+}
+
+void VideoClipDialog::setupSlider() {
+    const int CLIP_DURATION = 15000;
+    ui->positionSlider->setRange(0, CLIP_DURATION);
+    ui->positionSlider->setSingleStep(100);
+
+    // 독립적인 타이머 제거하고 프레임 타이머와 연동
+    connect(ui->positionSlider, &QSlider::sliderMoved, this, [this](int position) {
+        updatePosition(position);
+    });
 }
 
 void VideoClipDialog::reconnectStream()
