@@ -1,32 +1,37 @@
+# 컴파일러 설정
 CC = gcc
 
+# 운영 체제 확인
 UNAME_S := $(shell uname -s)
 
-# Linux 환경
-ifeq ($(UNAME_S),Linux)
-    CFLAGS = -Wall -g -I. -I/usr/include/json-c
-    LDFLAGS = -ljson-c -lsqlite3
-endif
+# 공통 설정
+CFLAGS = -Wall -g -I. -I/usr/include/json-c
+LDFLAGS = -ljson-c -lsqlite3
 
-# macOS 환경
+# macOS 환경 설정
 ifeq ($(UNAME_S),Darwin)
     CFLAGS = -I/opt/homebrew/Cellar/json-c/0.18/include
     LDFLAGS = -L/opt/homebrew/Cellar/json-c/0.18/lib -ljson-c -lsqlite3
 endif
 
-all: userServer
+# 타겟 이름
+TARGET = userServer
 
-userServer: main.o user_server.o database.o
-	$(CC) $(CFLAGS) -o userServer main.o user_server.o database.o $(LDFLAGS)
+# 소스 파일 및 오브젝트 파일
+SRCS = main.c user_server.c database.c
+OBJS = $(SRCS:.c=.o)
 
-main.o: main.c user_server.h
-	$(CC) $(CFLAGS) -c main.c
+# 기본 타겟
+all: $(TARGET)
 
-user_server.o: user_server.c user_server.h
-	$(CC) $(CFLAGS) -c user_server.c
+# 타겟 빌드 규칙
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-database.o: database.c user_server.h
-	$(CC) $(CFLAGS) -c database.c
+# 개별 오브젝트 파일 빌드 규칙
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
+# 클린 규칙
 clean:
-	rm -f *.o userServer
+	rm -f $(OBJS) $(TARGET)

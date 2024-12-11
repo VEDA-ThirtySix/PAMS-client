@@ -291,7 +291,7 @@ QTabWidget#searchTabWidget &gt; QTabBar::tab:hover {
 }</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="customerTab">
     <attribute name="title">
@@ -335,7 +335,7 @@ QHeaderView::section {
       </rect>
      </property>
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <widget class="QLabel" name="imageLabel">
       <property name="geometry">
@@ -366,8 +366,7 @@ border:1px solid rgb(67,188,205);</string>
       <property name="styleSheet">
        <string notr="true">background-color: white;
 color:rgb(0, 0, 0);
-border:1px solid rgb(67,188,205);
-font: 12pt &quot;Sans Serif&quot;;</string>
+border:1px solid rgb(67,188,205);</string>
       </property>
       <property name="text">
        <string/>
@@ -643,6 +642,9 @@ font: 14pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="text">
       <string>Select Calender Button</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <zorder>calendarFrame</zorder>

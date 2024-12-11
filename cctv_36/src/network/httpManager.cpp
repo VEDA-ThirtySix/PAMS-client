@@ -40,45 +40,19 @@ QUrl HttpManager::set_config(const QString& url, const QString& port) {
         return serverURL;
     }
 }
-/*
-bool HttpManager::post_initInfo(const QUrl& url, const ClientInfo& clientInfo) {
+
+void HttpManager::post_initInfo(const QUrl& url, const ClientInfo& clientInfo) {
     jsonManager = new JsonManager(this);
     accessManager = new QNetworkAccessManager(this);
-    if(!jsonManager || !accessManager) {
-        qDebug() << "FAILURE(HM)$ Failed to Allocate memory";
-        return false;
-    }
-    if(!url.isValid()) {
-        qDebug() << "FAILURE(HM)$ Invalid URL";
-        return false;
-    }
+
     QByteArray jsonArray = jsonManager->build_init(clientInfo);
-    if(jsonArray.isEmpty()) {
-        qDebug() << "FAILURE(HM)$ Failed to build JSON";
-        return false;
-    }
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    //request.setRawHeader("Connection", "keep-alive");
     request.setRawHeader("Connection", "close");
 
-    // Connect to the finished signal
-    QNetworkReply *reply = accessManager->post(request, jsonArray);
-
-    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-        if (reply->error() == QNetworkReply::NoError) {
-            QByteArray responseData = reply->readAll();
-            qDebug() << "Response received:" << responseData;
-            // Process the response here
-        } else {
-            qDebug() << "Network error:" << reply->errorString();
-        }
-        reply->deleteLater();
-    });
-
-    qDebug() << "DONE(HM): post_initInfo";
-    return true;
-}*/
+    accessManager->post(request, jsonArray);
+    qDebug() << "DONE(HM): post_clipInfo";
+}
 
 void HttpManager::post_userInfo(const QUrl& url, const BasicInfo& basicInfo) {
     jsonManager = new JsonManager(this);

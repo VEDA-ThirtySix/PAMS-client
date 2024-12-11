@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
     }
     MainWindow w;
 
-    TcpManager *tcpManager = new TcpManager(nullptr);
-    tcpManager->connectToServer("192.168.3.5", 8088);
+    TcpManager& tcpManager = TcpManager::instance();
+    tcpManager.connectToServer("192.168.68.120", 8088);
 
     w.show();
     return a.exec();

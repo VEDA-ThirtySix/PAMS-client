@@ -21,7 +21,7 @@ public:
     ~HttpManager();
 
     QUrl set_config(const QString& url, const QString& port);
-    //bool post_initInfo(const QUrl& url, const ClientInfo& clientInfo);
+    void post_initInfo(const QUrl& url, const ClientInfo& clientInfo);
     void post_userInfo(const QUrl& url, const BasicInfo& basicInfo);
     void post_clipInfo(const QUrl& url, const TimeInfo& timeInfo);
     void post_plateData(const QUrl& url);

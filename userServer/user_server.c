@@ -1,9 +1,4 @@
-#include "user_server.h"  
-#include "errno.h"
-#include "sqlite3.h"
-#include "sys/wait.h"
-#include "signal.h"
-
+#include "user_server.h"
 
 int init_server_user(int port) {
     int server_fd;
@@ -143,13 +138,8 @@ void handle_client(int client_socket) {
             printf("IP Address  : %s\n", clientInfo.ipAddr);
             printf("Connect Time: %s\n", clientInfo.connectTime);
 
-            if(save_user_data(db, &clientInfo)) {
-                const char* json_response = "{\"status\":\"init_success\",\"message\":\"Client initialized\"}";
-                send_http_response(client_socket, json_response);
-            } else {
-                const char* json_response = "{\"status\":\"error\",\"message\":\"Failed to save user data\"}";
-                send_http_response(client_socket, json_response);
-            }
+            const char* json_response = "{\"status\":\"success\",\"message\":\"Init success\"}";
+            send_http_response(client_socket, json_response);
         }   
         else if(strcmp(reqType, "user") == 0) {
             parse_user(body_start, &basicInfo);
@@ -354,5 +344,24 @@ void convertToFilename(const char* timeStr, char* filename) {
     printf("Converted name: %s\n", filename);
 }
 
+int check_plate_exists(sqlite3 *db, const char* plate) {
+    sqlite3_stmt *stmt;
+    const char *sql = "SELECT COUNT(*) FROM users WHERE plate = ?;";
+    int count = 0;
+    
+    if(sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
+        printf("[DB][ERROR] Failed to prepare statement\n");
+        return 0;
+    }
+    
+    sqlite3_bind_text(stmt, 1, plate, -1, SQLITE_STATIC);
+    
+    if(sqlite3_step(stmt) == SQLITE_ROW) {
+        count = sqlite3_column_int(stmt, 0);
+    }
+    
+    sqlite3_finalize(stmt);
+    return count > 0;
+}
 
 

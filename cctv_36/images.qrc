@@ -12,9 +12,5 @@
         <file>stop2.png</file>
         <file>pause2.png</file>
         <file>play2.png</file>
-        <file>bell.png</file>
-        <file>bell_none.png</file>
-        <file>gate_close.png</file>
-        <file>gate_open.png</file>
     </qresource>
 </RCC>

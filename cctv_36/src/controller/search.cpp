@@ -13,7 +13,6 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QIdentityProxyModel>
-#include <QStyledItemDelegate>
 
 #define protocol "http"
 #define port 8080
@@ -26,15 +25,6 @@ public:
             return QString("plate%1.png").arg(index.row() + 1);
         }
         return QIdentityProxyModel::data(index, role);
-    }
-};
-
-// 모든 셀의 텍스트를 가운데 정렬하기 위한 delegate 설정
-class CenterAlignDelegate : public QStyledItemDelegate {
-public:
-    void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const override {
-        QStyledItemDelegate::initStyleOption(option, index);
-        option->displayAlignment = Qt::AlignCenter;
     }
 };
 
@@ -56,6 +46,7 @@ Search::Search(QWidget *parent)
 
     connect(ui->pushButton_enroll, &QPushButton::clicked, this, &Search::clicked_buttonEnroll);
     connect(ui->pushButton_edit, &QPushButton::clicked, this, &Search::clicked_buttonEdit);
+    //connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
     connect(ui->customerTable->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Search::selectCustomerInfo);
     connect(ui->pushButton_delete, &QPushButton::clicked, this, &Search::clicked_buttonDelete);
 
@@ -146,7 +137,7 @@ void Search::setupVideoTable() {
     proxyModel->setSourceModel(m_modelTime);
     ui->videoTable->setModel(proxyModel);
     // 컬럼 퍼센트 비율로 설정
-      QVector<int> columnWidths = {8, 20, 35, 8, 15}; // 비율: ID 10%, PLATE 20%, TIME 40%, TYPE 10%, IMAGE 15%
+      QVector<int> columnWidths = {5, 20, 45, 15, 15}; // 비율: ID 10%, PLATE 25%, TIME 30%, TYPE 20%, IMAGE 15%
 
       // 테이블 너비와 실제 컬럼 너비 계산
       connect(ui->videoTable->horizontalHeader(), &QHeaderView::sectionResized, this, [this, columnWidths]() {
@@ -164,8 +155,7 @@ void Search::setupVideoTable() {
           ui->videoTable->setColumnWidth(i, width);
       }
 
-    ui->videoTable->setItemDelegate(new CenterAlignDelegate());
-    ui->videoTable->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
+    //ui->videoTable->resizeColumnsToContents();
     ui->videoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->videoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -190,7 +180,6 @@ void Search::setupVideoTable() {
                         QPixmap scaledPixmap = pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
                         ui->imageLabel_2->setPixmap(scaledPixmap);
-                        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
                         qDebug() << "DONE: Image loaded successfully";
                     } else {
                         ui->imageLabel_2->setText("이미지 로드 실패");
@@ -437,6 +426,7 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
 
     // Format the customer information
     QString customerInfo = QString(
+                               "[ 고객 정보 ]\n\n"
                                "이름: %1\n"
                                "차량번호: %2\n"
                                "주소: %3\n"
@@ -460,7 +450,6 @@ void Search::selectCustomerInfo(const QItemSelection &selected, const QItemSelec
         QSize labelSize = ui->imageLabel->size(); // QLabel 크기 가져오기
         QPixmap scaledPixmap = image.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         ui->imageLabel->setPixmap(scaledPixmap);
-        ui->imageLabel_2->setAlignment(Qt::AlignCenter);
 
         qDebug() << "이미지 로드 성공:" << imagePath;
     }
