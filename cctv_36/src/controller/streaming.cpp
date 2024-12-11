@@ -270,13 +270,13 @@ void Streaming::updateGateState(bool state) {
 }
 
 void Streaming::on_plateDataReceived(const QByteArray& buffer) {
-    qDebug() << "on_plateDataReceived";
+    qDebug() << "Streaming::on_plateDataReceived";
     m_receivedBuffer = buffer;
     update_InfoLabel();
 }
 
 void Streaming::update_InfoLabel() {
-    qDebug() << "update_InfoLabel";
+    qDebug() << "Streaming::update_InfoLabel";
     TimeInfo timeInfo;
     JsonManager *jsonManager = new JsonManager(this);
     timeInfo = jsonManager->parse_data(m_receivedBuffer);

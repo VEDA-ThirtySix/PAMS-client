@@ -109,12 +109,12 @@ void TcpManager::on_readyRead() {
 
         qDebug() << "PLATE: TimeInfo + BLOB done";
 
+        qDebug() << "emit plateDataReceived";
+        emit plateDataReceived(buffer); // Emit signal
+
         buffer.clear();
         contentLength = -1;
         headerParsed = false;
-
-        qDebug() << "emit plateDataReceived";
-        emit plateDataReceived(buffer); // Emit signal
 
     } else {
         qDebug() << "Waiting for more data. Current:" << buffer.size()

@@ -335,7 +335,7 @@ TimeInfo* get_timeInfo(void) {
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
     TimeInfo* timeInfo = malloc(sizeof(TimeInfo));
-    strcpy(timeInfo->plate, "123가4562");
+    strcpy(timeInfo->plate, "123가4568");
     strcpy(timeInfo->time, buffer);
     strcpy(timeInfo->type, "entry");
 
