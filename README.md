@@ -1,10 +1,26 @@
 
 ![PAMS_LOGO](https://github.com/user-attachments/assets/cc551581-4eb3-4cb8-928e-86e0ae65b1fa)
- 
- 
- Parking Area Management System(PAMS): Client
+
+
+  
+<div align="center">
+
+  
+# Parking Area Management System(PAMS)
 > **VEDA 1기 - Final Project**
+> 
 > **라즈베리 파이 카메라를 활용한 주차장 관리 시스템**
+
+![C](https://img.shields.io/badge/-C-A8B9CC?style=flat-square&logo=c&logoColor=white) 
+![C++](https://img.shields.io/badge/-C++-00599C?style=flat-square&logo=cplusplus&logoColor=white) 
+![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Qt Creator](https://img.shields.io/badge/-Qt%20Creator-41CD52?style=flat-square&logo=qt&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/-Ubuntu-E95420?style=flat-square&logo=ubuntu&logoColor=white)  
+![Raspbian](https://img.shields.io/badge/-Raspbian-C51A4A?style=flat-square&logo=raspberry-pi&logoColor=white) 
+
+</div>
+ 
+
 
 # 목차
 - [프로젝트 배경 및 목표](#프로젝트-배경-및-목표)
