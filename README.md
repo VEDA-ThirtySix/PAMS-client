@@ -1,15 +1,17 @@
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/cc551581-4eb3-4cb8-928e-86e0ae65b1fa" alt="PAMS_LOGO" width="200"/>
 
-![PAMS_LOGO](https://github.com/user-attachments/assets/cc551581-4eb3-4cb8-928e-86e0ae65b1fa)
-
-
+</div>
   
 <div align="center">
 
   
-# Parking Area Management System(PAMS)
+## Parking Area Management System(PAMS)
 > **VEDA 1기 - Final Project**
 > 
 > **라즈베리 파이 카메라를 활용한 주차장 관리 시스템**
+
+> **A Parking Management System Utilizing a Raspberry Pi Camera**
 
 ![C](https://img.shields.io/badge/-C-A8B9CC?style=flat-square&logo=c&logoColor=white) 
 ![C++](https://img.shields.io/badge/-C++-00599C?style=flat-square&logo=cplusplus&logoColor=white) 
@@ -19,19 +21,29 @@
 ![Raspbian](https://img.shields.io/badge/-Raspbian-C51A4A?style=flat-square&logo=raspberry-pi&logoColor=white) 
 
 </div>
- 
+
+
+## TEAM
+- 송현준 (Song Hyun Zun) [Github] (https://github.com/Song-H-J) email: 
+- 김태원 (Kim Tae Won) [Github] (https://github.com/kimtae9217) email: 
+- 지형근 (Ji Hyeng Gun) [Github] (https://github.com/hyeonggeun0209) email:
+- 신기윤 (Shin Ki yun) [Github] (https://github.com/kiyuniii) email:
+- 김시현 (Kim Si Hyun) [Github] (https://github.com/kongshyun) email: tlgus927@naver.com
+
 
 
 # 목차
+- [TEAM](#TEAM)
 - [프로젝트 배경 및 목표](#프로젝트-배경-및-목표)
 - [주요 기능](#주요-기능)
 - [기술 스택](#기술-스택)
+- [시스템 아키텍처](#시스템-아키텍처)
 - [설치 및 실행방법](#설치-및-실행방법)
 - [프로젝트 구조](#프로젝트-구조)
 - [팀원별 역할](#팀원별-역할)
 
 
-## 프로젝트 배경 및 목표
+### 프로젝트 배경 및 목표
 > **배경**
 > 장기 주차 문제 해결과 주차장 운영 효율성을 높이기 위한 솔루션으로 개발
 
@@ -66,6 +78,9 @@
 | 빌드 시스템 | qmake, GNU |
 | 보안 라이브러리 | OpenSSL |
 | 협업 도구 | git, Notion, Slack |
+
+## 시스템 아키텍처
+![Parking System](./26-architecture.jpg)
 
 
 ## 설치 및 실행방법
