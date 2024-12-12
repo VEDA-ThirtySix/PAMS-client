@@ -12,6 +12,7 @@
         <file>stop2.png</file>
         <file>pause2.png</file>
         <file>play2.png</file>
+        <file>PAMS1.png</file>
     </qresource>
     <qresource prefix="/">
         <file>bell.png</file>
