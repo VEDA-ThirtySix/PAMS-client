@@ -24,7 +24,6 @@
 
 
 ---
----
 # 목차
 1. [프로젝트 배경 및 목표](#프로젝트-배경-및-목표)
 2. [시스템 아키텍처](#시스템-아키텍처)
@@ -38,7 +37,6 @@
 7. [팀원별 역할](#팀원별-역할)
 
 
----
 ---
 ### 프로젝트 배경 및 목표
 > **배경**
@@ -183,18 +181,18 @@
 ```
 
 ### Linux(Server)
-환경 업데이트
+#### 환경 업데이트
 ``` sh
 - $ sudo apt update
 - $ sudo apt -y upgrade
 ```
-설치 환경으로 이동 및 패키지 설치
+#### 설치 환경으로 이동 및 패키지 설치
 ```sh
 - $ git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Server.git
 - $ chmod +x download_packages
 - $ ./download_packages
 ```
-빌드 및 실행
+#### 빌드 및 실행
 > 설치환경으로 이동 및 각각의 디렉터리에 아래의 단계들을 각각 수행
 > : rtspServer, userServer, plateServer
 ```sh
@@ -212,7 +210,7 @@
 - $ chmod +x download_packages
 - $ ./download_packages
 ```
-빌드 및 실행
+#### 빌드 및 실행
 - 방법 1: Qt Creator로 실행
     > 프로젝트 파일(cctv_36.pro)을 `Qt Creator`에서 열고, 실행 버튼을 누릅니다 (Ctrl+R).
 - 방법 2: 터미널로 실행
@@ -234,7 +232,7 @@
 - $ chmod +x download_packages
 - $ ./download_packages
 ```
-빌드 및 실행
+#### 빌드 및 실행
 > 설치환경으로 이동 및 각각의 디렉터리에 아래의 단계들을 각각 수행
 > : rtspServer, userServer, plateServer
 ```sh
@@ -245,7 +243,7 @@
 ```
 
 
-### Windows(Client)
+#### Windows(Client)
 환경 업데이트 및 업그레이드
 ``` sh
 - Download and install Qt Creator from the official website (https://www.qt.io/download).
@@ -254,7 +252,7 @@
   - > git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Client.git
 ```
 
-빌드 및 실행
+#### 빌드 및 실행
 - 방법 1: Qt Creator로 실행
     > 프로젝트 파일(cctv_36.pro)을 `Qt Creator`에서 열고, 실행 버튼을 누릅니다 (Ctrl+R).
 
@@ -277,7 +275,7 @@
   - Open Command Prompt and navigate to your working directory.
   - > git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Server.git
 ```
-빌드 및 실행
+#### 빌드 및 실행
 > 대안적으로, MinGW가 설치된 명령 프롬프트를 사용
 > MinGW 명령 프롬프트를 엽니다.<br>
 작업 디렉토리(Working Directory)로 이동합니다.<br>
