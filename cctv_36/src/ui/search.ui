@@ -205,7 +205,7 @@ QHeaderView::section {
       </rect>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <widget class="QLabel" name="imageLabel">
       <property name="geometry">
@@ -579,9 +579,6 @@ font: 14pt &quot;Sans Serif&quot;;</string>
      <property name="text">
       <string>Select Calender Button</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QPushButton" name="calendarButton">
      <property name="geometry">
@@ -606,14 +603,37 @@ font: 500 8pt &quot;Quicksand Medium&quot;;</string>
        <normaloff>:/images/calendar.png</normaloff>:/images/calendar.png</iconset>
      </property>
     </widget>
+    <zorder>imageLabel_2</zorder>
     <zorder>calendarFrame</zorder>
     <zorder>videoTable</zorder>
     <zorder>calendarWidget</zorder>
     <zorder>plateTitle_3</zorder>
-    <zorder>imageLabel_2</zorder>
     <zorder>plateTitle_4</zorder>
     <zorder>calendarButton</zorder>
    </widget>
+  </widget>
+  <widget class="QLabel" name="teamLogo">
+   <property name="geometry">
+    <rect>
+     <x>900</x>
+     <y>190</y>
+     <width>101</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background:none;
+border:1px dashed rgbrgb(162, 162, 162);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="../../images.qrc">:/images/PAMS1.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
   </widget>
  </widget>
  <resources>

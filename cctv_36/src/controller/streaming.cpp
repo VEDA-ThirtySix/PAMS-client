@@ -216,14 +216,10 @@ void Streaming::rtsp_setting(){
 
 void Streaming::on_startButton_clicked(){
     startFFmpeg();
-    carEntryState(true);
-    updateGateState(true);
 }
 
 void Streaming::on_stopButton_clicked(){
     stopFFmpeg();
-    carEntryState(false);
-    updateGateState(false);
 }
 
 /*START, STOP 버튼 true, false에 따른 스타일 지정 함수*/
@@ -247,11 +243,8 @@ void Streaming::setButtonStyle(QPushButton* button, bool isActive) {
 void Streaming::carEntryState(bool state){
     QString trueImagePath = ":/images/bell.png"; // true 상태의 이미지
     QString falseImagePath = ":/images/bell_none.png"; // false 상태의 이미지
-    // 상태에 따라 이미지 로드
     QPixmap pixmap = state ? QPixmap(trueImagePath) : QPixmap(falseImagePath);
-    // QLabel 크기를 가져오기
     QSize labelSize = ui->alarm_state->size();
-    // QLabel에 이미지를 설정 (픽셀 정보는 유지)
     ui->alarm_state->setPixmap(pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::FastTransformation));
     ui->alarm_state->setScaledContents(false); // QLabel의 스케일 조정 비활성화
 }
@@ -260,11 +253,8 @@ void Streaming::updateGateState(bool state) {
     // 이미지 경로
     QString trueImagePath = ":/images/gate_open.png"; // true 상태의 이미지
     QString falseImagePath = ":/images/gate_close.png"; // false 상태의 이미지
-    // 상태에 따라 이미지 로드
     QPixmap pixmap = state ? QPixmap(trueImagePath) : QPixmap(falseImagePath);
-    // QLabel 크기를 가져오기
     QSize labelSize = ui->gate_state->size();
-    // QLabel에 이미지를 설정 (픽셀 정보는 유지)
     ui->gate_state->setPixmap(pixmap.scaled(labelSize, Qt::KeepAspectRatio, Qt::FastTransformation));
     ui->gate_state->setScaledContents(false); // QLabel의 스케일 조정 비활성화
 }
@@ -307,12 +297,18 @@ void Streaming::update_InfoLabel() {
            "  주소 : %3\n"
            "전화번호: %4"
            ).arg(name, plate, home, phone);
+        carEntryState(true);
+        updateGateState(true);
     } else {
         qDebug() << "Who are you?";
         customerInfo = "미등록 차량입니다";
+        carEntryState(false);
+        updateGateState(false);
+
     }
 
     ui->label->setText(customerInfo);
+
 }
 
 
