@@ -23,39 +23,20 @@
 </div>
 
 
-<h2 id="TEAM"> 👨‍👩‍👧‍👧  TEAM</h2>
-
-|                                               [송현준](https://github.com/Song-H-J)                                                |                                                  [지형근](https://github.com/hyeonggeun0209)                                                  |                                               [김시현](https://github.com/kongshyun)                                                |                                                   [김태원](https://github.com/kimtae9217)                                                   |                                                   [신기윤](https://github.com/kiyuniii)                                                   |
-| :--------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="204" alt="songHY" src="https://avatars.githubusercontent.com/u/76940288?v=4"> | <img width="204" alt="jihg" src="https://avatars.githubusercontent.com/u/55240146?v=4"> | <img width="204" alt="KimSH" src="https://avatars.githubusercontent.com/u/77137429?v=4"> | <img width="204" alt="KimTW" src="https://avatars.githubusercontent.com/u/55828162?v=4"> | <img width="204" alt="ShinKY" src="https://avatars.githubusercontent.com/u/130027851?v=4"> |
-|                                                                 **Server**                                                                 |                                                                    **Server**                                                                     |                                                                    **Client**                                                                     |                                                                    **Client**                                                                     |                                                                    **Client**                                                                     |
-
-## 팀원별 역할
-- 송현준: RTSPS 서버 개발 및 영상 처리 담당.
-- 지형근: 딥러닝 기반 분석 기능 구현.
-- 김시현: Qt Application UI 설계 및 데이터 파싱.
-- 김태원: 영상 스트리밍 플레이어 개발.
-- 신기윤: 데이터베이스 설계 및 이벤트 관리.
-
 ---
 ---
 # 목차
-## 주제 개요
-- [프로젝트 배경 및 목표](#프로젝트-배경-및-목표)
-- [시스템 아키텍처](#시스템-아키텍처)
-
-
-## Server
-
-- [Server 설치 및 실행 방법](#server-설치-및-실행-방법)
-- [Server 프로젝트 구조](#server-프로젝트-구조)
-
-## Client
-- [Client 주요 기능 ](#Client-주요-기능)
-- [Client 설치 및 실행 방법](#client-설치-및-실행-방법)
-- [Client 프로젝트 구조](#client-프로젝트-구조)
-- [기술 스택](#기술-스택)
-- [팀원별 역할](#팀원별-역할)
+1. [프로젝트 배경 및 목표](#프로젝트-배경-및-목표)
+2. [시스템 아키텍처](#시스템-아키텍처)
+3. [기술 스택](#기술-스택)
+4. [Server](#server)
+   - [Server 설치 및 실행 방법](#server-설치-및-실행-방법)
+   - [Server 프로젝트 구조](#server-프로젝트-구조)
+5. [Client](#client)
+   - [Client 주요 기능](#client-주요-기능)
+   - [Client 설치 및 실행 방법](#client-설치-및-실행-방법)
+   - [Client 프로젝트 구조](#client-프로젝트-구조)
+6. [팀원별 역할](#팀원별-역할)
 
 
 ---
@@ -80,6 +61,14 @@
 | src | 소스 파일  |
 | objs | 오브젝트 파일 |
 
+### SERVER
+| 파일명 | 기능 |
+|-------|-------|
+| rtspServer | - 클라이언트로 RTSP 실시간 스트리밍 서버 구현<br>  - 번호판 발견 시 OCR 저장 및 클립(15초) 녹화<br> - 클립 영상 전송 처리
+ |
+| userServer | - 클라이언트 요청 처리 및 응답<br> -입주민 정보 데이터베이스 관리 및 저장<br> -클립 요청 파싱 및 `rtspServer`에 스트리밍 요청 전달 |
+| plateServer | - `rtspServer`에서 전달받은 메타데이터(JSON) 생성 및 클라이언트로 전송 |
+
 ### CLIENT
 | 파일명 | 기능 |
 |-------|-------|    
@@ -88,13 +77,6 @@
 | controller | 비즈니스 로직 제어 및 모델과 뷰 사이의 데이터 흐름 관리  | 
 | network | HTTP 및 TCP 통신 구현, 서버와의 데이터 교환 관리 |
 
-### SERVER
-| 파일명 | 기능 |
-|-------|-------|
-| rtspServer | - 클라이언트로 RTSP 실시간 스트리밍 서버 구현<br>  - 번호판 발견 시 OCR 저장 및 클립(15초) 녹화<br> - 클립 영상 전송 처리
- |
-| userServer | - 클라이언트 요청 처리 및 응답<br> -입주민 정보 데이터베이스 관리 및 저장<br> -클립 요청 파싱 및 `rtspServer`에 스트리밍 요청 전달 |
-| plateServer | - `rtspServer`에서 전달받은 메타데이터(JSON) 생성 및 클라이언트로 전송 |
 
 ### Database
 | 파일명 | 위치 | 데이터 | 
@@ -109,28 +91,63 @@
 | TimeInfo | id(식별번호), plate(번호판), time(시간), type(입출차구분), image(사진_BLOB) |
 
 
-
 ## 기술 스택
-| 카테고리 | 사용기술 |
-|-------|-------|
-| 하드웨어 | Raspberry Pi 5, Picam |
-| 미디어 스트리밍 | FFmpeg |
-| 프로그래밍 환경 | Qt, VSCode |
-| 프로그래밍 언어 | C, C++, python |
-| 컴퓨터 비전 | OpenCV, TensorFlow |
-| 통신 프로토콜 | RTSP, SRTP/DTLS, TCP/HTTP |
-| 디버깅 도구 | CppCheck, Valgrind |
-| 테스트 환경 | Ubuntu 24.04/22.04 LTS<br>, MacOS, Rasberry Pi OS |
-| 빌드 시스템 | qmake, GNU |
-| 보안 라이브러리 | OpenSSL |
-| 협업 도구 | git, Notion, Slack |
+
+<div align="center">
+
+### 🛠️ **개발 도구**
+![Qt](https://img.shields.io/badge/-Qt-41CD52?style=flat-square&logo=qt&logoColor=white)
+![VSCode](https://img.shields.io/badge/-VSCode-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)
+![CppCheck](https://img.shields.io/badge/-CppCheck-00599C?style=flat-square)
+![Valgrind](https://img.shields.io/badge/-Valgrind-336791?style=flat-square)
+
+### 📡 **통신 프로토콜**
+![RTSP](https://img.shields.io/badge/-RTSP-FF6F00?style=flat-square)
+![HTTP](https://img.shields.io/badge/-HTTP-00599C?style=flat-square)
+![SRTP/DTLS](https://img.shields.io/badge/-SRTP/DTLS-764ABC?style=flat-square)
+
+### 💻 **프로그래밍 언어**
+![C](https://img.shields.io/badge/-C-A8B9CC?style=flat-square&logo=c&logoColor=white)
+![C++](https://img.shields.io/badge/-C++-00599C?style=flat-square&logo=cplusplus&logoColor=white)
+![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
+
+---
+
+### **컴퓨터 비전 / 운영 환경 / 하드웨어**
+
+<div style="display: flex; justify-content: center;">
+  
+![OpenCV](https://img.shields.io/badge/-OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/-TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/-Ubuntu-E95420?style=flat-square&logo=ubuntu&logoColor=white)
+![Raspberry Pi OS](https://img.shields.io/badge/-Raspberry%20Pi%20OS-C51A4A?style=flat-square&logo=raspberry-pi&logoColor=white)
+![MacOS](https://img.shields.io/badge/-MacOS-000000?style=flat-square&logo=apple&logoColor=white)
+![Raspberry Pi](https://img.shields.io/badge/-Raspberry%20Pi-C51A4A?style=flat-square&logo=raspberry-pi&logoColor=white)
+![Pi Camera](https://img.shields.io/badge/-Pi%20Camera-3776AB?style=flat-square)
+
+</div>
+
+---
+
+### 🔐 **보안 및 빌드**
+![OpenSSL](https://img.shields.io/badge/-OpenSSL-721412?style=flat-square&logo=openssl&logoColor=white)
+![qmake](https://img.shields.io/badge/-qmake-41CD52?style=flat-square)
+![GNU](https://img.shields.io/badge/-GNU-000000?style=flat-square&logo=gnu&logoColor=white)
+
+### 🤝 **협업 도구**
+![Git](https://img.shields.io/badge/-Git-F05032?style=flat-square&logo=git&logoColor=white)
+![Notion](https://img.shields.io/badge/-Notion-000000?style=flat-square&logo=notion&logoColor=white)
+![Slack](https://img.shields.io/badge/-Slack-4A154B?style=flat-square&logo=slack&logoColor=white)
+
+</div>
 ---
 <h1 id="Server"> 🔷  Server</h1>
+## - server 주요 기능
 
 ---
 <h1 id="Client"> 🔷  Client</h1>
 
-## Client 주요 기능 
+## - client 주요 기능 
 **실시간 영상 스트리밍**
 - Raspberry Pi Camera로 촬영된 영상을 RTSP 프로토콜을 통해 클라이언트(Qt)로 실시간 전송.
 **번호판 인식 및 데이터 처리**
@@ -144,7 +161,7 @@
 
 
 
-## 설치 및 실행방법
+## - 설치 및 실행방법
 ### Linux(Client)
 환경 업데이트 및 업그레이드
 ``` sh
@@ -277,3 +294,18 @@
   - > mingw32-make     //build
   - > ./cctv_36.exe    //Run the Server Program
 ```
+
+
+<h2 id="TEAM"> 👨‍👩‍👧‍👧  TEAM</h2>
+
+|                                               [송현준](https://github.com/Song-H-J)                                                |                                                  [지형근](https://github.com/hyeonggeun0209)                                                  |                                               [김시현](https://github.com/kongshyun)                                                |                                                   [김태원](https://github.com/kimtae9217)                                                   |                                                   [신기윤](https://github.com/kiyuniii)                                                   |
+| :--------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
+| <img width="204" alt="songHY" src="https://avatars.githubusercontent.com/u/76940288?v=4"> | <img width="204" alt="jihg" src="https://avatars.githubusercontent.com/u/55240146?v=4"> | <img width="204" alt="KimSH" src="https://avatars.githubusercontent.com/u/77137429?v=4"> | <img width="204" alt="KimTW" src="https://avatars.githubusercontent.com/u/55828162?v=4"> | <img width="204" alt="ShinKY" src="https://avatars.githubusercontent.com/u/130027851?v=4"> |
+|                                                                 **Server**                                                                 |                                                                    **Server**                                                                     |                                                                    **Client**                                                                     |                                                                    **Client**                                                                     |                                                                    **Client**                                                                     |
+
+## 팀원별 역할
+- 송현준: RTSPS 서버 개발 및 영상 처리 담당.
+- 지형근: 딥러닝 기반 분석 기능 구현.
+- 김시현: Qt Application UI 설계 및 데이터 파싱.
+- 김태원: 영상 스트리밍 플레이어 개발.
+- 신기윤: 데이터베이스 설계 및 이벤트 관리.
