@@ -6,7 +6,7 @@
 <div align="center">
 
 
-## Parking Area Management System(PAMS)
+# Parking Area Management System(PAMS)
 > **VEDA 1기 - Final Project**
 > 
 > **라즈베리 파이 카메라를 활용한 주차장 관리 시스템**
@@ -26,7 +26,7 @@
     - [server 설치 및 실행 방법](#server-설치-및-실행-방법)
   5. [Client](#client)
     - [client 주요 기능](#client-주요-기능)
-    - [client 설치 및 실행방법](#client-설치-및-실행방법)
+    - [client 설치 및 실행 방법](#client-설치-및-실행-방법)
   6. [팀원별 역할](#팀원별-역할)
 
 
@@ -86,7 +86,8 @@
 </div>
 
 ## 시스템 아키텍처
-![26-architecture](https://github.com/user-attachments/assets/c8d4c14e-62c9-4947-af6e-e90496fd1c15) 
+<img width="1089" alt="image" src="https://github.com/user-attachments/assets/30cc0e65-e35c-485d-9f15-619346261a65" />
+
 
 ## 프로젝트 구조
 
@@ -98,9 +99,10 @@
 ---
 
 ### Server
+- **`tfliteRuntime`**: TensorFlow Lite 사용, 번호판 감지, 정렬, 텍스트 추출 모델
 - **`rtspServer`**: RTSP 스트리밍 서버, 번호판 OCR 및 클립 녹화/전송  
-- **`userServer`**: 클라이언트 요청 처리, 데이터베이스 관리, 스트리밍 요청 전달  
-- **`plateServer`**: 메타데이터 생성 및 클라이언트 전송  
+- **`usrReceiver`**: 클라이언트 요청 처리, 데이터베이스 관리, 스트리밍 클립 요청 전달  
+- **`plateSender`**: 번호판, 타임스탬프 등 메타데이터 생성 및 클라이언트 전송  
 
 ---
 
@@ -113,39 +115,66 @@
 ---
 
 ### Database
-- **`metadata.db`**: 입주민 정보(Basic), 입출차 정보(Time)  
-- **`parking.db`**: 입출차 정보 관리  
+- **`metadata.db`**: 입주민 정보(Basic), 입출차 정보(Time)   
 
 ---
 
 ### DTO (Data Transfer Object)
 - **`BasicInfo`**: 이름, 번호판, 동호수, 전화번호  
-- **`TimeInfo`**: 식별번호, 번호판, 시간, 입출차 구분, 이미지 데이터  
+- **`TimeInfo`**: 식별번호, 번호판, 시간, 입출차 구분, 번호판 이미지
 
 
 ---
 <h1 id="Server"> 🔷  Server</h1>
 
 ## server 주요 기능
+**1. 실시간 영상 스트리밍 및 저장**
+- Raspberry Pi Camera로 촬영된 영상을 RTSP 프로토콜을 통해 클라이언트(Qt)로 실시간 전송 및 15초씩 저장
+  
+**2. 번호판 OCR 인식 및 데이터 처리**
+- OpenCV와 TensorFlow lite를 활용하여 차량 번호판을 인식하고 OCR(광학 문자 인식)을 통해 텍스트를 추출 후 데이터 저장
+  
+**3. 사진 및 메타데이터 전송**
+- 저장된 사진과 메타데이터(번호판 정보, 입출차 시간 등)를 HTTP 프로토콜로 클라이언트에 실시간 전송
+  
+**4. 클립 기록 영상 스트리밍**
+- 클라이언트가 특정 시간대의 기록을 요청하면, 서버에서 해당 시간의 15초 클립을 스트리밍으로 제공
+  
 ## server 설치 및 실행 방법
+### Raspberrypi 5 (Server)
+#### 설치 환경으로 이동 및 패키지 설치
+```sh
+- $ git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Server.git
+- $ ./setup.sh       # 패키지 설치 쉘 스크립트
+```
+#### 빌드 및 실행
+> 설치환경으로 이동 및 각각의 디렉터리에 아래의 단계들을 각각 수행
+> : plateSender, usrRecevier, rtspServer, rtspH264, tfliteRuntime 
+```sh
+- $ make clean
+- $ make            # build
+- $ ./start.sh      # Run the Server Program
+```
+#### 결과
+[사진 넣을 예정]
+
 ---
 <h1 id="Client"> 🔷  Client</h1>
 
 ## client 주요 기능
-**실시간 영상 스트리밍**
-- Raspberry Pi Camera로 촬영된 영상을 RTSP 프로토콜을 통해 클라이언트(Qt)로 실시간 전송.
-**번호판 인식 및 데이터 처리**
-- OpenCV와 TensorFlow를 활용하여 차량 번호판을 인식하고 OCR(광학 문자 인식)을 통해 텍스트를 추출 후 데이터 저장.
-**사진 및 메타데이터 전송**
-- 저장된 사진과 메타데이터(번호판 정보, 입출차 시간 등)를 HTTP 프로토콜로 클라이언트에 실시간 전송.
-**입주민 정보 관리 및 인증**
-- 클라이언트에서 입주민 정보를 저장 및 관리하며, 서버에서 입차 차량 번호판과 비교하여 입주민 여부를 판별.
-**영상 기록 요청 및 스트리밍**
-- 클라이언트가 특정 시간대의 기록을 요청하면, 서버에서 해당 시간의 15초 클립을 스트리밍으로 제공.
 
+**1. 실시간 영상 스트리밍 및 이벤트 알림**
+- 차량 입차시 등록 차량, 미등록 차량 판별하여 이벤트 알림, 차량 번호판 OCR 이미지 출력
+  
+**2. 입주민 정보 관리 및 인증**
+- 클라이언트에서 입주민 정보를 저장 및 관리하며, 서버에서 입차 차량 번호판과 비교하여 입주민 여부를 판별 (등록 차량, 미등록 차량)
+  
+**3. 날짜별 영상 기록 조회**
+- 과거의 영상 기록을 날짜별로 조회하여 스트리밍 가능
 
-
-## client-설치-및-실행방법
+## Qt Application(Client) UI
+[UI 넣을 예정]
+## client 설치 및 실행 방법
 ### Linux(Client)
 환경 업데이트 및 업그레이드
 ``` sh
@@ -160,10 +189,9 @@
 ```
 빌드 및 실행
 - 방법 1: Qt Creator로 실행
-    > 프로젝트 파일(cctv_36.pro)을 `Qt Creator`에서 열고, 실행 버튼을 누릅니다 (Ctrl+R).
+    > 프로젝트 파일(cctv_36.pro)을 `Qt Creator`에서 열고, 실행 버튼을 누릅니다.
 
 - 방법 2: 터미널로 실행
-    > Navigate to 'Working Directory'
 ```sh
 - $ qmake           
 - $ make clean
@@ -171,114 +199,28 @@
 - $ ./cctv_36.pro     //Run the Client Program
 ```
 
-### Linux(Server)
-#### 환경 업데이트
-``` sh
-- $ sudo apt update
-- $ sudo apt -y upgrade
-```
-#### 설치 환경으로 이동 및 패키지 설치
-```sh
-- $ git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Server.git
-- $ chmod +x download_packages
-- $ ./download_packages
-```
-#### 빌드 및 실행
-> 설치환경으로 이동 및 각각의 디렉터리에 아래의 단계들을 각각 수행
-> : rtspServer, userServer, plateServer
-```sh
-- $ make clean
-- $ make            //build
-- ./cctv_36.pro     //Run the Server Program
-```
-
-### MacOS(Clinent)
+### MacOS(Client)
 환경 업데이트 및 업그레이드
 ```sh
 - $ brew update
 - $ brew install qt5
+```
+설치 환경으로 이동 및 패키지 설치
+```sh
 - $ git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Client.git
 - $ chmod +x download_packages
 - $ ./download_packages
 ```
 #### 빌드 및 실행
 - 방법 1: Qt Creator로 실행
-    > 프로젝트 파일(cctv_36.pro)을 `Qt Creator`에서 열고, 실행 버튼을 누릅니다 (Ctrl+R).
+    > 프로젝트 파일(cctv_36.pro)을 `Qt Creator`에서 열고, 실행 버튼을 누릅니다.
 - 방법 2: 터미널로 실행
-> 설치환경으로 이동 및 각각의 디렉터리에 아래의 단계들을 각각 수행
-> : rtspServer, userServer, plateServer
 ```sh
   - $ qmake
   - $ make clean
   - $ make           //build
   - $ ./cctv_36.pro   //Run the Client Program
 ```
-
-### MacOS(Server)
-환경 업데이트 및 업그레이드
-```sh
-- $ brew update
-- $ brew install qt5
-- $ git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Server.git
-- $ chmod +x download_packages
-- $ ./download_packages
-```
-#### 빌드 및 실행
-> 설치환경으로 이동 및 각각의 디렉터리에 아래의 단계들을 각각 수행
-> : rtspServer, userServer, plateServer
-```sh
-  - $ qmake
-  - $ make clean
-  - $ make           //build
-  - $ ./cctv_36.pro   //Run the Client Program
-```
-
-
-#### Windows(Client)
-환경 업데이트 및 업그레이드
-``` sh
-- Download and install Qt Creator from the official website (https://www.qt.io/download).
-- Clone the repository:
-  - Open Command Prompt and navigate to your working directory.
-  - > git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Client.git
-```
-
-#### 빌드 및 실행
-- 방법 1: Qt Creator로 실행
-    > 프로젝트 파일(cctv_36.pro)을 `Qt Creator`에서 열고, 실행 버튼을 누릅니다 (Ctrl+R).
-
-- 방법 2: 터미널로 실행
-> 대안적으로, MinGW가 설치된 명령 프롬프트를 사용
-> MinGW 명령 프롬프트를 엽니다.<br>
-작업 디렉토리(Working Directory)로 이동합니다.<br>
-```sh
-  - > qmake
-  - > mingw32-make clean
-  - > mingw32-make     //build
-  - > ./cctv_36.exe    //Run the Client Program
-```
-
-### Windows(Server)
-환경 업데이트 및 업그레이드
-```sh
-- Download and install Qt Creator from the official website (https://www.qt.io/download).
-- Clone the repository:
-  - Open Command Prompt and navigate to your working directory.
-  - > git clone https://github.com/VEDA-ThirtySix/RaspberryPi-5-RTSP-Server.git
-```
-#### 빌드 및 실행
-> 대안적으로, MinGW가 설치된 명령 프롬프트를 사용
-> MinGW 명령 프롬프트를 엽니다.<br>
-작업 디렉토리(Working Directory)로 이동합니다.<br>
-설치환경으로 이동 및 각각의 디렉터리에 아래의 단계들을 각각 수행<br>
-: `rtspServer`, `userServer`, `plateServer`
-```sh
-  - > qmake
-  - > mingw32-make clean
-  - > mingw32-make     //build
-  - > ./cctv_36.exe    //Run the Server Program
-```
-
 
 <h2 id="TEAM"> 👨‍👩‍👧‍👧  TEAM</h2>
 
@@ -288,8 +230,8 @@
 |                                                                 **Server**                                                                 |                                                                    **Server**                                                                     |                                                                    **Client**                                                                     |                                                                    **Client**                                                                     |                                                                    **Client**                                                                     |
 
 ## 팀원별 역할
-- 송현준: RTSPS 서버 개발 및 영상 처리 담당.
-- 지형근: 딥러닝 기반 분석 기능 구현.
+- 송현준: RTSP 스트리밍 서버 개발 및 딥러닝 기반 영상 처리 개발
+- 지형근: OpenSSL, SRTP, DTLS 관련 보안 프로토콜 개발 
 - 김시현: Qt Application UI 설계 및 실시간 스트리밍 클라이언트 개발
-- 김태원: 데이터베이스 UI 설계 및 검색 관리기능 개발.
-- 신기윤: 데이터베이스 설계 및 이벤트 관리.
+- 김태원: Qt Application UI 설계 및 데이터베이스 검색/관리 기능 개발
+- 신기윤: http통신 서버 개발 및 데이터베이스 설계
