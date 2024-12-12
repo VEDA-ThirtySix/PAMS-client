@@ -13,28 +13,21 @@
 
 > **A Parking Management System Utilizing a Raspberry Pi Camera**
 
-![C](https://img.shields.io/badge/-C-A8B9CC?style=flat-square&logo=c&logoColor=white) 
-![C++](https://img.shields.io/badge/-C++-00599C?style=flat-square&logo=cplusplus&logoColor=white) 
-![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![Qt Creator](https://img.shields.io/badge/-Qt%20Creator-41CD52?style=flat-square&logo=qt&logoColor=white)
-![Ubuntu](https://img.shields.io/badge/-Ubuntu-E95420?style=flat-square&logo=ubuntu&logoColor=white)  
-![Raspbian](https://img.shields.io/badge/-Raspbian-C51A4A?style=flat-square&logo=raspberry-pi&logoColor=white) 
-
 </div>
 
 
 ---
-# 목차
-1. [프로젝트 배경 및 목표](#프로젝트-배경-및-목표)
-2. [기술 스택](#기술-스택)
-3. [시스템 아키텍처](#시스템-아키텍처)
-4. [Server](#server)
-   - [server 주요 기능](#server-주요-기능)
-   - [server 설치 및 실행 방법](#server-설치-및-실행-방법)
-5. [Client](#client)
-   - [client 주요 기능](#client-주요-기능)
-   - [client 설치 및 실행방법](#client-설치-및-실행방법)
-6. [팀원별 역할](#팀원별-역할)
+  # 목차
+  1. [프로젝트 배경 및 목표](#프로젝트-배경-및-목표)
+  2. [기술 스택](#기술-스택)
+  3. [시스템 아키텍처](#시스템-아키텍처)
+  4. [Server](#server)
+    - [server 주요 기능](#server-주요-기능)
+    - [server 설치 및 실행 방법](#server-설치-및-실행-방법)
+  5. [Client](#client)
+    - [client 주요 기능](#client-주요-기능)
+    - [client 설치 및 실행방법](#client-설치-및-실행방법)
+  6. [팀원별 역할](#팀원별-역할)
 
 
 ---
@@ -298,5 +291,5 @@
 - 송현준: RTSPS 서버 개발 및 영상 처리 담당.
 - 지형근: 딥러닝 기반 분석 기능 구현.
 - 김시현: Qt Application UI 설계 및 실시간 스트리밍 클라이언트 개발
-- 김태원: 데이터베이스 UI 설계 및검색 관리기능 개발.
+- 김태원: 데이터베이스 UI 설계 및 검색 관리기능 개발.
 - 신기윤: 데이터베이스 설계 및 이벤트 관리.
