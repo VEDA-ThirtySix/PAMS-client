@@ -103,7 +103,6 @@
 ![C++](https://img.shields.io/badge/-C++-00599C?style=flat-square&logo=cplusplus&logoColor=white)
 ![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
 
----
 
 ### **컴퓨터 비전 / 운영 환경 / 하드웨어**
 
@@ -118,8 +117,6 @@
 ![Pi Camera](https://img.shields.io/badge/-Pi%20Camera-3776AB?style=flat-square)
 
 </div>
-
----
 
 ### 🔐 **보안 및 빌드**
 ![OpenSSL](https://img.shields.io/badge/-OpenSSL-721412?style=flat-square&logo=openssl&logoColor=white)
@@ -300,5 +297,5 @@
 - 송현준: RTSPS 서버 개발 및 영상 처리 담당.
 - 지형근: 딥러닝 기반 분석 기능 구현.
 - 김시현: Qt Application UI 설계 및 실시간 스트리밍 클라이언트 개발
-- 김태원: 영상 스트리밍 플레이어 개발.
+- 김태원: 데이터베이스 UI 설계 및검색 관리기능 개발.
 - 신기윤: 데이터베이스 설계 및 이벤트 관리.
