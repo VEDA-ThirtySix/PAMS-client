@@ -51,44 +51,39 @@
 ## 시스템 아키텍처
 ![26-architecture](https://github.com/user-attachments/assets/c8d4c14e-62c9-4947-af6e-e90496fd1c15) 
 
-
-
 ## 프로젝트 구조
-### Common
-| 파일명 | 기능 |
-|-------|-------|
-| inc | 헤더 파일 |
-| src | 소스 파일  |
-| objs | 오브젝트 파일 |
 
-### SERVER
-| 파일명 | 기능 |
-|-------|-------|
-| rtspServer | - 클라이언트로 RTSP 실시간 스트리밍 서버 구현<br>  - 번호판 발견 시 OCR 저장 및 클립(15초) 녹화<br> - 클립 영상 전송 처리
- |
-| userServer | - 클라이언트 요청 처리 및 응답<br> -입주민 정보 데이터베이스 관리 및 저장<br> -클립 요청 파싱 및 `rtspServer`에 스트리밍 요청 전달 |
-| plateServer | - `rtspServer`에서 전달받은 메타데이터(JSON) 생성 및 클라이언트로 전송 |
+### 공통 디렉터리
+- **`inc`**: 헤더 파일  
+- **`src`**: 소스 파일  
+- **`objs`**: 오브젝트 파일  
 
-### CLIENT
-| 파일명 | 기능 |
-|-------|-------|    
-| model | DTO(데이터 전송 객체) 및 SQL 함수 정의 및 데이터 처리 로직 |
-| view | 사용자 인터페이스(UI) 구성 및 사용자 입력 처리 |
-| controller | 비즈니스 로직 제어 및 모델과 뷰 사이의 데이터 흐름 관리  | 
-| network | HTTP 및 TCP 통신 구현, 서버와의 데이터 교환 관리 |
+---
 
+### Server
+- **`rtspServer`**: RTSP 스트리밍 서버, 번호판 OCR 및 클립 녹화/전송  
+- **`userServer`**: 클라이언트 요청 처리, 데이터베이스 관리, 스트리밍 요청 전달  
+- **`plateServer`**: 메타데이터 생성 및 클라이언트 전송  
+
+---
+
+### Client
+- **`model`**: DTO 및 SQL 데이터 처리  
+- **`view`**: UI 구성 및 사용자 입력 처리  
+- **`controller`**: 비즈니스 로직 관리  
+- **`network`**: HTTP/TCP 통신 구현  
+
+---
 
 ### Database
-| 파일명 | 위치 | 데이터 | 
-|-------|-------|-------|
-| metadata.db | cctv_36 | Basic(입주민정보), Time(입출차정보) |
-| parking.db | userServer | Time(입출차정보) |
+- **`metadata.db`**: 입주민 정보(Basic), 입출차 정보(Time)  
+- **`parking.db`**: 입출차 정보 관리  
 
-### DTO(Data Transfer Object)
-| 클래스명 | 멤버변수 |
-|-------|-------|
-| BasicInfo | name(이름), plate(번호판), home(동호수), phone(전화번호) |
-| TimeInfo | id(식별번호), plate(번호판), time(시간), type(입출차구분), image(사진_BLOB) |
+---
+
+### DTO (Data Transfer Object)
+- **`BasicInfo`**: 이름, 번호판, 동호수, 전화번호  
+- **`TimeInfo`**: 식별번호, 번호판, 시간, 입출차 구분, 이미지 데이터  
 
 
 ## 기술 스택
@@ -306,6 +301,6 @@
 ## 팀원별 역할
 - 송현준: RTSPS 서버 개발 및 영상 처리 담당.
 - 지형근: 딥러닝 기반 분석 기능 구현.
-- 김시현: Qt Application UI 설계 및 데이터 파싱.
+- 김시현: Qt Application UI 설계 및 실시간 스트리밍 클라이언트 개발
 - 김태원: 영상 스트리밍 플레이어 개발.
 - 신기윤: 데이터베이스 설계 및 이벤트 관리.
