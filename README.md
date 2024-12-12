@@ -1,4 +1,8 @@
-# Parking Area Management System(PAMS): Client
+
+![PAMS_LOGO](https://github.com/user-attachments/assets/cc551581-4eb3-4cb8-928e-86e0ae65b1fa)
+ 
+ 
+ Parking Area Management System(PAMS): Client
 > **VEDA 1기 - Final Project**
 > **라즈베리 파이 카메라를 활용한 주차장 관리 시스템**
 
